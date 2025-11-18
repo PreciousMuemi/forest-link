@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card';
 import ThreatMap from '@/components/ThreatMap';
+import SatelliteMap from '@/components/SatelliteMap';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity } from 'lucide-react';
 
@@ -85,19 +86,37 @@ const Index = () => {
           </Card>
         </div>
 
-        {/* Map Section */}
-        <Card className="p-6 shadow-lg">
-          <div className="mb-4">
-            <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
-              <Satellite className="h-5 w-5 text-primary" />
-              Live Threat Detection Map
-            </h2>
-            <p className="text-sm text-muted-foreground mt-1">
-              Real-time monitoring powered by satellite imagery and ML detection
-            </p>
-          </div>
-          <ThreatMap />
-        </Card>
+        {/* Satellite Map */}
+        <section className="mb-8">
+          <Card className="p-6 shadow-lg">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                <Globe className="h-5 w-5 text-primary" />
+                Real-Time Satellite Imagery
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Live satellite feed with ML-powered threat detection
+              </p>
+            </div>
+            <SatelliteMap />
+          </Card>
+        </section>
+
+        {/* Threat List */}
+        <section>
+          <Card className="p-6 shadow-lg">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
+                <Activity className="h-5 w-5 text-primary" />
+                Active Threats
+              </h2>
+              <p className="text-sm text-muted-foreground mt-1">
+                Detected incidents and alerts
+              </p>
+            </div>
+            <ThreatMap />
+          </Card>
+        </section>
       </div>
     </div>
   );
