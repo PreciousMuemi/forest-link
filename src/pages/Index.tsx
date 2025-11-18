@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import ThreatMap from '@/components/ThreatMap';
 import SatelliteMap from '@/components/SatelliteMap';
+import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity } from 'lucide-react';
 
@@ -85,6 +86,11 @@ const Index = () => {
             </div>
           </Card>
         </div>
+
+        {/* Field Reporter */}
+        <section className="mb-8">
+          <FieldReporter />
+        </section>
 
         {/* Satellite Map */}
         <section className="mb-8">
