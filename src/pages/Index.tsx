@@ -1,14 +1,67 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ThreatMap from '@/components/ThreatMap';
 import SatelliteMap from '@/components/SatelliteMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
-import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, CheckCircle } from 'lucide-react';
+import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, CheckCircle, LogOut, User } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
+import { toast } from 'sonner';
 
 const Index = () => {
+  const navigate = useNavigate();
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+
+  useEffect(() => {
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    toast.success('Logged out successfully');
+  };
+
+  const scrollToMap = () => {
+    const mapSection = document.getElementById('satellite-map-section');
+    if (mapSection) {
+      mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
+      {/* Header with Auth */}
+      <div className="absolute top-4 right-4 z-50 flex gap-2">
+        {user ? (
+          <>
+            <Button variant="outline" size="sm" className="gap-2">
+              <User className="h-4 w-4" />
+              {user.email}
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
+              <LogOut className="h-4 w-4" />
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
+            Login / Sign Up
+          </Button>
+        )}
+      </div>
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHptLTggNGMwIDIuMjEtMS43OSA0LTQgNHMtNC0xLjc5LTQtNCAxLjc5LTQgNC00IDQgMS43OSA0IDR6bTI0IDhjMCAyLjIxLTEuNzkgNC00IDRzLTQtMS43OS00LTQgMS43OS00IDQtNCA0IDEuNzkgNCA0em0tOCA4YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
@@ -29,7 +82,7 @@ const Index = () => {
             </p>
             
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Button size="lg" variant="secondary" className="gap-2 shadow-lg">
+              <Button size="lg" variant="secondary" className="gap-2 shadow-lg" onClick={scrollToMap}>
                 <Eye className="h-5 w-5" />
                 View Live Feed
               </Button>
@@ -130,7 +183,7 @@ const Index = () => {
       </section>
 
       {/* Satellite Map */}
-      <section className="container mx-auto px-4 py-8">
+      <section id="satellite-map-section" className="container mx-auto px-4 py-8">
         <Card className="overflow-hidden shadow-2xl border-0">
           <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-6 border-b">
             <div className="flex items-center justify-between flex-wrap gap-4">
