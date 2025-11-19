@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { supabase } from '@/integrations/supabase/client';
+import { MapLayerControl } from './MapLayerControl';
 
 interface Incident {
   id: string;
@@ -16,6 +17,7 @@ const SatelliteMap = () => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
   const [incidents, setIncidents] = useState<Incident[]>([]);
+  const [currentLayer, setCurrentLayer] = useState('satellite-streets-v12');
 
   useEffect(() => {
     if (!mapContainer.current) return;
@@ -25,7 +27,7 @@ const SatelliteMap = () => {
 
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/satellite-streets-v12',
+      style: `mapbox://styles/mapbox/${currentLayer}`,
       center: [36.8219, -1.2921], // Kenya coordinates
       zoom: 6,
       pitch: 45,
@@ -115,14 +117,24 @@ const SatelliteMap = () => {
     });
   }, [incidents]);
 
+  const handleLayerChange = (layer: string) => {
+    if (map.current) {
+      map.current.setStyle(`mapbox://styles/mapbox/${layer}`);
+      setCurrentLayer(layer);
+    }
+  };
+
   return (
-    <div className="relative w-full h-[600px] rounded-lg overflow-hidden shadow-lg border border-border">
+    <div className="relative w-full h-[400px] md:h-[600px] rounded-lg overflow-hidden shadow-lg border border-border">
       <div ref={mapContainer} className="absolute inset-0" />
-      <div className="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-4 py-2 rounded-lg shadow-md">
+      <div className="absolute top-2 md:top-4 left-2 md:left-4 bg-background/90 backdrop-blur-sm px-2 md:px-4 py-1.5 md:py-2 rounded-lg shadow-md">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium">Live Satellite Feed</span>
+          <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-xs md:text-sm font-medium">Live Satellite Feed</span>
         </div>
+      </div>
+      <div className="absolute top-2 md:top-4 right-2 md:right-4">
+        <MapLayerControl onLayerChange={handleLayerChange} currentLayer={currentLayer} />
       </div>
     </div>
   );

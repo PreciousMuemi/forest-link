@@ -6,6 +6,7 @@ import ThreatMap from '@/components/ThreatMap';
 import SatelliteMap from '@/components/SatelliteMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
+import { UserJourneyShowcase } from '@/components/UserJourneyShowcase';
 import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, CheckCircle, LogOut, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
@@ -180,45 +181,41 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Field Reporter */}
-      <section className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-3">Field Reporter</h2>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Upload ground-level photos for instant ML analysis. Help us protect forests by reporting threats directly from the field.
-            </p>
+      {/* Field Reporter Section */}
+      <section className="py-12 md:py-16 lg:py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+                Report Threats from the Field
+              </h2>
+              <p className="text-sm md:text-base lg:text-lg text-muted-foreground px-4">
+                Help protect Kenya's forests by documenting threats in real-time
+              </p>
+            </div>
+            <FieldReporter />
+            <div className="mt-4 md:mt-6 text-center">
+              <TestIncidentButton />
+            </div>
           </div>
-          <FieldReporter />
         </div>
       </section>
 
-      {/* Satellite Map */}
-      <section id="satellite-map-section" className="container mx-auto px-4 py-8">
-        <Card className="overflow-hidden shadow-2xl border-0">
-          <div className="bg-gradient-to-r from-primary/5 to-accent/5 p-6 border-b">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h2 className="text-2xl font-bold text-foreground flex items-center gap-3 mb-2">
-                  <div className="bg-primary/10 p-2 rounded-lg">
-                    <Globe className="h-6 w-6 text-primary" />
-                  </div>
-                  Real-Time Satellite Imagery
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Live satellite feed with ML-powered threat detection and geolocation tracking
-                </p>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-success/10 border border-success/20">
-                <div className="h-2 w-2 rounded-full bg-success animate-pulse"></div>
-                <span className="text-xs font-semibold text-success">LIVE FEED</span>
-              </div>
+      {/* Live Map Section */}
+      <section id="satellite-map-section" className="py-12 md:py-16 lg:py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8 md:mb-12">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+                Live Forest Monitoring
+              </h2>
+              <p className="text-sm md:text-base lg:text-lg text-muted-foreground px-4">
+                Real-time satellite imagery and threat visualization with toggleable layers
+              </p>
             </div>
-          </div>
-          <div className="p-0">
             <SatelliteMap />
           </div>
-        </Card>
+        </div>
       </section>
 
       {/* Threat List */}
