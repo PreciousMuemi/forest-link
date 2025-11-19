@@ -14,7 +14,7 @@ const TestIncidentButton = () => {
       const lat = -0.5 + Math.random() * 2;
       const lon = 36 + Math.random() * 2;
       
-      const threats = ['fire', 'deforestation', 'illegal_logging'];
+      const threats = ['Fire', 'Deforestation', 'Illegal Logging', 'Wildlife Poaching'];
       const severities = ['low', 'medium', 'high', 'critical'];
       
       const threat = threats[Math.floor(Math.random() * threats.length)];
