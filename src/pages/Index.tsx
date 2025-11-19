@@ -10,10 +10,13 @@ import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, Chec
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { toast } from 'sonner';
+import { useAdminRole } from '@/hooks/useAdminRole';
+import { OfflineIndicator } from '@/components/OfflineIndicator';
 
 const Index = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<SupabaseUser | null>(null);
+  const { isAdmin, loading: adminLoading } = useAdminRole(user);
 
   useEffect(() => {
     // Get initial session
@@ -43,17 +46,25 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <OfflineIndicator />
+      
       {/* Header with Auth */}
       <div className="absolute top-4 right-4 z-50 flex gap-2">
         {user ? (
           <>
+            {!adminLoading && isAdmin && (
+              <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="gap-2">
+                <Shield className="h-4 w-4" />
+                <span className="hidden sm:inline">Admin</span>
+              </Button>
+            )}
             <Button variant="outline" size="sm" className="gap-2">
               <User className="h-4 w-4" />
-              {user.email}
+              <span className="hidden sm:inline">{user.email}</span>
             </Button>
             <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
               <LogOut className="h-4 w-4" />
-              Logout
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </>
         ) : (

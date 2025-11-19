@@ -1,73 +1,61 @@
-# Welcome to your Lovable project
+# ForestGuard AI - Wangari Maathai Hackathon 2025
 
-## Project info
+**AI-Powered Forest Monitoring & Community Reporting System**
 
-**URL**: https://lovable.dev/projects/dd46b8b0-12d1-4a20-a343-a487a9129a90
+## 🌍 Overview
 
-## How can I edit this code?
+ForestGuard AI combines satellite imagery, ML, blockchain, and community reporting to combat deforestation and forest fires.
 
-There are several ways of editing your application.
+### Core Features
+- 🛰️ Real-time Satellite Monitoring (Mapbox)
+- 📸 Field Photo Reporting with GPS
+- 🤖 AI Threat Detection (Hugging Face)
+- ⛓️ Blockchain Verification (Scroll)
+- 📊 Admin Dashboard with Analytics
+- 📱 PWA - Installable, works offline
+- 🔔 SMS Alerts (Twilio)
 
-**Use Lovable**
+## 🏗️ Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/dd46b8b0-12d1-4a20-a343-a487a9129a90) and start prompting.
+**Frontend:** React 18, TypeScript, Vite, Tailwind CSS, Shadcn UI, Mapbox GL
+**Backend:** Supabase (PostgreSQL, Auth, Storage, Edge Functions, Realtime)
+**AI/ML:** Hugging Face (Google ViT model)
+**Blockchain:** Scroll Sepolia testnet, Ethers.js
+**Services:** Twilio SMS, Mapbox Maps
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🚀 Quick Start
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+git clone <repo>
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## 📋 Database Schema
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+- **profiles** - User data (name, phone, organization)
+- **incidents** - Threat reports (location, type, severity, verified, tx_hash)
+- **user_roles** - Role-based access (admin, moderator, user)
 
-**Use GitHub Codespaces**
+## 🎯 Hackathon Criteria
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+✅ **Innovation (20%)** - ML + Blockchain + Satellite
+✅ **Feasibility (25%)** - Functional MVP, offline-first
+✅ **Impact (25%)** - Community empowerment, transparency
+✅ **Scalability (20%)** - Serverless, CDN, RLS
+✅ **Presentation (10%)** - Documentation, demo, architecture
 
-## What technologies are used for this project?
+## 📱 PWA Installation
 
-This project is built with:
+1. Open app in mobile browser
+2. "Add to Home Screen"
+3. Works offline with photo queue
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🔐 Security
 
-## How can I deploy this project?
+- Row Level Security on all tables
+- Role-based access control with security definer functions
+- Blockchain immutability
+- Secrets in Supabase only
 
-Simply open [Lovable](https://lovable.dev/projects/dd46b8b0-12d1-4a20-a343-a487a9129a90) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+Built with 💚 for Kenya's forests
