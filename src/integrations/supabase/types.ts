@@ -23,11 +23,13 @@ export type Database = {
           image_url: string | null
           lat: number
           lon: number
+          notes: string | null
           severity: string
           threat_type: string
           timestamp: string
           tx_hash: string | null
           updated_at: string
+          verified: boolean | null
         }
         Insert: {
           alert_status?: string
@@ -37,11 +39,13 @@ export type Database = {
           image_url?: string | null
           lat: number
           lon: number
+          notes?: string | null
           severity: string
           threat_type: string
           timestamp?: string
           tx_hash?: string | null
           updated_at?: string
+          verified?: boolean | null
         }
         Update: {
           alert_status?: string
@@ -51,11 +55,13 @@ export type Database = {
           image_url?: string | null
           lat?: number
           lon?: number
+          notes?: string | null
           severity?: string
           threat_type?: string
           timestamp?: string
           tx_hash?: string | null
           updated_at?: string
+          verified?: boolean | null
         }
         Relationships: []
       }
@@ -89,15 +95,52 @@ export type Database = {
         }
         Relationships: []
       }
+      user_roles: {
+        Row: {
+          created_at: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      incident_analytics: {
+        Row: {
+          count: number | null
+          date: string | null
+          severity: string | null
+          threat_type: string | null
+          verified_count: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      get_dashboard_stats: { Args: never; Returns: Json }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -224,6 +267,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+    },
   },
 } as const
