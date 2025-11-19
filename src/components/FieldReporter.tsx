@@ -11,7 +11,7 @@ const FieldReporter = () => {
   const [result, setResult] = useState<any>(null);
   const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [threatType, setThreatType] = useState<string>('deforestation');
+  const [threatType, setThreatType] = useState<string>('Deforestation');
   const [description, setDescription] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 

@@ -63,11 +63,11 @@ serve(async (req) => {
 
       if (deforestationKeywords.some(kw => label.includes(kw))) {
         threatDetected = true;
-        threatType = 'deforestation';
+        threatType = 'Deforestation';
         severity = confidence > 0.7 ? 'high' : 'medium';
       } else if (forestFireKeywords.some(kw => label.includes(kw))) {
         threatDetected = true;
-        threatType = 'forest_fire';
+        threatType = 'Fire';
         severity = confidence > 0.8 ? 'critical' : 'high';
       }
     }
