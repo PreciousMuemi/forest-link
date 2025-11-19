@@ -30,7 +30,21 @@ Deno.serve(async (req) => {
     const toNumber = 'whatsapp:+254714296157'; // Your WhatsApp number
 
     if (!accountSid || !authToken || !fromNumber) {
-      throw new Error('Missing Twilio configuration');
+      console.log('Twilio configuration not set - skipping alert');
+      
+      const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+      const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const supabase = createClient(supabaseUrl, supabaseKey);
+
+      await supabase
+        .from('incidents')
+        .update({ alert_status: 'pending' })
+        .eq('id', incidentId);
+
+      return new Response(
+        JSON.stringify({ success: true, demo: true, message: 'Alert system not configured' }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // Create alert message

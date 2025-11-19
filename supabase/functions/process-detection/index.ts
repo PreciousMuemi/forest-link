@@ -50,8 +50,8 @@ Deno.serve(async (req) => {
 
     console.log('Incident created:', incident.id);
 
-    // Trigger blockchain logging (background task)
-    const blockchainPromise = supabase.functions.invoke('log-blockchain', {
+    // Trigger blockchain logging (background task - non-blocking)
+    supabase.functions.invoke('log-blockchain', {
       body: {
         incidentId: incident.id,
         threatType: incident.threat_type,
@@ -59,10 +59,13 @@ Deno.serve(async (req) => {
         lat: incident.lat,
         lon: incident.lon,
       },
+    }).then(({ data, error }) => {
+      if (error) console.error('Blockchain logging failed:', error);
+      else console.log('Blockchain logged successfully:', data);
     });
 
-    // Trigger WhatsApp alert (background task)
-    const alertPromise = supabase.functions.invoke('send-alert', {
+    // Trigger WhatsApp alert (background task - non-blocking)
+    supabase.functions.invoke('send-alert', {
       body: {
         incidentId: incident.id,
         threatType: incident.threat_type,
@@ -71,10 +74,10 @@ Deno.serve(async (req) => {
         lon: incident.lon,
         description: incident.description,
       },
+    }).then(({ data, error }) => {
+      if (error) console.error('Alert sending failed:', error);
+      else console.log('Alert sent successfully:', data);
     });
-
-    // Wait for both background tasks
-    await Promise.all([blockchainPromise, alertPromise]);
 
     console.log('Successfully processed detection');
 
