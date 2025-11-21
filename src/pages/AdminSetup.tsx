@@ -44,41 +44,55 @@ const AdminSetup = () => {
   const setupAdmin = async () => {
     setLoading(true);
     try {
+      console.log('🔧 [AdminSetup] Starting admin setup...');
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('🔧 [AdminSetup] Current user:', user?.id);
       
       if (!user) {
+        console.log('❌ [AdminSetup] No user found');
         toast.error('Please log in first');
         navigate('/auth');
         return;
       }
 
       // Check if user already has a role
-      const { data: existingRole } = await supabase
+      console.log('🔍 [AdminSetup] Checking for existing role...');
+      const { data: existingRole, error: checkError } = await supabase
         .from('user_roles')
         .select('*')
         .eq('user_id', user.id)
         .maybeSingle();
 
+      console.log('🔍 [AdminSetup] Existing role:', existingRole);
+      console.log('🔍 [AdminSetup] Check error:', checkError);
+
       if (existingRole) {
+        console.log('✅ [AdminSetup] User already has role:', existingRole.role);
         toast.info('You already have a role assigned');
         navigate('/admin');
         return;
       }
 
       // Insert admin role
-      const { error } = await supabase
+      console.log('➕ [AdminSetup] Inserting admin role...');
+      const { data: insertData, error } = await supabase
         .from('user_roles')
         .insert({
           user_id: user.id,
           role: 'admin'
-        });
+        })
+        .select();
+
+      console.log('➕ [AdminSetup] Insert result:', insertData);
+      console.log('➕ [AdminSetup] Insert error:', error);
 
       if (error) throw error;
 
+      console.log('✅ [AdminSetup] Admin role granted successfully!');
       toast.success('Admin role granted! Redirecting...');
       setTimeout(() => navigate('/admin'), 1000);
     } catch (error: any) {
-      console.error('Setup error:', error);
+      console.error('❌ [AdminSetup] Setup error:', error);
       toast.error(error.message || 'Failed to setup admin');
     } finally {
       setLoading(false);
