@@ -15,6 +15,7 @@ const FieldReporter = () => {
   const [threatType, setThreatType] = useState<string>('Deforestation');
   const [description, setDescription] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadInputRef = useRef<HTMLInputElement>(null);
 
   const getLocation = () => {
     return new Promise<{ lat: number; lon: number }>((resolve, reject) => {
@@ -126,8 +127,24 @@ const FieldReporter = () => {
   };
 
   const handleCameraClick = () => {
+    console.log('Camera button clicked');
     if (fileInputRef.current) {
+      console.log('Triggering camera file input');
       fileInputRef.current.click();
+    } else {
+      console.error('File input ref not found');
+      toast.error('Camera not available. Please try uploading instead.');
+    }
+  };
+
+  const handleUploadClick = () => {
+    console.log('Upload button clicked');
+    if (uploadInputRef.current) {
+      console.log('Triggering upload file input');
+      uploadInputRef.current.click();
+    } else {
+      console.error('Upload input ref not found');
+      toast.error('Upload not available. Please try again.');
     }
   };
 
@@ -145,7 +162,7 @@ const FieldReporter = () => {
         </p>
       </div>
 
-      {/* Hidden file input */}
+      {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
         type="file"
@@ -153,6 +170,15 @@ const FieldReporter = () => {
         capture="environment"
         onChange={handleFileSelect}
         className="hidden"
+        aria-label="Take photo with camera"
+      />
+      <input
+        ref={uploadInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileSelect}
+        className="hidden"
+        aria-label="Upload image from device"
       />
 
       {/* Upload Buttons - Clean Design */}
@@ -173,7 +199,7 @@ const FieldReporter = () => {
           </Button>
 
           <Button
-            onClick={handleCameraClick}
+            onClick={handleUploadClick}
             disabled={uploading || analyzing}
             variant="outline"
             size="lg"
