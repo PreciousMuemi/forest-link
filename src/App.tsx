@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import RangerMobile from "./pages/RangerMobile";
 import NotFound from "./pages/NotFound";
+import AdminSetup from "./pages/AdminSetup";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminIncidents from "./pages/admin/Incidents";
@@ -28,6 +29,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/admin-setup" element={<AdminSetup />} />
             <Route path="/ranger" element={<RangerMobile />} />
             
             {/* Admin Routes */}
