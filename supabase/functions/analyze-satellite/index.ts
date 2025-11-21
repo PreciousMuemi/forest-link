@@ -6,71 +6,106 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+interface AnalysisRequest {
+  imageUrl: string;
+  lat: number;
+  lon: number;
+  threatType?: string;
+  description?: string;
+}
+
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { imageUrl, lat, lon } = await req.json();
+    const { imageUrl, lat, lon, threatType: userThreatType, description } = await req.json() as AnalysisRequest;
     
-    console.log('Analyzing satellite image:', { imageUrl, lat, lon });
+    console.log('Analyzing satellite image:', { imageUrl, lat, lon, threatType: userThreatType });
 
-    const HF_TOKEN = Deno.env.get('HUGGING_FACE_ACCESS_TOKEN');
-    if (!HF_TOKEN) {
-      throw new Error('Hugging Face token not configured');
+    const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
+    if (!LOVABLE_API_KEY) {
+      throw new Error('Lovable API key not configured');
     }
 
-    // Use Hugging Face image classification model for deforestation detection
-    const response = await fetch(
-      'https://router.huggingface.co/models/google/vit-base-patch16-224',
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${HF_TOKEN}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          inputs: imageUrl,
-        }),
-      }
-    );
+    // Use Lovable AI (Gemini) for image analysis
+    const analysisPrompt = `Analyze this environmental image and determine if there are any threats present.
+
+Look for signs of:
+- Deforestation (cleared land, cut trees, logging activity)
+- Forest fires (smoke, flames, burned areas)
+- Illegal logging (cut timber, logging equipment)
+- Wildlife poaching (traps, snares, suspicious activity)
+- Land encroachment (unauthorized construction, settlements)
+
+Respond with a JSON object in this exact format:
+{
+  "threatDetected": true or false,
+  "threatType": "Fire" | "Deforestation" | "Illegal Logging" | "Wildlife Poaching" | "Land Encroachment" | "None",
+  "severity": "low" | "medium" | "high" | "critical",
+  "confidence": 0.0 to 1.0,
+  "description": "Brief description of what you see",
+  "reasoning": "Why you classified it this way"
+}`;
+
+    const response = await fetch('https://ai.gateway.lovable.dev/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${LOVABLE_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: analysisPrompt },
+              { type: 'image_url', image_url: { url: imageUrl } }
+            ]
+          }
+        ],
+        temperature: 0.3,
+      }),
+    });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('HF API error:', errorText);
-      throw new Error(`Hugging Face API error: ${response.status}`);
+      console.error('Lovable AI API error:', errorText);
+      throw new Error(`Lovable AI API error: ${response.status}`);
     }
 
-    const results = await response.json();
-    console.log('ML Analysis results:', results);
+    const aiResponse = await response.json();
+    console.log('AI Analysis response:', aiResponse);
 
-    // Analyze results to detect threats
-    let threatDetected = false;
-    let threatType = 'unknown';
-    let severity = 'low';
-    let confidence = 0;
-
-    if (Array.isArray(results) && results.length > 0) {
-      const topResult = results[0];
-      confidence = topResult.score || 0;
-
-      // Keywords indicating environmental threats
-      const deforestationKeywords = ['desert', 'bare', 'dead', 'dry', 'burned'];
-      const forestFireKeywords = ['fire', 'smoke', 'flame', 'burning'];
-
-      const label = topResult.label?.toLowerCase() || '';
-
-      if (deforestationKeywords.some(kw => label.includes(kw))) {
-        threatDetected = true;
-        threatType = 'Deforestation';
-        severity = confidence > 0.7 ? 'high' : 'medium';
-      } else if (forestFireKeywords.some(kw => label.includes(kw))) {
-        threatDetected = true;
-        threatType = 'Fire';
-        severity = confidence > 0.8 ? 'critical' : 'high';
-      }
+    // Parse the AI response
+    const content = aiResponse.choices[0]?.message?.content || '{}';
+    let analysis;
+    try {
+      // Try to extract JSON from markdown code blocks if present
+      const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/) || content.match(/\{[\s\S]*\}/);
+      const jsonStr = jsonMatch ? (jsonMatch[1] || jsonMatch[0]) : content;
+      analysis = JSON.parse(jsonStr);
+    } catch (e) {
+      console.error('Failed to parse AI response:', content);
+      // Fallback: assume no threat if parsing fails
+      analysis = {
+        threatDetected: false,
+        threatType: 'None',
+        severity: 'low',
+        confidence: 0,
+        description: 'Unable to analyze image',
+        reasoning: 'AI response parsing failed'
+      };
     }
+
+    console.log('Parsed analysis:', analysis);
+
+    const threatDetected = analysis.threatDetected || false;
+    const threatType = analysis.threatType || userThreatType || 'Unknown';
+    const severity = analysis.severity || 'medium';
+    const confidence = analysis.confidence || 0;
 
     // If threat detected, create incident
     if (threatDetected) {
@@ -112,7 +147,7 @@ serve(async (req) => {
         JSON.stringify({
           threatDetected: true,
           incident,
-          analysis: results,
+          analysis,
         }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
@@ -121,7 +156,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({
         threatDetected: false,
-        analysis: results,
+        analysis,
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
