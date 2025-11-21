@@ -23,7 +23,7 @@ serve(async (req) => {
 
     // Use Hugging Face image classification model for deforestation detection
     const response = await fetch(
-      'https://api-inference.huggingface.co/models/google/vit-base-patch16-224',
+      'https://router.huggingface.co/models/google/vit-base-patch16-224',
       {
         method: 'POST',
         headers: {
