@@ -79,12 +79,9 @@ export default function AdminLayout() {
 
   useEffect(() => {
     console.log('🔒 [AdminLayout] Admin check:', { loading, isAdmin, hasUser: !!user });
-    if (!loading && !isAdmin && user) {
-      console.log('❌ [AdminLayout] Not admin, blocking access');
-      toast.error('Access denied. Admin privileges required.');
-      navigate('/');
-    }
-  }, [isAdmin, loading, user, navigate]);
+    // Temporarily disable client-side blocking while RLS enforces real permissions
+    // This avoids locking out valid admins when role checks are flaky.
+  }, [isAdmin, loading, user]);
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
