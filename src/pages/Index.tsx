@@ -100,7 +100,7 @@ const Index = () => {
       <HeroSection />
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-card">
+      <section className="py-20 px-4 bg-background">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -140,10 +140,10 @@ const Index = () => {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 hover:shadow-government transition-all duration-300 hover:scale-105 bg-gradient-card border-border/50 animate-scale-in"
+                className="p-6 hover:shadow-medium transition-all duration-300 hover:scale-105 bg-white border animate-scale-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft ${feature.color}`}>
+                <div className={`h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft`}>
                   <feature.icon className="h-7 w-7 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2">{feature.title}</h3>
@@ -155,7 +155,7 @@ const Index = () => {
       </section>
 
       {/* Field Reporter Section */}
-      <section id="field-reporter" className="py-20 px-4 bg-background">
+      <section id="field-reporter" className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
@@ -171,7 +171,7 @@ const Index = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="p-8 shadow-government-lg border-2 border-primary/10">
+            <Card className="p-8 shadow-medium border bg-white">
               <FieldReporter />
             </Card>
           </div>
@@ -184,7 +184,7 @@ const Index = () => {
       </section>
 
       {/* Recent Threats Gallery */}
-      <section className="py-20 px-4 bg-card">
+      <section className="py-20 px-4 bg-background">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
@@ -199,7 +199,7 @@ const Index = () => {
       </section>
 
       {/* Satellite Map Section */}
-      <section id="satellite-map-section" className="py-20 px-4 bg-background">
+      <section id="satellite-map-section" className="py-20 px-4 bg-muted/30">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-4">
@@ -214,14 +214,14 @@ const Index = () => {
             </p>
           </div>
           
-          <Card className="overflow-hidden shadow-government-lg border-2 border-primary/10">
+          <Card className="overflow-hidden shadow-medium border bg-white">
             <SatelliteMap />
           </Card>
         </div>
       </section>
 
       {/* Interactive Threat Map */}
-      <section className="py-20 px-4 bg-card">
+      <section className="py-20 px-4 bg-background">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
@@ -236,7 +236,7 @@ const Index = () => {
             </p>
           </div>
           
-          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10">
+          <Card className="overflow-hidden shadow-medium border bg-white">
             <ThreatMap />
           </Card>
         </div>
@@ -275,7 +275,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 bg-card border-t border-border">
+      <footer className="py-12 px-4 bg-muted/30 border-t border-border">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
