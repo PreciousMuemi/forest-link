@@ -29,7 +29,7 @@ Deno.serve(async (req) => {
     const phoneNumber = formData.get('phoneNumber') as string;
     const text = formData.get('text') as string;
 
-    console.log('USSD Request:', { sessionId, serviceCode, phoneNumber, text });
+    console.log('USSD Request received:', { sessionId, serviceCode, phoneNumber, text });
 
     // Initialize Supabase
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -40,14 +40,17 @@ Deno.serve(async (req) => {
     let session = sessions.get(sessionId) || { step: 'main' };
     
     // Parse user input (text contains the full input path: "1*2" means menu 1, then option 2)
-    const inputs = text ? text.split('*') : [];
+    // Empty string means first request (main menu)
+    const inputs = text && text.trim() !== '' ? text.split('*') : [];
     const lastInput = inputs[inputs.length - 1] || '';
+
+    console.log('Parsed inputs:', { inputs, lastInput, inputsLength: inputs.length });
 
     let response = '';
     let endSession = false;
 
-    // Main menu
-    if (inputs.length === 0) {
+    // Main menu - show when no input or empty text
+    if (inputs.length === 0 || text === '') {
       response = `CON Welcome to KFEAN Forest Alert System
 1. Report Fire 🔥
 2. Report Logging 🪓
@@ -262,7 +265,8 @@ Thank you for protecting our forests! 🌳`;
     });
 
   } catch (error) {
-    console.error('Error processing USSD:', error);
+    console.error('USSD Error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace');
     return new Response('END Service temporarily unavailable. Please try again.', {
       headers: { ...corsHeaders, 'Content-Type': 'text/plain' },
       status: 200, // Always return 200 for USSD
