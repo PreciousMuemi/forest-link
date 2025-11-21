@@ -2,14 +2,29 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import HeroSection from '@/components/HeroSection';
 import ThreatMap from '@/components/ThreatMap';
 import SatelliteMap from '@/components/SatelliteMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
-import { UserJourneyShowcase } from '@/components/UserJourneyShowcase';
 import { ThreatGallery } from '@/components/ThreatGallery';
 import { SMSInstructions } from '@/components/SMSInstructions';
-import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, CheckCircle, LogOut, User } from 'lucide-react';
+import { 
+  AlertTriangle, 
+  Shield, 
+  Leaf, 
+  Satellite, 
+  Globe, 
+  Activity, 
+  Zap, 
+  Eye, 
+  CheckCircle, 
+  LogOut, 
+  User,
+  Bell,
+  Lock,
+  Map as MapIcon
+} from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
 import { toast } from 'sonner';
@@ -22,12 +37,10 @@ const Index = () => {
   const { isAdmin, loading: adminLoading } = useAdminRole(user);
 
   useEffect(() => {
-    // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
     });
 
-    // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
@@ -40,222 +53,276 @@ const Index = () => {
     toast.success('Logged out successfully');
   };
 
-  const scrollToMap = () => {
-    const mapSection = document.getElementById('satellite-map-section');
-    if (mapSection) {
-      mapSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background">
       <OfflineIndicator />
       
-      {/* Header with Auth */}
-      <div className="absolute top-4 right-4 z-50 flex gap-2">
-        {user ? (
-          <>
-            {!adminLoading && isAdmin && (
-              <Button variant="outline" size="sm" onClick={() => navigate('/admin')} className="gap-2">
-                <Shield className="h-4 w-4" />
-                <span className="hidden sm:inline">Admin</span>
+      {/* Navigation Header */}
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-lg shadow-soft">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
+              <Leaf className="h-6 w-6 text-white" />
+            </div>
+            <div>
+              <h2 className="font-bold text-foreground">ForestGuard</h2>
+              <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            {user ? (
+              <>
+                {!adminLoading && isAdmin && (
+                  <Button variant="ghost" size="sm" onClick={() => navigate('/admin')} className="gap-2">
+                    <Shield className="h-4 w-4" />
+                    <span className="hidden sm:inline">Dashboard</span>
+                  </Button>
+                )}
+                <Button variant="ghost" size="sm" className="gap-2">
+                  <User className="h-4 w-4" />
+                  <span className="hidden sm:inline">{user.email?.split('@')[0]}</span>
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <Button variant="default" size="sm" onClick={() => navigate('/auth')}>
+                Sign In
               </Button>
             )}
-            <Button variant="outline" size="sm" className="gap-2">
-              <User className="h-4 w-4" />
-              <span className="hidden sm:inline">{user.email}</span>
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleLogout} className="gap-2">
-              <LogOut className="h-4 w-4" />
-              <span className="hidden sm:inline">Logout</span>
-            </Button>
-          </>
-        ) : (
-          <Button variant="outline" size="sm" onClick={() => navigate('/auth')}>
-            Login / Sign Up
-          </Button>
-        )}
-      </div>
-      {/* Hero Section - Fresh Light Design */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMxZmM4NzEiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE2YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHptLTggNGMwIDIuMjEtMS43OSA0LTQgNHMtNC0xLjc5LTQtNCAxLjc5LTQgNC00IDQgMS43OSA0IDR6bTI0IDhjMCAyLjIxLTEuNzkgNC00IDRzLTQtMS43OS00LTQgMS43OS00IDQtNCA0IDEuNzkgNCA0em0tOCA4YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-40"></div>
-        
-        <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-primary/20 shadow-soft mb-4">
-              <Leaf className="h-5 w-5 text-primary" />
-              <span className="text-sm font-semibold text-foreground">AI-Powered Forest Protection</span>
-            </div>
-            
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground">
-              ForestGuard <span className="text-primary">AI</span>
-            </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Real-time satellite monitoring and ML-powered threat detection to protect our forests from deforestation and wildfires. Powered by blockchain verification.
+          </div>
+        </div>
+      </header>
+
+      {/* Hero Section with Slideshow */}
+      <HeroSection />
+
+      {/* Features Section */}
+      <section className="py-20 px-4 bg-card">
+        <div className="container mx-auto">
+          <div className="text-center mb-16 animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Government-Grade Environmental Protection
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Advanced technology empowering communities to protect Kenya's precious forests
             </p>
-            
-            <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Button size="lg" className="gap-2 shadow-lg bg-primary hover:bg-primary/90 text-white" onClick={scrollToMap}>
-                <Eye className="h-5 w-5" />
-                View Live Feed
-              </Button>
-              <TestIncidentButton />
-            </div>
+          </div>
 
-            {/* Stats Row - Clean & Modern */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12">
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
-                <div className="text-4xl font-bold text-primary">24/7</div>
-                <div className="text-sm text-muted-foreground mt-1">Monitoring</div>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
-                <div className="text-4xl font-bold text-accent">Global</div>
-                <div className="text-sm text-muted-foreground mt-1">Coverage</div>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
-                <div className="text-4xl font-bold text-primary">AI</div>
-                <div className="text-sm text-muted-foreground mt-1">Powered</div>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
-                <div className="text-4xl font-bold text-accent">Verified</div>
-                <div className="text-sm text-muted-foreground mt-1">Blockchain</div>
-              </div>
-            </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: Activity,
+                title: 'Real-Time Monitoring',
+                description: 'Live satellite feeds and AI-powered threat detection across all forest regions',
+                color: 'text-accent',
+              },
+              {
+                icon: Lock,
+                title: 'Blockchain Verified',
+                description: 'Immutable records on Scroll blockchain ensure transparency and accountability',
+                color: 'text-primary',
+              },
+              {
+                icon: Bell,
+                title: 'Instant Alerts',
+                description: 'SMS and USSD notifications reach communities within seconds of detection',
+                color: 'text-accent',
+              },
+              {
+                icon: Globe,
+                title: 'Nationwide Coverage',
+                description: 'Protecting forests from Mau to Karura with comprehensive monitoring',
+                color: 'text-primary',
+              },
+            ].map((feature, index) => (
+              <Card
+                key={index}
+                className="p-6 hover:shadow-government transition-all duration-300 hover:scale-105 bg-gradient-card border-border/50 animate-scale-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className={`h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft ${feature.color}`}>
+                  <feature.icon className="h-7 w-7 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Features Grid - Clean & Light */}
-      <section className="container mx-auto px-4 py-16 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-destructive/20">
-            <div className="flex items-start justify-between mb-6">
-              <div className="bg-destructive/10 p-4 rounded-2xl">
-                <AlertTriangle className="h-7 w-7 text-destructive" />
-              </div>
-              <div className="bg-destructive/10 px-3 py-1 rounded-full">
-                <span className="text-xs font-bold text-destructive">LIVE</span>
-              </div>
+      {/* Field Reporter Section */}
+      <section id="field-reporter" className="py-20 px-4 bg-background">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
+              <AlertTriangle className="h-4 w-4 text-accent" />
+              <span className="text-sm font-semibold text-accent">Community Reporting</span>
             </div>
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Active Threats</h3>
-            <p className="text-3xl font-bold text-foreground mb-2">Real-time</p>
-            <p className="text-sm text-muted-foreground">Continuous monitoring & instant detection</p>
-          </Card>
-          
-          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-primary/20">
-            <div className="flex items-start justify-between mb-6">
-              <div className="bg-primary/10 p-4 rounded-2xl">
-                <Shield className="h-7 w-7 text-primary" />
-              </div>
-              <CheckCircle className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Blockchain</h3>
-            <p className="text-3xl font-bold text-foreground mb-2">Sepolia</p>
-            <p className="text-sm text-muted-foreground">Immutable verification & transparency</p>
-          </Card>
-          
-          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-success/20">
-            <div className="flex items-start justify-between mb-6">
-              <div className="bg-success/10 p-4 rounded-2xl">
-                <Zap className="h-7 w-7 text-success" />
-              </div>
-              <Activity className="h-6 w-6 text-success" />
-            </div>
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Instant Alerts</h3>
-            <p className="text-3xl font-bold text-foreground mb-2">WhatsApp</p>
-            <p className="text-sm text-muted-foreground">Immediate notifications to authorities</p>
-          </Card>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Report Environmental Threats
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Your eyes on the ground. Snap a photo, share your location, and help protect our forests.
+            </p>
+          </div>
 
-          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-accent/20">
-            <div className="flex items-start justify-between mb-6">
-              <div className="bg-accent/10 p-4 rounded-2xl">
-                <Satellite className="h-7 w-7 text-accent" />
-              </div>
-              <Globe className="h-6 w-6 text-accent" />
-            </div>
-            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Coverage</h3>
-            <p className="text-3xl font-bold text-foreground mb-2">Global</p>
-            <p className="text-sm text-muted-foreground">Worldwide satellite monitoring</p>
-          </Card>
-        </div>
-      </section>
+          <div className="max-w-4xl mx-auto">
+            <Card className="p-8 shadow-government-lg border-2 border-primary/10">
+              <FieldReporter />
+            </Card>
+          </div>
 
-      {/* Field Reporter Section - Light & Clean */}
-      <section className="py-16 md:py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Kenya Forest Emergency Alert Network
-              </h2>
-              <p className="text-base md:text-lg text-muted-foreground">
-                Multi-channel threat reporting system - works on any device, anywhere
-              </p>
-            </div>
-            
-            {/* SMS Instructions */}
+          {/* SMS/USSD Instructions */}
+          <div className="mt-12 max-w-4xl mx-auto">
             <SMSInstructions />
-            
-            {/* Field Reporter */}
-            <FieldReporter />
-            
-            <div className="mt-6 text-center">
-              <TestIncidentButton />
+          </div>
+        </div>
+      </section>
+
+      {/* Recent Threats Gallery */}
+      <section className="py-20 px-4 bg-card">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Recent Threat Reports
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Real-time incidents verified by AI and blockchain
+            </p>
+          </div>
+          <ThreatGallery />
+        </div>
+      </section>
+
+      {/* Satellite Map Section */}
+      <section id="satellite-map-section" className="py-20 px-4 bg-background">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-4">
+              <Satellite className="h-4 w-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">NASA FIRMS Integration</span>
             </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Live Satellite Monitoring
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Real-time fire hotspot detection from NASA satellites
+            </p>
+          </div>
+          
+          <Card className="overflow-hidden shadow-government-lg border-2 border-primary/10">
+            <SatelliteMap />
+          </Card>
+        </div>
+      </section>
+
+      {/* Interactive Threat Map */}
+      <section className="py-20 px-4 bg-card">
+        <div className="container mx-auto">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
+              <MapIcon className="h-4 w-4 text-accent" />
+              <span className="text-sm font-semibold text-accent">Interactive Map</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              All Reported Incidents
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Click on any marker to view incident details and community responses
+            </p>
+          </div>
+          
+          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10">
+            <ThreatMap />
+          </Card>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-20 px-4 bg-gradient-primary text-white">
+        <div className="container mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Join the Forest Protection Network
+          </h2>
+          <p className="text-lg text-white/90 max-w-2xl mx-auto mb-8">
+            Every report matters. Together, we can save Kenya's forests for future generations.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              variant="accent"
+              onClick={() => navigate('/auth')}
+              className="bg-accent hover:bg-accent/90 text-white font-semibold shadow-glow-accent"
+            >
+              <User className="mr-2 h-5 w-5" />
+              Create Account
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline"
+              onClick={() => navigate('/admin')}
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold"
+            >
+              <Eye className="mr-2 h-5 w-5" />
+              View Dashboard
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Threat Gallery Section */}
-      <section className="py-16 md:py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="max-w-7xl mx-auto">
-            <ThreatGallery />
-          </div>
-        </div>
-      </section>
-
-      {/* Live Map Section - Modern Light Design */}
-      <section id="satellite-map-section" className="py-16 md:py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Live Forest Monitoring
-              </h2>
-              <p className="text-base md:text-lg text-muted-foreground">
-                Real-time satellite imagery and threat visualization with toggleable layers
+      {/* Footer */}
+      <footer className="py-12 px-4 bg-card border-t border-border">
+        <div className="container mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
+                  <Leaf className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-foreground">ForestGuard AI</h3>
+                  <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
+                </div>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Government-grade environmental threat reporting system powered by AI, blockchain, and community action.
               </p>
             </div>
-            <SatelliteMap />
-          </div>
-        </div>
-      </section>
 
-      {/* Threat List - Clean Card Design */}
-      <section className="container mx-auto px-4 py-12 pb-20">
-        <Card className="overflow-hidden shadow-lg border-2 border-border bg-white">
-          <div className="bg-gradient-to-r from-destructive/5 to-accent/5 p-8 border-b-2 border-border">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div>
-                <h2 className="text-3xl font-bold text-foreground flex items-center gap-3 mb-2">
-                  <div className="bg-destructive/10 p-3 rounded-xl">
-                    <Activity className="h-7 w-7 text-destructive" />
-                  </div>
-                  Active Threats
-                </h2>
-                <p className="text-sm text-muted-foreground">
-                  Detected incidents, alerts, and real-time threat monitoring dashboard
-                </p>
-              </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="/auth" className="hover:text-primary transition-colors">Sign In</a></li>
+                <li><a href="/admin" className="hover:text-primary transition-colors">Dashboard</a></li>
+                <li><a href="/ranger" className="hover:text-primary transition-colors">Ranger Portal</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold text-foreground mb-4">Emergency Contact</h4>
+              <p className="text-sm text-muted-foreground mb-2">SMS: Text FIRE to +254...</p>
+              <p className="text-sm text-muted-foreground mb-2">USSD: Dial *384*33248#</p>
+              <p className="text-sm text-muted-foreground">24/7 Response Team</p>
             </div>
           </div>
-          <div className="p-6 bg-muted/20">
-            <ThreatMap />
+
+          <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
+            <p>© 2025 ForestGuard AI - Kenya Forest Emergency Alert Network. All rights reserved.</p>
+            <p className="mt-2">Built with 💚 for Kenya's Forests | Wangari Maathai Hackathon 2025</p>
           </div>
-        </Card>
-      </section>
+        </div>
+      </footer>
+
+      {/* Admin Test Button (bottom-right corner) */}
+      {!adminLoading && isAdmin && (
+        <div className="fixed bottom-4 right-4 z-40">
+          <TestIncidentButton />
+        </div>
+      )}
     </div>
   );
 };
