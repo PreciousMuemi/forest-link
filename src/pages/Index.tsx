@@ -74,153 +74,140 @@ const Index = () => {
           </Button>
         )}
       </div>
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-primary via-primary/90 to-primary/80 text-primary-foreground">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDE2YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHptLTggNGMwIDIuMjEtMS43OSA0LTQgNHMtNC0xLjc5LTQtNCAxLjc5LTQgNC00IDQgMS43OSA0IDR6bTI0IDhjMCAyLjIxLTEuNzkgNC00IDRzLTQtMS43OS00LTQgMS43OS00IDQtNCA0IDEuNzkgNCA0em0tOCA4YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+      {/* Hero Section - Fresh Light Design */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-primary/5 via-accent/5 to-primary/5">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMxZmM4NzEiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE2YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHptLTggNGMwIDIuMjEtMS43OSA0LTQgNHMtNC0xLjc5LTQtNCAxLjc5LTQgNC00IDQgMS43OSA0IDR6bTI0IDhjMCAyLjIxLTEuNzkgNC00IDRzLTQtMS43OS00LTQgMS43OS00IDQtNCA0IDEuNzkgNCA0em0tOCA4YzAgMi4yMS0xLjc5IDQtNCA0cy00LTEuNzktNC00IDEuNzktNCA0LTQgNCAxLjc5IDQgNHoiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-40"></div>
         
-        <div className="container mx-auto px-4 py-16 md:py-24 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-6">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-foreground/10 backdrop-blur-sm border border-primary-foreground/20 mb-4">
-              <Leaf className="h-4 w-4" />
-              <span className="text-sm font-medium">AI-Powered Forest Protection</span>
+        <div className="container mx-auto px-4 py-20 md:py-28 relative z-10">
+          <div className="max-w-4xl mx-auto text-center space-y-8">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-primary/20 shadow-soft mb-4">
+              <Leaf className="h-5 w-5 text-primary" />
+              <span className="text-sm font-semibold text-foreground">AI-Powered Forest Protection</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight">
-              ForestGuard AI
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground">
+              ForestGuard <span className="text-primary">AI</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Real-time satellite monitoring and ML-powered threat detection to protect our forests from deforestation and wildfires. Powered by blockchain verification.
             </p>
             
             <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-              <Button size="lg" variant="secondary" className="gap-2 shadow-lg" onClick={scrollToMap}>
+              <Button size="lg" className="gap-2 shadow-lg bg-primary hover:bg-primary/90 text-white" onClick={scrollToMap}>
                 <Eye className="h-5 w-5" />
                 View Live Feed
               </Button>
               <TestIncidentButton />
             </div>
 
-            {/* Stats Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8">
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold">24/7</div>
-                <div className="text-sm text-primary-foreground/80">Monitoring</div>
+            {/* Stats Row - Clean & Modern */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 pt-12">
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
+                <div className="text-4xl font-bold text-primary">24/7</div>
+                <div className="text-sm text-muted-foreground mt-1">Monitoring</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold">Global</div>
-                <div className="text-sm text-primary-foreground/80">Coverage</div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
+                <div className="text-4xl font-bold text-accent">Global</div>
+                <div className="text-sm text-muted-foreground mt-1">Coverage</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold">AI</div>
-                <div className="text-sm text-primary-foreground/80">Powered</div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
+                <div className="text-4xl font-bold text-primary">AI</div>
+                <div className="text-sm text-muted-foreground mt-1">Powered</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold">Verified</div>
-                <div className="text-sm text-primary-foreground/80">Blockchain</div>
+              <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-border shadow-soft">
+                <div className="text-4xl font-bold text-accent">Verified</div>
+                <div className="text-sm text-muted-foreground mt-1">Blockchain</div>
               </div>
             </div>
           </div>
         </div>
-        
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent"></div>
       </section>
 
-      {/* Features Grid with WOW factor */}
-      <section className="container mx-auto px-4 py-12 md:py-16 -mt-12 relative">
-        {/* Animated background */}
-        <div className="absolute inset-0 opacity-20 pointer-events-none">
-          <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-primary rounded-full animate-pulse" />
-          <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
-          <div className="absolute bottom-1/4 left-1/2 w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
-          <Card className="p-6 hover:shadow-2xl hover:shadow-destructive/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-destructive bg-gradient-to-br from-card to-card/80 group cursor-pointer">
-            <div className="flex items-start justify-between mb-4">
-              <div className="bg-destructive/10 p-3 rounded-xl relative">
-                <div className="absolute inset-0 bg-destructive/20 rounded-xl blur-xl group-hover:bg-destructive/40 transition-all" />
-                <AlertTriangle className="h-6 w-6 text-destructive relative animate-pulse" />
+      {/* Features Grid - Clean & Light */}
+      <section className="container mx-auto px-4 py-16 md:py-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-destructive/20">
+            <div className="flex items-start justify-between mb-6">
+              <div className="bg-destructive/10 p-4 rounded-2xl">
+                <AlertTriangle className="h-7 w-7 text-destructive" />
               </div>
-              <div className="bg-destructive/5 px-2 py-1 rounded-full">
+              <div className="bg-destructive/10 px-3 py-1 rounded-full">
                 <span className="text-xs font-bold text-destructive">LIVE</span>
               </div>
             </div>
-            <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">Active Threats</h3>
-            <p className="text-2xl font-bold text-foreground">Real-time</p>
-            <p className="text-xs text-muted-foreground mt-2">Continuous monitoring & instant detection</p>
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Active Threats</h3>
+            <p className="text-3xl font-bold text-foreground mb-2">Real-time</p>
+            <p className="text-sm text-muted-foreground">Continuous monitoring & instant detection</p>
           </Card>
           
-          <Card className="p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-primary bg-gradient-to-br from-card to-card/80 group cursor-pointer">
-            <div className="flex items-start justify-between mb-4">
-              <div className="bg-primary/10 p-3 rounded-xl relative">
-                <div className="absolute inset-0 bg-primary/20 rounded-xl blur-xl group-hover:bg-primary/40 transition-all" />
-                <Shield className="h-6 w-6 text-primary relative animate-pulse" />
+          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-primary/20">
+            <div className="flex items-start justify-between mb-6">
+              <div className="bg-primary/10 p-4 rounded-2xl">
+                <Shield className="h-7 w-7 text-primary" />
               </div>
-              <CheckCircle className="h-5 w-5 text-primary" />
+              <CheckCircle className="h-6 w-6 text-primary" />
             </div>
-            <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">Blockchain</h3>
-            <p className="text-2xl font-bold text-foreground">Sepolia</p>
-            <p className="text-xs text-muted-foreground mt-2">Immutable verification & transparency</p>
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Blockchain</h3>
+            <p className="text-3xl font-bold text-foreground mb-2">Sepolia</p>
+            <p className="text-sm text-muted-foreground">Immutable verification & transparency</p>
           </Card>
           
-          <Card className="p-6 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-success bg-gradient-to-br from-card to-card/80 group cursor-pointer">
-            <div className="flex items-start justify-between mb-4">
-              <div className="bg-success/10 p-3 rounded-xl relative">
-                <div className="absolute inset-0 bg-success/20 rounded-xl blur-xl group-hover:bg-success/40 transition-all" />
-                <Zap className="h-6 w-6 text-success relative animate-pulse" />
+          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-success/20">
+            <div className="flex items-start justify-between mb-6">
+              <div className="bg-success/10 p-4 rounded-2xl">
+                <Zap className="h-7 w-7 text-success" />
               </div>
-              <Activity className="h-5 w-5 text-success animate-pulse" />
+              <Activity className="h-6 w-6 text-success" />
             </div>
-            <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">Instant Alerts</h3>
-            <p className="text-2xl font-bold text-foreground">WhatsApp</p>
-            <p className="text-xs text-muted-foreground mt-2">Immediate notifications to authorities</p>
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Instant Alerts</h3>
+            <p className="text-3xl font-bold text-foreground mb-2">WhatsApp</p>
+            <p className="text-sm text-muted-foreground">Immediate notifications to authorities</p>
           </Card>
 
-          <Card className="p-6 hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-accent bg-gradient-to-br from-card to-card/80 group cursor-pointer">
-            <div className="flex items-start justify-between mb-4">
-              <div className="bg-accent/30 p-3 rounded-xl relative">
-                <div className="absolute inset-0 bg-accent/20 rounded-xl blur-xl group-hover:bg-accent/40 transition-all" />
-                <Satellite className="h-6 w-6 text-primary relative animate-pulse" />
+          <Card className="p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 bg-white border-2 border-transparent hover:border-accent/20">
+            <div className="flex items-start justify-between mb-6">
+              <div className="bg-accent/10 p-4 rounded-2xl">
+                <Satellite className="h-7 w-7 text-accent" />
               </div>
-              <Globe className="h-5 w-5 text-primary" />
+              <Globe className="h-6 w-6 text-accent" />
             </div>
-            <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">Coverage</h3>
-            <p className="text-2xl font-bold text-foreground">Global</p>
-            <p className="text-xs text-muted-foreground mt-2">Worldwide satellite monitoring</p>
+            <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Coverage</h3>
+            <p className="text-3xl font-bold text-foreground mb-2">Global</p>
+            <p className="text-sm text-muted-foreground">Worldwide satellite monitoring</p>
           </Card>
         </div>
       </section>
 
-      {/* Field Reporter Section */}
-      <section className="py-12 md:py-16 lg:py-20 bg-background">
+      {/* Field Reporter Section - Light & Clean */}
+      <section className="py-16 md:py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                 Report Threats from the Field
               </h2>
-              <p className="text-sm md:text-base lg:text-lg text-muted-foreground px-4">
+              <p className="text-base md:text-lg text-muted-foreground">
                 Help protect Kenya's forests by documenting threats in real-time
               </p>
             </div>
             <FieldReporter />
-            <div className="mt-4 md:mt-6 text-center">
+            <div className="mt-6 text-center">
               <TestIncidentButton />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Live Map Section */}
-      <section id="satellite-map-section" className="py-12 md:py-16 lg:py-20 bg-muted/30">
+      {/* Live Map Section - Modern Light Design */}
+      <section id="satellite-map-section" className="py-16 md:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-8 md:mb-12">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
                 Live Forest Monitoring
               </h2>
-              <p className="text-sm md:text-base lg:text-lg text-muted-foreground px-4">
+              <p className="text-base md:text-lg text-muted-foreground">
                 Real-time satellite imagery and threat visualization with toggleable layers
               </p>
             </div>
@@ -229,15 +216,15 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Threat List */}
-      <section className="container mx-auto px-4 py-8 pb-16">
-        <Card className="overflow-hidden shadow-2xl border-0">
-          <div className="bg-gradient-to-r from-destructive/5 to-warning/5 p-6 border-b">
+      {/* Threat List - Clean Card Design */}
+      <section className="container mx-auto px-4 py-12 pb-20">
+        <Card className="overflow-hidden shadow-lg border-2 border-border bg-white">
+          <div className="bg-gradient-to-r from-destructive/5 to-accent/5 p-8 border-b-2 border-border">
             <div className="flex items-center justify-between flex-wrap gap-4">
               <div>
-                <h2 className="text-2xl font-bold text-foreground flex items-center gap-3 mb-2">
-                  <div className="bg-destructive/10 p-2 rounded-lg">
-                    <Activity className="h-6 w-6 text-destructive" />
+                <h2 className="text-3xl font-bold text-foreground flex items-center gap-3 mb-2">
+                  <div className="bg-destructive/10 p-3 rounded-xl">
+                    <Activity className="h-7 w-7 text-destructive" />
                   </div>
                   Active Threats
                 </h2>
@@ -247,7 +234,7 @@ const Index = () => {
               </div>
             </div>
           </div>
-          <div className="p-6">
+          <div className="p-6 bg-muted/20">
             <ThreatMap />
           </div>
         </Card>

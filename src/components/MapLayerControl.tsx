@@ -25,13 +25,13 @@ export const MapLayerControl = ({ onLayerChange, currentLayer }: MapLayerControl
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="secondary" size="sm" className="gap-2 shadow-lg">
+        <Button variant="secondary" size="sm" className="gap-2 shadow-lg bg-white border-2 border-border hover:bg-muted">
           <Layers className="h-4 w-4" />
           <span className="hidden sm:inline">Layers</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48">
-        <DropdownMenuLabel>Map Layers</DropdownMenuLabel>
+      <DropdownMenuContent align="end" className="w-48 bg-white border-2 border-border shadow-xl">
+        <DropdownMenuLabel className="text-foreground">Map Layers</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {layers.map((layer) => {
           const Icon = layer.icon;
@@ -39,7 +39,7 @@ export const MapLayerControl = ({ onLayerChange, currentLayer }: MapLayerControl
             <DropdownMenuItem
               key={layer.id}
               onClick={() => onLayerChange(layer.id)}
-              className={currentLayer === layer.id ? 'bg-accent' : ''}
+              className={`${currentLayer === layer.id ? 'bg-primary/10 text-primary' : ''} hover:bg-muted`}
             >
               <Icon className="h-4 w-4 mr-2" />
               {layer.name}

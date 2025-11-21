@@ -153,21 +153,21 @@ const SatelliteMap = () => {
   };
 
   return (
-    <div className="relative w-full h-[400px] md:h-[600px] rounded-lg overflow-hidden shadow-2xl border border-primary/30">
+    <div className="relative w-full h-[400px] md:h-[600px] rounded-2xl overflow-hidden shadow-xl border-2 border-border bg-white">
       <div ref={mapContainer} className="absolute inset-0" />
       
-      {/* Live indicator with enhanced animation */}
-      <div className="absolute top-2 md:top-4 left-2 md:left-4 bg-gradient-to-r from-red-500/90 to-orange-500/90 backdrop-blur-md px-3 md:px-4 py-2 md:py-2.5 rounded-lg shadow-xl border border-white/20">
-        <div className="flex items-center gap-2">
+      {/* Live indicator - Modern Light Style */}
+      <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md px-4 py-3 rounded-xl shadow-lg border-2 border-primary/20">
+        <div className="flex items-center gap-3">
           <div className="relative">
-            <div className="w-2 h-2 md:w-3 md:h-3 bg-white rounded-full animate-pulse" />
-            <div className="absolute inset-0 w-2 h-2 md:w-3 md:h-3 bg-white rounded-full animate-ping" />
+            <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+            <div className="absolute inset-0 w-3 h-3 bg-primary rounded-full animate-ping" />
           </div>
-          <span className="text-xs md:text-sm font-bold text-white">🛰️ Live Satellite Feed</span>
+          <span className="text-sm font-bold text-foreground">🛰️ Live Satellite</span>
         </div>
       </div>
       
-      <div className="absolute top-2 md:top-4 right-2 md:right-4 z-10">
+      <div className="absolute top-4 right-4 z-10">
         <MapLayerControl onLayerChange={handleLayerChange} currentLayer={currentLayer} />
       </div>
 

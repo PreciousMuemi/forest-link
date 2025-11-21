@@ -39,10 +39,10 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
   if (!isScanning && threatDetected === null) return null;
 
   return (
-    <div className="relative rounded-lg overflow-hidden bg-gradient-to-br from-primary/5 to-accent/5 border border-primary/20 p-6">
+    <div className="relative rounded-2xl overflow-hidden bg-white border-2 border-border shadow-lg p-6">
       {imageUrl && (
-        <div className="relative mb-4 rounded-lg overflow-hidden">
-          <img src={imageUrl} alt="Scanning" className="w-full h-48 object-cover" />
+        <div className="relative mb-6 rounded-xl overflow-hidden shadow-md">
+          <img src={imageUrl} alt="Scanning" className="w-full h-64 object-cover" />
           
           {/* Scanning overlay effect */}
           {isScanning && (
@@ -53,18 +53,18 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
                 style={{
                   top: `${scanProgress}%`,
                   transition: 'top 0.1s linear',
-                  boxShadow: '0 0 20px rgba(var(--primary), 0.8)'
+                  boxShadow: '0 0 20px hsl(152 69% 45% / 0.8)'
                 }}
               />
               
               {/* Grid overlay */}
-              <div className="absolute inset-0 bg-grid-pattern opacity-30" />
+              <div className="absolute inset-0 bg-grid-pattern opacity-20" />
               
               {/* Corner brackets */}
-              <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-primary animate-pulse" />
-              <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-primary animate-pulse" />
-              <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-primary animate-pulse" />
-              <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-primary animate-pulse" />
+              <div className="absolute top-3 left-3 w-10 h-10 border-t-3 border-l-3 border-primary animate-pulse" />
+              <div className="absolute top-3 right-3 w-10 h-10 border-t-3 border-r-3 border-primary animate-pulse" />
+              <div className="absolute bottom-3 left-3 w-10 h-10 border-b-3 border-l-3 border-primary animate-pulse" />
+              <div className="absolute bottom-3 right-3 w-10 h-10 border-b-3 border-r-3 border-primary animate-pulse" />
             </>
           )}
         </div>
@@ -76,37 +76,37 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
           <>
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center gap-2">
-                <Scan className="h-4 w-4 text-primary animate-pulse" />
-                <span className="font-medium">
+                <Scan className="h-5 w-5 text-primary animate-pulse" />
+                <span className="font-semibold text-foreground">
                   {scanPhase === 'analyzing' && 'Analyzing image...'}
                   {scanPhase === 'detecting' && 'Detecting threats...'}
                   {scanPhase === 'complete' && 'Finalizing...'}
                 </span>
               </div>
-              <span className="text-muted-foreground">{scanProgress}%</span>
+              <span className="text-muted-foreground font-medium">{scanProgress}%</span>
             </div>
             
-            <div className="relative h-2 bg-muted rounded-full overflow-hidden">
+            <div className="relative h-3 bg-muted rounded-full overflow-hidden">
               <div 
                 className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300"
                 style={{ width: `${scanProgress}%` }}
               >
-                <div className="absolute inset-0 bg-white/20 animate-pulse" />
+                <div className="absolute inset-0 bg-white/30 animate-pulse" />
               </div>
             </div>
 
             {/* AI Processing indicators */}
-            <div className="grid grid-cols-3 gap-2 text-xs text-muted-foreground">
-              <div className={`flex items-center gap-1 ${scanProgress > 20 ? 'text-primary' : ''}`}>
-                <div className={`w-2 h-2 rounded-full ${scanProgress > 20 ? 'bg-primary' : 'bg-muted'} animate-pulse`} />
+            <div className="grid grid-cols-3 gap-3 text-sm">
+              <div className={`flex items-center gap-2 p-3 rounded-lg ${scanProgress > 20 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                <div className={`w-2 h-2 rounded-full ${scanProgress > 20 ? 'bg-primary' : 'bg-muted-foreground'} animate-pulse`} />
                 Vision AI
               </div>
-              <div className={`flex items-center gap-1 ${scanProgress > 50 ? 'text-primary' : ''}`}>
-                <div className={`w-2 h-2 rounded-full ${scanProgress > 50 ? 'bg-primary' : 'bg-muted'} animate-pulse`} />
+              <div className={`flex items-center gap-2 p-3 rounded-lg ${scanProgress > 50 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                <div className={`w-2 h-2 rounded-full ${scanProgress > 50 ? 'bg-primary' : 'bg-muted-foreground'} animate-pulse`} />
                 ML Model
               </div>
-              <div className={`flex items-center gap-1 ${scanProgress > 80 ? 'text-primary' : ''}`}>
-                <div className={`w-2 h-2 rounded-full ${scanProgress > 80 ? 'bg-primary' : 'bg-muted'} animate-pulse`} />
+              <div className={`flex items-center gap-2 p-3 rounded-lg ${scanProgress > 80 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+                <div className={`w-2 h-2 rounded-full ${scanProgress > 80 ? 'bg-primary' : 'bg-muted-foreground'} animate-pulse`} />
                 Classification
               </div>
             </div>
@@ -115,24 +115,24 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
 
         {/* Result */}
         {!isScanning && threatDetected !== null && (
-          <div className={`flex items-center gap-3 p-4 rounded-lg border ${
+          <div className={`flex items-center gap-4 p-5 rounded-xl border-2 ${
             threatDetected 
               ? 'bg-destructive/10 border-destructive/30' 
-              : 'bg-green-500/10 border-green-500/30'
+              : 'bg-success/10 border-success/30'
           }`}>
             {threatDetected ? (
               <>
-                <AlertTriangle className="h-6 w-6 text-destructive animate-pulse" />
+                <AlertTriangle className="h-8 w-8 text-destructive animate-pulse flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-destructive">Threat Detected!</p>
+                  <p className="font-bold text-lg text-destructive">Threat Detected!</p>
                   <p className="text-sm text-muted-foreground">Environmental threat identified by AI</p>
                 </div>
               </>
             ) : (
               <>
-                <CheckCircle2 className="h-6 w-6 text-green-500" />
+                <CheckCircle2 className="h-8 w-8 text-success flex-shrink-0" />
                 <div>
-                  <p className="font-semibold text-green-500">No Threats Detected</p>
+                  <p className="font-bold text-lg text-success">No Threats Detected</p>
                   <p className="text-sm text-muted-foreground">Forest area appears healthy</p>
                 </div>
               </>
@@ -144,8 +144,8 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
       <style>{`
         .bg-grid-pattern {
           background-image: 
-            linear-gradient(rgba(var(--primary) / 0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(var(--primary) / 0.1) 1px, transparent 1px);
+            linear-gradient(rgba(31, 200, 113, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(31, 200, 113, 0.1) 1px, transparent 1px);
           background-size: 20px 20px;
         }
       `}</style>
