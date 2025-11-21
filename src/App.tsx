@@ -6,9 +6,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
-import Admin from "./pages/Admin";
 import RangerMobile from "./pages/RangerMobile";
 import NotFound from "./pages/NotFound";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminDashboard from "./pages/admin/Dashboard";
+import AdminIncidents from "./pages/admin/Incidents";
+import AdminAlerts from "./pages/admin/Alerts";
+import AdminAnalytics from "./pages/admin/Analytics";
+import AdminUsers from "./pages/admin/Users";
+import AdminSettings from "./pages/admin/Settings";
 
 const queryClient = new QueryClient();
 
@@ -22,8 +28,18 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/admin" element={<Admin />} />
             <Route path="/ranger" element={<RangerMobile />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin" element={<AdminLayout />}>
+              <Route index element={<AdminDashboard />} />
+              <Route path="incidents" element={<AdminIncidents />} />
+              <Route path="alerts" element={<AdminAlerts />} />
+              <Route path="analytics" element={<AdminAnalytics />} />
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="settings" element={<AdminSettings />} />
+            </Route>
+            
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
