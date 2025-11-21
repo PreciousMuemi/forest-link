@@ -131,6 +131,7 @@ const ThreatMap = () => {
         {incidents.slice(0, 5).map((incident, idx) => {
           const isSatellite = incident.source === 'satellite';
           const isSMS = incident.source === 'sms';
+          const isUSSD = incident.source === 'ussd';
           
           return (
             <div
@@ -144,12 +145,14 @@ const ThreatMap = () => {
               <div className="relative">
                 <div className={`absolute inset-0 rounded-full animate-ping ${
                   isSatellite ? 'bg-blue-500/30' : 
-                  isSMS ? 'bg-green-500/30' : 
+                  isSMS ? 'bg-green-500/30' :
+                  isUSSD ? 'bg-purple-500/30' :
                   'bg-destructive/30'
                 }`} />
                 <div className={`relative p-3 rounded-full shadow-lg hover:scale-110 transition-transform cursor-pointer ${
                   isSatellite ? 'bg-blue-500 text-white' :
                   isSMS ? 'bg-green-500 text-white' :
+                  isUSSD ? 'bg-purple-500 text-white' :
                   'bg-destructive text-destructive-foreground'
                 }`}>
                   {getThreatIcon(incident.threat_type, incident.source)}
@@ -164,6 +167,7 @@ const ThreatMap = () => {
                       <p className="text-xs text-muted-foreground">
                         Source: {incident.source === 'satellite' ? '🛰️ Satellite' : 
                                  incident.source === 'sms' ? '💬 SMS' : 
+                                 incident.source === 'ussd' ? '📞 USSD' :
                                  '📱 App'}
                       </p>
                     )}
@@ -231,6 +235,7 @@ const ThreatMap = () => {
                           <Badge variant="outline" className="text-xs">
                             {incident.source === 'satellite' ? '🛰️' : 
                              incident.source === 'sms' ? '💬' : 
+                             incident.source === 'ussd' ? '📞' :
                              '📱'}
                           </Badge>
                         )}

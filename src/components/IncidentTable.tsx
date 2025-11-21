@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite, Radio, UserPlus, Clock } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite, Radio, UserPlus, Clock, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import { User } from '@supabase/supabase-js';
 import {
@@ -83,6 +83,7 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
   const getSourceIcon = (source?: string) => {
     switch (source) {
       case 'sms': return <MessageSquare className="h-3 w-3" />;
+      case 'ussd': return <Phone className="h-3 w-3" />;
       case 'satellite': return <Satellite className="h-3 w-3" />;
       case 'pwa': return <Smartphone className="h-3 w-3" />;
       default: return <Smartphone className="h-3 w-3" />;
@@ -92,6 +93,7 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
   const getSourceLabel = (source?: string) => {
     switch (source) {
       case 'sms': return 'SMS';
+      case 'ussd': return 'USSD';
       case 'satellite': return 'Satellite';
       case 'pwa': return 'App';
       default: return 'App';

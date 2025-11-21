@@ -207,6 +207,7 @@ export default function Admin() {
                   <SelectItem value="all">All Sources</SelectItem>
                   <SelectItem value="pwa">📱 App</SelectItem>
                   <SelectItem value="sms">💬 SMS</SelectItem>
+                  <SelectItem value="ussd">📞 USSD</SelectItem>
                   <SelectItem value="satellite">🛰️ Satellite</SelectItem>
                 </SelectContent>
               </Select>
