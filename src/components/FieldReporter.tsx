@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
+import { AIDetectionScanner } from './AIDetectionScanner';
 
 const FieldReporter = () => {
   const [uploading, setUploading] = useState(false);
@@ -182,13 +183,13 @@ const FieldReporter = () => {
         </div>
       )}
 
-      {/* Preview */}
+      {/* AI Scanner with Preview */}
       {preview && (
         <div className="mb-6">
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-full h-64 object-cover rounded-lg border border-border"
+          <AIDetectionScanner
+            isScanning={analyzing}
+            threatDetected={result ? result.threatDetected : null}
+            imageUrl={preview}
           />
           {!analyzing && !result && (
             <Button

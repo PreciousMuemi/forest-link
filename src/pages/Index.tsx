@@ -126,13 +126,21 @@ const Index = () => {
         <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-background to-transparent"></div>
       </section>
 
-      {/* Features Grid */}
-      <section className="container mx-auto px-4 py-12 md:py-16 -mt-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-l-destructive bg-gradient-to-br from-card to-card/80">
+      {/* Features Grid with WOW factor */}
+      <section className="container mx-auto px-4 py-12 md:py-16 -mt-12 relative">
+        {/* Animated background */}
+        <div className="absolute inset-0 opacity-20 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-primary rounded-full animate-pulse" />
+          <div className="absolute top-1/2 right-1/4 w-2 h-2 bg-accent rounded-full animate-pulse" style={{ animationDelay: '0.3s' }} />
+          <div className="absolute bottom-1/4 left-1/2 w-2 h-2 bg-primary rounded-full animate-pulse" style={{ animationDelay: '0.6s' }} />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 relative z-10">
+          <Card className="p-6 hover:shadow-2xl hover:shadow-destructive/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-destructive bg-gradient-to-br from-card to-card/80 group cursor-pointer">
             <div className="flex items-start justify-between mb-4">
-              <div className="bg-destructive/10 p-3 rounded-xl">
-                <AlertTriangle className="h-6 w-6 text-destructive" />
+              <div className="bg-destructive/10 p-3 rounded-xl relative">
+                <div className="absolute inset-0 bg-destructive/20 rounded-xl blur-xl group-hover:bg-destructive/40 transition-all" />
+                <AlertTriangle className="h-6 w-6 text-destructive relative animate-pulse" />
               </div>
               <div className="bg-destructive/5 px-2 py-1 rounded-full">
                 <span className="text-xs font-bold text-destructive">LIVE</span>
@@ -143,10 +151,11 @@ const Index = () => {
             <p className="text-xs text-muted-foreground mt-2">Continuous monitoring & instant detection</p>
           </Card>
           
-          <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-l-primary bg-gradient-to-br from-card to-card/80">
+          <Card className="p-6 hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-primary bg-gradient-to-br from-card to-card/80 group cursor-pointer">
             <div className="flex items-start justify-between mb-4">
-              <div className="bg-primary/10 p-3 rounded-xl">
-                <Shield className="h-6 w-6 text-primary" />
+              <div className="bg-primary/10 p-3 rounded-xl relative">
+                <div className="absolute inset-0 bg-primary/20 rounded-xl blur-xl group-hover:bg-primary/40 transition-all" />
+                <Shield className="h-6 w-6 text-primary relative animate-pulse" />
               </div>
               <CheckCircle className="h-5 w-5 text-primary" />
             </div>
@@ -155,10 +164,11 @@ const Index = () => {
             <p className="text-xs text-muted-foreground mt-2">Immutable verification & transparency</p>
           </Card>
           
-          <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-l-success bg-gradient-to-br from-card to-card/80">
+          <Card className="p-6 hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-success bg-gradient-to-br from-card to-card/80 group cursor-pointer">
             <div className="flex items-start justify-between mb-4">
-              <div className="bg-success/10 p-3 rounded-xl">
-                <Zap className="h-6 w-6 text-success" />
+              <div className="bg-success/10 p-3 rounded-xl relative">
+                <div className="absolute inset-0 bg-success/20 rounded-xl blur-xl group-hover:bg-success/40 transition-all" />
+                <Zap className="h-6 w-6 text-success relative animate-pulse" />
               </div>
               <Activity className="h-5 w-5 text-success animate-pulse" />
             </div>
@@ -167,10 +177,11 @@ const Index = () => {
             <p className="text-xs text-muted-foreground mt-2">Immediate notifications to authorities</p>
           </Card>
 
-          <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-l-4 border-l-accent bg-gradient-to-br from-card to-card/80">
+          <Card className="p-6 hover:shadow-2xl hover:shadow-accent/20 transition-all duration-500 hover:-translate-y-2 hover:scale-105 border-l-4 border-l-accent bg-gradient-to-br from-card to-card/80 group cursor-pointer">
             <div className="flex items-start justify-between mb-4">
-              <div className="bg-accent/30 p-3 rounded-xl">
-                <Satellite className="h-6 w-6 text-primary" />
+              <div className="bg-accent/30 p-3 rounded-xl relative">
+                <div className="absolute inset-0 bg-accent/20 rounded-xl blur-xl group-hover:bg-accent/40 transition-all" />
+                <Satellite className="h-6 w-6 text-primary relative animate-pulse" />
               </div>
               <Globe className="h-5 w-5 text-primary" />
             </div>
