@@ -30,7 +30,18 @@ const SatelliteMap = () => {
       style: `mapbox://styles/mapbox/${currentLayer}`,
       center: [36.8219, -1.2921], // Kenya coordinates
       zoom: 6,
-      pitch: 45,
+      pitch: 60,
+      bearing: -15,
+    });
+
+    // Cinematic camera animation on load
+    map.current.on('load', () => {
+      map.current?.easeTo({
+        pitch: 45,
+        bearing: 0,
+        duration: 3000,
+        easing: (t) => t * (2 - t), // easeOutQuad
+      });
     });
 
     map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
@@ -82,16 +93,17 @@ const SatelliteMap = () => {
       markers[0].remove();
     }
 
-    // Add markers for each incident
+    // Add animated markers for each incident with WOW effect
     incidents.forEach((incident) => {
       const el = document.createElement('div');
       el.className = 'threat-marker';
-      el.style.width = '30px';
-      el.style.height = '30px';
+      el.style.width = '24px';
+      el.style.height = '24px';
       el.style.borderRadius = '50%';
       el.style.cursor = 'pointer';
       el.style.border = '3px solid white';
-      el.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+      el.style.position = 'relative';
+      el.style.animation = 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite';
       
       const severityColors: Record<string, string> = {
         critical: '#ef4444',
@@ -100,7 +112,23 @@ const SatelliteMap = () => {
         low: '#3b82f6',
       };
       
-      el.style.backgroundColor = severityColors[incident.severity] || '#6b7280';
+      const color = severityColors[incident.severity] || '#6b7280';
+      el.style.backgroundColor = color;
+      el.style.boxShadow = `0 0 20px ${color}, 0 0 40px ${color}`;
+      
+      // Add animated ripple effect
+      const ripple = document.createElement('div');
+      ripple.style.position = 'absolute';
+      ripple.style.top = '50%';
+      ripple.style.left = '50%';
+      ripple.style.width = '40px';
+      ripple.style.height = '40px';
+      ripple.style.borderRadius = '50%';
+      ripple.style.border = `2px solid ${color}`;
+      ripple.style.transform = 'translate(-50%, -50%)';
+      ripple.style.animation = 'ripple 2s ease-out infinite';
+      ripple.style.pointerEvents = 'none';
+      el.appendChild(ripple);
 
       const popup = new mapboxgl.Popup({ offset: 25 }).setHTML(`
         <div style="padding: 8px;">
@@ -125,17 +153,37 @@ const SatelliteMap = () => {
   };
 
   return (
-    <div className="relative w-full h-[400px] md:h-[600px] rounded-lg overflow-hidden shadow-lg border border-border">
+    <div className="relative w-full h-[400px] md:h-[600px] rounded-lg overflow-hidden shadow-2xl border border-primary/30">
       <div ref={mapContainer} className="absolute inset-0" />
-      <div className="absolute top-2 md:top-4 left-2 md:left-4 bg-background/90 backdrop-blur-sm px-2 md:px-4 py-1.5 md:py-2 rounded-lg shadow-md">
+      
+      {/* Live indicator with enhanced animation */}
+      <div className="absolute top-2 md:top-4 left-2 md:left-4 bg-gradient-to-r from-red-500/90 to-orange-500/90 backdrop-blur-md px-3 md:px-4 py-2 md:py-2.5 rounded-lg shadow-xl border border-white/20">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 md:w-3 md:h-3 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-xs md:text-sm font-medium">Live Satellite Feed</span>
+          <div className="relative">
+            <div className="w-2 h-2 md:w-3 md:h-3 bg-white rounded-full animate-pulse" />
+            <div className="absolute inset-0 w-2 h-2 md:w-3 md:h-3 bg-white rounded-full animate-ping" />
+          </div>
+          <span className="text-xs md:text-sm font-bold text-white">🛰️ Live Satellite Feed</span>
         </div>
       </div>
-      <div className="absolute top-2 md:top-4 right-2 md:right-4">
+      
+      <div className="absolute top-2 md:top-4 right-2 md:right-4 z-10">
         <MapLayerControl onLayerChange={handleLayerChange} currentLayer={currentLayer} />
       </div>
+
+      {/* Ripple animation styles */}
+      <style>{`
+        @keyframes ripple {
+          0% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.6;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(2);
+            opacity: 0;
+          }
+        }
+      `}</style>
     </div>
   );
 };
