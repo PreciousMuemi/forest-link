@@ -47,17 +47,29 @@ export default function AdminLayout() {
   const [user, setUser] = useState<User | null>(null);
   const { isAdmin, loading } = useAdminRole(user);
 
+  console.log('🏛️ [AdminLayout] Render state:', { 
+    user: user?.id, 
+    isAdmin, 
+    loading, 
+    path: location.pathname 
+  });
+
   useEffect(() => {
+    console.log('🔐 [AdminLayout] Checking initial session...');
     supabase.auth.getSession().then(({ data: { session } }) => {
+      console.log('🔐 [AdminLayout] Initial session:', session?.user?.id);
       setUser(session?.user ?? null);
       if (!session?.user) {
+        console.log('❌ [AdminLayout] No session, redirecting to /auth');
         navigate('/auth');
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log('🔐 [AdminLayout] Auth state changed:', { event: _event, user: session?.user?.id });
       setUser(session?.user ?? null);
       if (!session?.user) {
+        console.log('❌ [AdminLayout] No user, redirecting to /auth');
         navigate('/auth');
       }
     });
@@ -66,7 +78,9 @@ export default function AdminLayout() {
   }, [navigate]);
 
   useEffect(() => {
+    console.log('🔒 [AdminLayout] Admin check:', { loading, isAdmin, hasUser: !!user });
     if (!loading && !isAdmin && user) {
+      console.log('❌ [AdminLayout] Not admin, blocking access');
       toast.error('Access denied. Admin privileges required.');
       navigate('/');
     }
