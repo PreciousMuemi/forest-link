@@ -24,7 +24,9 @@ export type Database = {
           lat: number
           lon: number
           notes: string | null
+          sender_phone: string | null
           severity: string
+          source: string | null
           threat_type: string
           timestamp: string
           tx_hash: string | null
@@ -40,7 +42,9 @@ export type Database = {
           lat: number
           lon: number
           notes?: string | null
+          sender_phone?: string | null
           severity: string
+          source?: string | null
           threat_type: string
           timestamp?: string
           tx_hash?: string | null
@@ -56,7 +60,9 @@ export type Database = {
           lat?: number
           lon?: number
           notes?: string | null
+          sender_phone?: string | null
           severity?: string
+          source?: string | null
           threat_type?: string
           timestamp?: string
           tx_hash?: string | null
