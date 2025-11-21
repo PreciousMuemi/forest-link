@@ -15,13 +15,32 @@ export const useAdminRole = (user: User | null) => {
       }
 
       try {
-        const { data, error } = await supabase.rpc('has_role', {
+        // Primary check via has_role() helper
+        const { data: hasRoleResult, error: hasRoleError } = await supabase.rpc('has_role', {
           _user_id: user.id,
           _role: 'admin',
         });
 
-        if (error) throw error;
-        setIsAdmin(!!data);
+        if (hasRoleError) throw hasRoleError;
+
+        let isAdminFlag = !!hasRoleResult;
+
+        // Fallback: direct check against user_roles for debugging robustness
+        if (!isAdminFlag) {
+          const { data: roleRow, error: roleError } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', user.id)
+            .eq('role', 'admin')
+            .maybeSingle();
+
+          if (roleError) throw roleError;
+          if (roleRow) {
+            isAdminFlag = true;
+          }
+        }
+
+        setIsAdmin(isAdminFlag);
       } catch (error) {
         console.error('Error checking admin role:', error);
         setIsAdmin(false);
