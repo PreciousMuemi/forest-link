@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { useAdminRole } from '@/hooks/useAdminRole';
 import { User } from '@supabase/supabase-js';
 import { Button } from '@/components/ui/button';
 import { StatsCard } from '@/components/StatsCard';
@@ -14,7 +13,6 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function Admin() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
-  const { isAdmin, loading: roleLoading } = useAdminRole(user);
   const [stats, setStats] = useState<any>(null);
   const [incidents, setIncidents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -38,17 +36,10 @@ export default function Admin() {
   }, [navigate]);
 
   useEffect(() => {
-    if (!roleLoading && !isAdmin && user) {
-      toast.error('Access denied. Admin privileges required.');
-      navigate('/');
-    }
-  }, [roleLoading, isAdmin, user, navigate]);
-
-  useEffect(() => {
-    if (isAdmin) {
+    if (user) {
       fetchDashboardData();
     }
-  }, [isAdmin]);
+  }, [user]);
 
   const fetchDashboardData = async () => {
     try {
@@ -109,7 +100,7 @@ export default function Admin() {
     }
   };
 
-  if (roleLoading || !user) {
+  if (!user) {
     return (
       <div className="min-h-screen bg-background p-4 md:p-8">
         <div className="max-w-7xl mx-auto space-y-8">
@@ -122,10 +113,6 @@ export default function Admin() {
         </div>
       </div>
     );
-  }
-
-  if (!isAdmin) {
-    return null;
   }
 
   return (
