@@ -3,8 +3,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite, Radio } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite, Radio, UserPlus, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import { User } from '@supabase/supabase-js';
 import {
   Dialog,
   DialogContent,
@@ -14,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { BroadcastAlertDialog } from './BroadcastAlertDialog';
 import { CommunityResponses } from './CommunityResponses';
+import { IncidentChat } from './IncidentChat';
 
 interface Incident {
   id: string;
@@ -28,14 +30,22 @@ interface Incident {
   notes?: string;
   source?: string;
   sender_phone?: string;
+  assigned_ranger_id?: string | null;
+  incident_status?: string;
+  eta_minutes?: number | null;
+  rangers?: {
+    name: string;
+    phone_number: string;
+  };
 }
 
 interface IncidentTableProps {
   incidents: Incident[];
   onUpdate: () => void;
+  user: User | null;
 }
 
-export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
+export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps) => {
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
@@ -93,6 +103,47 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
     setAlertDialogOpen(true);
   };
 
+  const handleAssignRanger = async (incidentId: string) => {
+    setIsUpdating(true);
+    try {
+      toast.info('Finding nearest available ranger...');
+      
+      const { data, error } = await supabase.functions.invoke('assign-ranger', {
+        body: { incident_id: incidentId, auto_assign: true },
+      });
+
+      if (error) throw error;
+
+      if (data?.success) {
+        toast.success(data.message || 'Ranger assigned successfully!');
+        onUpdate();
+      } else {
+        toast.error(data?.error || 'Failed to assign ranger');
+      }
+    } catch (error) {
+      console.error('Error assigning ranger:', error);
+      toast.error('Failed to assign ranger');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const getIncidentStatusBadge = (status?: string) => {
+    if (!status) return null;
+    
+    const variants: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }> = {
+      reported: { variant: 'outline', label: 'Reported' },
+      assigned: { variant: 'secondary', label: 'Assigned' },
+      en_route: { variant: 'default', label: 'En Route' },
+      on_scene: { variant: 'destructive', label: 'On Scene' },
+      resolved: { variant: 'outline', label: 'Resolved' },
+      false_alarm: { variant: 'secondary', label: 'False Alarm' },
+    };
+    
+    const config = variants[status] || { variant: 'outline', label: status };
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
+
   return (
     <>
       <div className="rounded-md border overflow-x-auto">
@@ -102,16 +153,17 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
               <TableHead>Type</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Severity</TableHead>
+              <TableHead>Ranger</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Date</TableHead>
-              <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {incidents.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
                   No incidents reported yet
                 </TableCell>
               </TableRow>
@@ -131,6 +183,26 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                     </Badge>
                   </TableCell>
                   <TableCell>
+                    {incident.rangers ? (
+                      <div className="text-sm">
+                        <div className="font-medium">{incident.rangers.name}</div>
+                        {incident.eta_minutes && (
+                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <Clock className="h-3 w-3" />
+                            ETA: {incident.eta_minutes} min
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <Badge variant="outline" className="text-xs">
+                        Unassigned
+                      </Badge>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {getIncidentStatusBadge(incident.incident_status || 'reported')}
+                  </TableCell>
+                  <TableCell>
                     <div className="flex items-center gap-1 text-sm">
                       <MapPin className="h-3 w-3" />
                       {incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}
@@ -138,11 +210,6 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                   </TableCell>
                   <TableCell className="text-sm">
                     {new Date(incident.timestamp).toLocaleDateString()}
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={incident.verified ? 'default' : 'outline'}>
-                      {incident.verified ? 'Verified' : 'Pending'}
-                    </Badge>
                   </TableCell>
                   <TableCell className="text-right space-x-2">
                     <Button
@@ -153,6 +220,18 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                     >
                       <Eye className="h-4 w-4" />
                     </Button>
+                    {!incident.assigned_ranger_id && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleAssignRanger(incident.id)}
+                        disabled={isUpdating}
+                        title="Auto-Assign Ranger"
+                        className="text-blue-600 hover:text-blue-700"
+                      >
+                        <UserPlus className="h-4 w-4" />
+                      </Button>
+                    )}
                     <Button
                       variant="ghost"
                       size="sm"
@@ -253,6 +332,14 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                 <h3 className="text-sm font-semibold mb-3">Community Responses</h3>
                 <CommunityResponses incidentId={selectedIncident.id} />
               </div>
+
+              {/* Coordination Chat */}
+              {user && (
+                <div className="border-t pt-4">
+                  <h3 className="text-sm font-semibold mb-3">Coordination Chat</h3>
+                  <IncidentChat incidentId={selectedIncident.id} user={user} />
+                </div>
+              )}
             </div>
           )}
         </DialogContent>

@@ -6,8 +6,10 @@ import { Button } from '@/components/ui/button';
 import { StatsCard } from '@/components/StatsCard';
 import { ThreatChart } from '@/components/ThreatChart';
 import { IncidentTable } from '@/components/IncidentTable';
+import { RangerDispatchBoard } from '@/components/RangerDispatchBoard';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { AlertTriangle, CheckCircle, Clock, AlertCircle, ArrowLeft, Download, RefreshCw, Satellite } from 'lucide-react';
+import { AlertTriangle, CheckCircle, Clock, AlertCircle, ArrowLeft, Download, RefreshCw, Satellite, Shield } from 'lucide-react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -59,7 +61,13 @@ export default function Admin() {
       // Build query with filters
       let query = supabase
         .from('incidents')
-        .select('*')
+        .select(`
+          *,
+          rangers (
+            name,
+            phone_number
+          )
+        `)
         .order('created_at', { ascending: false })
         .limit(50);
 
@@ -281,10 +289,26 @@ export default function Admin() {
               />
             </div>
 
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Recent Incidents</h2>
-              <IncidentTable incidents={incidents} onUpdate={fetchDashboardData} />
-            </div>
+            {/* Tabs for Incidents and Rangers */}
+            <Tabs defaultValue="incidents" className="space-y-4">
+              <TabsList className="grid w-full max-w-md grid-cols-2">
+                <TabsTrigger value="incidents">Incidents</TabsTrigger>
+                <TabsTrigger value="rangers" className="gap-2">
+                  <Shield className="h-4 w-4" />
+                  Rangers
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="incidents" className="space-y-4">
+                <h2 className="text-xl font-semibold">Recent Incidents</h2>
+                <IncidentTable incidents={incidents} onUpdate={fetchDashboardData} user={user} />
+              </TabsContent>
+
+              <TabsContent value="rangers" className="space-y-4">
+                <h2 className="text-xl font-semibold">Ranger Dispatch</h2>
+                <RangerDispatchBoard />
+              </TabsContent>
+            </Tabs>
           </>
         )}
       </div>
