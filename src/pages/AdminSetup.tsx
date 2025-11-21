@@ -1,14 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Shield } from 'lucide-react';
+import { Shield, CheckCircle2, XCircle } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const AdminSetup = () => {
   const [loading, setLoading] = useState(false);
+  const [debugInfo, setDebugInfo] = useState<{
+    userId: string | null;
+    hasRole: boolean;
+    existingRole: string | null;
+  }>({ userId: null, hasRole: false, existingRole: null });
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDebugInfo = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      if (!user) {
+        setDebugInfo({ userId: null, hasRole: false, existingRole: null });
+        return;
+      }
+
+      const { data: role } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', user.id)
+        .maybeSingle();
+
+      setDebugInfo({
+        userId: user.id,
+        hasRole: !!role,
+        existingRole: role?.role || null,
+      });
+    };
+
+    fetchDebugInfo();
+  }, []);
 
   const setupAdmin = async () => {
     setLoading(true);
@@ -26,7 +57,7 @@ const AdminSetup = () => {
         .from('user_roles')
         .select('*')
         .eq('user_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (existingRole) {
         toast.info('You already have a role assigned');
@@ -66,10 +97,43 @@ const AdminSetup = () => {
             Grant yourself admin access to manage the ForestGuard system
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-4">
+          <Alert>
+            <AlertDescription className="space-y-3">
+              <div className="flex items-start gap-2">
+                <div className="font-medium min-w-24">User ID:</div>
+                <code className="text-xs bg-muted px-2 py-1 rounded break-all">
+                  {debugInfo.userId || 'Not logged in'}
+                </code>
+              </div>
+              
+              <div className="flex items-start gap-2">
+                <div className="font-medium min-w-24">Has Role:</div>
+                <div className="flex items-center gap-2">
+                  {debugInfo.hasRole ? (
+                    <>
+                      <CheckCircle2 className="h-4 w-4 text-green-500" />
+                      <span className="text-green-500">Yes</span>
+                      {debugInfo.existingRole && (
+                        <code className="text-xs bg-muted px-2 py-1 rounded">
+                          {debugInfo.existingRole}
+                        </code>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <XCircle className="h-4 w-4 text-muted-foreground" />
+                      <span className="text-muted-foreground">No role assigned</span>
+                    </>
+                  )}
+                </div>
+              </div>
+            </AlertDescription>
+          </Alert>
+
           <Button 
             onClick={setupAdmin} 
-            disabled={loading}
+            disabled={loading || !debugInfo.userId}
             className="w-full"
           >
             {loading ? 'Setting up...' : 'Grant Admin Access'}
