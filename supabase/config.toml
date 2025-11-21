@@ -1,1 +1,16 @@
 project_id = "rivkrzxrsnsrubnfvdvy"
+
+[functions.generate-threat-image]
+verify_jwt = false
+
+[functions.process-detection]
+verify_jwt = false
+
+[functions.log-blockchain]
+verify_jwt = false
+
+[functions.send-alert]
+verify_jwt = false
+
+[functions.analyze-satellite]
+verify_jwt = false

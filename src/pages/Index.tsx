@@ -7,6 +7,7 @@ import SatelliteMap from '@/components/SatelliteMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { UserJourneyShowcase } from '@/components/UserJourneyShowcase';
+import { ThreatGallery } from '@/components/ThreatGallery';
 import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, CheckCircle, LogOut, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
@@ -199,8 +200,17 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Threat Gallery Section */}
+      <section className="py-16 md:py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="max-w-7xl mx-auto">
+            <ThreatGallery />
+          </div>
+        </div>
+      </section>
+
       {/* Live Map Section - Modern Light Design */}
-      <section id="satellite-map-section" className="py-16 md:py-20 bg-background">
+      <section id="satellite-map-section" className="py-16 md:py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
