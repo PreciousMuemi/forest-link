@@ -20,3 +20,9 @@ verify_jwt = false
 
 [functions.fetch-satellite-hotspots]
 verify_jwt = false
+
+[functions.send-broadcast-alert]
+verify_jwt = true
+
+[functions.sms-response]
+verify_jwt = false
