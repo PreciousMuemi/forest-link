@@ -25,6 +25,7 @@ import {
   Settings,
   LogOut,
   Shield,
+  Bug,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -37,6 +38,7 @@ const menuItems = [
   { title: 'Analytics', url: '/admin/analytics', icon: TrendingUp },
   { title: 'Users & Roles', url: '/admin/users', icon: Users },
   { title: 'Settings', url: '/admin/settings', icon: Settings },
+  { title: 'Debug Access', url: '/admin/debug', icon: Bug },
 ];
 
 export default function AdminLayout() {
