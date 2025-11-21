@@ -78,9 +78,15 @@ export default function RangerMobile() {
         .from('rangers')
         .select('*')
         .eq('phone_number', user.phone || user.email)
-        .single();
+        .maybeSingle();
 
       if (rangerError) throw rangerError;
+      
+      if (!rangerData) {
+        toast.error('No ranger profile found. Please contact admin.');
+        return;
+      }
+      
       setRanger(rangerData);
 
       // Get assigned incident if any
@@ -89,10 +95,10 @@ export default function RangerMobile() {
           .from('incidents')
           .select('*')
           .eq('id', rangerData.current_incident_id)
-          .single();
+          .maybeSingle();
 
         if (incidentError) throw incidentError;
-        setIncident(incidentData);
+        setIncident(incidentData || null);
       } else {
         setIncident(null);
       }
