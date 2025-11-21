@@ -7,6 +7,9 @@ import { StatsCard } from '@/components/StatsCard';
 import { ThreatChart } from '@/components/ThreatChart';
 import { IncidentTable } from '@/components/IncidentTable';
 import { RangerDispatchBoard } from '@/components/RangerDispatchBoard';
+import { ResponseTimeAnalytics } from '@/components/ResponseTimeAnalytics';
+import { CommunityLeaderboard } from '@/components/CommunityLeaderboard';
+import { RiskHeatMap } from '@/components/RiskHeatMap';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { AlertTriangle, CheckCircle, Clock, AlertCircle, ArrowLeft, Download, RefreshCw, Satellite, Shield } from 'lucide-react';
@@ -288,6 +291,14 @@ export default function Admin() {
                 type="bar"
               />
             </div>
+
+            {/* Analytics Dashboard */}
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <ResponseTimeAnalytics />
+              <CommunityLeaderboard />
+            </div>
+
+            <RiskHeatMap />
 
             {/* Tabs for Incidents and Rangers */}
             <Tabs defaultValue="incidents" className="space-y-4">
