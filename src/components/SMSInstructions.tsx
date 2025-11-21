@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { MessageSquare, Satellite, Smartphone, AlertCircle } from 'lucide-react';
+import { MessageSquare, Satellite, Smartphone, AlertCircle, Phone } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 export const SMSInstructions = () => {
@@ -16,6 +16,26 @@ export const SMSInstructions = () => {
       </div>
 
       <div className="space-y-3">
+        {/* USSD Channel */}
+        <div className="p-4 rounded-lg border bg-card/50">
+          <div className="flex items-start gap-3">
+            <Phone className="h-5 w-5 text-purple-500 mt-0.5" />
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                <h4 className="font-semibold text-sm">USSD Menu (Feature Phones)</h4>
+                <Badge variant="secondary" className="text-xs">Interactive Menu</Badge>
+              </div>
+              <p className="text-xs text-muted-foreground mb-2">
+                Dial the USSD shortcode for an interactive menu:
+              </p>
+              <code className="text-sm bg-muted px-3 py-1.5 rounded block w-fit">*384*123#</code>
+              <p className="text-xs text-muted-foreground mt-2">
+                Works on any phone, even basic feature phones without internet. Choose from menu options to report fires, logging, or charcoal production.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {/* SMS Channel */}
         <div className="p-4 rounded-lg border bg-card/50">
           <div className="flex items-start gap-3">
@@ -76,7 +96,7 @@ export const SMSInstructions = () => {
       <div className="flex items-start gap-2 p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
         <AlertCircle className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
         <p className="text-xs text-muted-foreground">
-          <span className="font-semibold text-foreground">For Admins:</span> Configure the Twilio webhook URL in your Twilio console to point to your edge function endpoint for SMS reports.
+          <span className="font-semibold text-foreground">For Admins:</span> Configure Twilio webhook for SMS and Africa's Talking callback URL for USSD in your respective service dashboards.
         </p>
       </div>
     </Card>

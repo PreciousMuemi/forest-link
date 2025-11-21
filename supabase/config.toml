@@ -29,3 +29,6 @@ verify_jwt = false
 
 [functions.assign-ranger]
 verify_jwt = true
+
+[functions.ussd-webhook]
+verify_jwt = false
