@@ -14,6 +14,79 @@ export type Database = {
   }
   public: {
     Tables: {
+      alert_logs: {
+        Row: {
+          created_by: string | null
+          id: string
+          incident_id: string
+          message: string
+          radius_km: number
+          sent_at: string
+          sent_to: string[]
+        }
+        Insert: {
+          created_by?: string | null
+          id?: string
+          incident_id: string
+          message: string
+          radius_km: number
+          sent_at?: string
+          sent_to: string[]
+        }
+        Update: {
+          created_by?: string | null
+          id?: string
+          incident_id?: string
+          message?: string
+          radius_km?: number
+          sent_at?: string
+          sent_to?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alert_logs_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      community_responses: {
+        Row: {
+          id: string
+          incident_id: string
+          message: string | null
+          phone_number: string
+          responded_at: string
+          response: string
+        }
+        Insert: {
+          id?: string
+          incident_id: string
+          message?: string | null
+          phone_number: string
+          responded_at?: string
+          response: string
+        }
+        Update: {
+          id?: string
+          incident_id?: string
+          message?: string | null
+          phone_number?: string
+          responded_at?: string
+          response?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_responses_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incidents: {
         Row: {
           alert_status: string
@@ -76,6 +149,8 @@ export type Database = {
           created_at: string
           full_name: string | null
           id: string
+          lat: number | null
+          lon: number | null
           organization: string | null
           phone_number: string | null
           updated_at: string
@@ -85,6 +160,8 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          lat?: number | null
+          lon?: number | null
           organization?: string | null
           phone_number?: string | null
           updated_at?: string
@@ -94,6 +171,8 @@ export type Database = {
           created_at?: string
           full_name?: string | null
           id?: string
+          lat?: number | null
+          lon?: number | null
           organization?: string | null
           phone_number?: string | null
           updated_at?: string

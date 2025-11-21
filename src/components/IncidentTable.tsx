@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite, Radio } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -12,6 +12,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { BroadcastAlertDialog } from './BroadcastAlertDialog';
+import { CommunityResponses } from './CommunityResponses';
 
 interface Incident {
   id: string;
@@ -36,6 +38,8 @@ interface IncidentTableProps {
 export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [alertIncident, setAlertIncident] = useState<Incident | null>(null);
 
   const handleVerify = async (id: string, verified: boolean) => {
     setIsUpdating(true);
@@ -82,6 +86,11 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
       case 'pwa': return 'App';
       default: return 'App';
     }
+  };
+
+  const handleOpenAlert = (incident: Incident) => {
+    setAlertIncident(incident);
+    setAlertDialogOpen(true);
   };
 
   return (
@@ -140,8 +149,18 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                       variant="ghost"
                       size="sm"
                       onClick={() => setSelectedIncident(incident)}
+                      title="View Details"
                     >
                       <Eye className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleOpenAlert(incident)}
+                      title="Send Community Alert"
+                      className="text-primary hover:text-primary"
+                    >
+                      <Radio className="h-4 w-4" />
                     </Button>
                     {!incident.verified ? (
                       <Button
@@ -149,6 +168,7 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                         size="sm"
                         onClick={() => handleVerify(incident.id, true)}
                         disabled={isUpdating}
+                        title="Mark as Verified"
                       >
                         <CheckCircle className="h-4 w-4 text-green-600" />
                       </Button>
@@ -158,6 +178,7 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                         size="sm"
                         onClick={() => handleVerify(incident.id, false)}
                         disabled={isUpdating}
+                        title="Mark as Unverified"
                       >
                         <XCircle className="h-4 w-4 text-red-600" />
                       </Button>
@@ -226,10 +247,25 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                   <p className="text-sm text-muted-foreground">{selectedIncident.notes}</p>
                 </div>
               )}
+
+              {/* Community Responses */}
+              <div className="border-t pt-4">
+                <h3 className="text-sm font-semibold mb-3">Community Responses</h3>
+                <CommunityResponses incidentId={selectedIncident.id} />
+              </div>
             </div>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Broadcast Alert Dialog */}
+      {alertIncident && (
+        <BroadcastAlertDialog
+          open={alertDialogOpen}
+          onOpenChange={setAlertDialogOpen}
+          incident={alertIncident}
+        />
+      )}
     </>
   );
 };
