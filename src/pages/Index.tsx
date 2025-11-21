@@ -8,6 +8,7 @@ import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { UserJourneyShowcase } from '@/components/UserJourneyShowcase';
 import { ThreatGallery } from '@/components/ThreatGallery';
+import { SMSInstructions } from '@/components/SMSInstructions';
 import { AlertTriangle, Shield, Leaf, Satellite, Globe, Activity, Zap, Eye, CheckCircle, LogOut, User } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
@@ -183,16 +184,22 @@ const Index = () => {
       {/* Field Reporter Section - Light & Clean */}
       <section className="py-16 md:py-20 bg-muted/30">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
+          <div className="max-w-4xl mx-auto space-y-8">
+            <div className="text-center">
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Report Threats from the Field
+                Kenya Forest Emergency Alert Network
               </h2>
               <p className="text-base md:text-lg text-muted-foreground">
-                Help protect Kenya's forests by documenting threats in real-time
+                Multi-channel threat reporting system - works on any device, anywhere
               </p>
             </div>
+            
+            {/* SMS Instructions */}
+            <SMSInstructions />
+            
+            {/* Field Reporter */}
             <FieldReporter />
+            
             <div className="mt-6 text-center">
               <TestIncidentButton />
             </div>

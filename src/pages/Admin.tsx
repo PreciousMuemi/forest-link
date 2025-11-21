@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { StatsCard } from '@/components/StatsCard';
 import { ThreatChart } from '@/components/ThreatChart';
 import { IncidentTable } from '@/components/IncidentTable';
-import { AlertTriangle, CheckCircle, Clock, AlertCircle, ArrowLeft, Download } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { AlertTriangle, CheckCircle, Clock, AlertCircle, ArrowLeft, Download, RefreshCw, Satellite } from 'lucide-react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -16,6 +17,9 @@ export default function Admin() {
   const [stats, setStats] = useState<any>(null);
   const [incidents, setIncidents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [sourceFilter, setSourceFilter] = useState<string>('all');
+  const [severityFilter, setSeverityFilter] = useState<string>('all');
+  const [isFetchingSatellite, setIsFetchingSatellite] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -39,7 +43,7 @@ export default function Admin() {
     if (user) {
       fetchDashboardData();
     }
-  }, [user]);
+  }, [user, sourceFilter, severityFilter]);
 
   const fetchDashboardData = async () => {
     try {
@@ -52,12 +56,24 @@ export default function Admin() {
       if (statsError) throw statsError;
       setStats(statsData);
 
-      // Fetch recent incidents
-      const { data: incidentsData, error: incidentsError } = await supabase
+      // Build query with filters
+      let query = supabase
         .from('incidents')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(50);
+
+      // Apply source filter
+      if (sourceFilter !== 'all') {
+        query = query.eq('source', sourceFilter);
+      }
+
+      // Apply severity filter
+      if (severityFilter !== 'all') {
+        query = query.eq('severity', severityFilter);
+      }
+
+      const { data: incidentsData, error: incidentsError } = await query;
 
       if (incidentsError) throw incidentsError;
       setIncidents(incidentsData || []);
@@ -66,6 +82,25 @@ export default function Admin() {
       toast.error('Failed to load dashboard data');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleFetchSatelliteData = async () => {
+    try {
+      setIsFetchingSatellite(true);
+      toast.info('Fetching satellite fire hotspots from NASA FIRMS...');
+      
+      const { error } = await supabase.functions.invoke('fetch-satellite-hotspots');
+      
+      if (error) throw error;
+      
+      toast.success('Satellite data fetched successfully!');
+      fetchDashboardData();
+    } catch (error) {
+      console.error('Error fetching satellite data:', error);
+      toast.error('Failed to fetch satellite data');
+    } finally {
+      setIsFetchingSatellite(false);
     }
   };
 
@@ -118,23 +153,80 @@ export default function Admin() {
   return (
     <div className="min-h-screen bg-background">
       <div className="border-b bg-card">
-        <div className="max-w-7xl mx-auto p-4 md:p-6 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back
-            </Button>
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
-              <p className="text-sm text-muted-foreground mt-1">
-                Monitor and manage forest threat reports
-              </p>
+        <div className="max-w-7xl mx-auto p-4 md:p-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <Button variant="ghost" size="sm" onClick={() => navigate('/')}>
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back
+              </Button>
+              <div>
+                <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Kenya Forest Emergency Alert Network
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <Button 
+                onClick={handleFetchSatelliteData} 
+                size="sm" 
+                variant="outline"
+                disabled={isFetchingSatellite}
+              >
+                <Satellite className="h-4 w-4 mr-2" />
+                {isFetchingSatellite ? 'Fetching...' : 'Fetch Satellite Data'}
+              </Button>
+              <Button onClick={handleExport} size="sm">
+                <Download className="h-4 w-4 mr-2" />
+                Export Data
+              </Button>
             </div>
           </div>
-          <Button onClick={handleExport} size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export Data
-          </Button>
+          
+          {/* Filters */}
+          <div className="flex flex-wrap gap-4 mt-4 pt-4 border-t">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">Source:</span>
+              <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="All Sources" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Sources</SelectItem>
+                  <SelectItem value="pwa">📱 App</SelectItem>
+                  <SelectItem value="sms">💬 SMS</SelectItem>
+                  <SelectItem value="satellite">🛰️ Satellite</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">Severity:</span>
+              <Select value={severityFilter} onValueChange={setSeverityFilter}>
+                <SelectTrigger className="w-[140px]">
+                  <SelectValue placeholder="All Severities" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Severities</SelectItem>
+                  <SelectItem value="critical">Critical</SelectItem>
+                  <SelectItem value="high">High</SelectItem>
+                  <SelectItem value="medium">Medium</SelectItem>
+                  <SelectItem value="low">Low</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={fetchDashboardData}
+              className="ml-auto"
+            >
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Refresh
+            </Button>
+          </div>
         </div>
       </div>
 

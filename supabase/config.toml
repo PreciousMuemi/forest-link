@@ -14,3 +14,9 @@ verify_jwt = false
 
 [functions.analyze-satellite]
 verify_jwt = false
+
+[functions.sms-webhook]
+verify_jwt = false
+
+[functions.fetch-satellite-hotspots]
+verify_jwt = false

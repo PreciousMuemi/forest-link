@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, Eye, MapPin } from 'lucide-react';
+import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite } from 'lucide-react';
 import { toast } from 'sonner';
 import {
   Dialog,
@@ -24,6 +24,8 @@ interface Incident {
   image_url?: string;
   description?: string;
   notes?: string;
+  source?: string;
+  sender_phone?: string;
 }
 
 interface IncidentTableProps {
@@ -64,6 +66,24 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
     }
   };
 
+  const getSourceIcon = (source?: string) => {
+    switch (source) {
+      case 'sms': return <MessageSquare className="h-3 w-3" />;
+      case 'satellite': return <Satellite className="h-3 w-3" />;
+      case 'pwa': return <Smartphone className="h-3 w-3" />;
+      default: return <Smartphone className="h-3 w-3" />;
+    }
+  };
+
+  const getSourceLabel = (source?: string) => {
+    switch (source) {
+      case 'sms': return 'SMS';
+      case 'satellite': return 'Satellite';
+      case 'pwa': return 'App';
+      default: return 'App';
+    }
+  };
+
   return (
     <>
       <div className="rounded-md border overflow-x-auto">
@@ -71,6 +91,7 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
           <TableHeader>
             <TableRow>
               <TableHead>Type</TableHead>
+              <TableHead>Source</TableHead>
               <TableHead>Severity</TableHead>
               <TableHead>Location</TableHead>
               <TableHead>Date</TableHead>
@@ -89,6 +110,12 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
               incidents.map((incident) => (
                 <TableRow key={incident.id}>
                   <TableCell className="font-medium">{incident.threat_type}</TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className="gap-1">
+                      {getSourceIcon(incident.source)}
+                      {getSourceLabel(incident.source)}
+                    </Badge>
+                  </TableCell>
                   <TableCell>
                     <Badge variant={getSeverityColor(incident.severity)}>
                       {incident.severity}
@@ -174,6 +201,19 @@ export const IncidentTable = ({ incidents, onUpdate }: IncidentTableProps) => {
                   </p>
                 </div>
               </div>
+              <div>
+                <p className="text-sm font-medium">Source</p>
+                <Badge variant="outline" className="gap-1">
+                  {getSourceIcon(selectedIncident.source)}
+                  {getSourceLabel(selectedIncident.source)}
+                </Badge>
+              </div>
+              {selectedIncident.sender_phone && (
+                <div>
+                  <p className="text-sm font-medium">Sender Phone</p>
+                  <p className="text-sm text-muted-foreground">{selectedIncident.sender_phone}</p>
+                </div>
+              )}
               {selectedIncident.description && (
                 <div>
                   <p className="text-sm font-medium">Description</p>

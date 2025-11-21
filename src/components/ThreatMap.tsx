@@ -70,7 +70,13 @@ const ThreatMap = () => {
     }
   };
 
-  const getThreatIcon = (threatType: string) => {
+  const getThreatIcon = (threatType: string, source?: string) => {
+    // Special icons for satellite sources
+    if (source === 'satellite') {
+      return <Satellite className="h-4 w-4" />;
+    }
+    
+    // Regular threat type icons
     switch (threatType.toLowerCase()) {
       case 'fire':
         return <Flame className="h-4 w-4" />;
@@ -122,34 +128,54 @@ const ThreatMap = () => {
         </div>
         
         {/* Animated incident markers */}
-        {incidents.slice(0, 5).map((incident, idx) => (
-          <div
-            key={incident.id}
-            className="absolute z-20 group"
-            style={{
-              left: `${15 + idx * 17}%`,
-              top: `${25 + (idx % 2) * 30}%`,
-            }}
-          >
-            <div className="relative">
-              <div className="absolute inset-0 bg-destructive/30 rounded-full animate-ping" />
-              <div className="relative bg-destructive text-destructive-foreground p-3 rounded-full shadow-lg hover:scale-110 transition-transform cursor-pointer">
-                {getThreatIcon(incident.threat_type)}
-              </div>
-              <div className="absolute hidden group-hover:block bg-card p-3 rounded-xl shadow-xl -top-24 left-1/2 -translate-x-1/2 w-56 border border-border z-30">
-                <div className="space-y-1">
-                  <p className="font-semibold text-sm">{incident.threat_type}</p>
-                  <p className="text-xs text-muted-foreground">
-                    📍 {incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}
-                  </p>
-                  <Badge variant={getSeverityColor(incident.severity)} className="text-xs">
-                    {incident.severity} severity
-                  </Badge>
+        {incidents.slice(0, 5).map((incident, idx) => {
+          const isSatellite = incident.source === 'satellite';
+          const isSMS = incident.source === 'sms';
+          
+          return (
+            <div
+              key={incident.id}
+              className="absolute z-20 group"
+              style={{
+                left: `${15 + idx * 17}%`,
+                top: `${25 + (idx % 2) * 30}%`,
+              }}
+            >
+              <div className="relative">
+                <div className={`absolute inset-0 rounded-full animate-ping ${
+                  isSatellite ? 'bg-blue-500/30' : 
+                  isSMS ? 'bg-green-500/30' : 
+                  'bg-destructive/30'
+                }`} />
+                <div className={`relative p-3 rounded-full shadow-lg hover:scale-110 transition-transform cursor-pointer ${
+                  isSatellite ? 'bg-blue-500 text-white' :
+                  isSMS ? 'bg-green-500 text-white' :
+                  'bg-destructive text-destructive-foreground'
+                }`}>
+                  {getThreatIcon(incident.threat_type, incident.source)}
+                </div>
+                <div className="absolute hidden group-hover:block bg-card p-3 rounded-xl shadow-xl -top-24 left-1/2 -translate-x-1/2 w-56 border border-border z-30">
+                  <div className="space-y-1">
+                    <p className="font-semibold text-sm">{incident.threat_type}</p>
+                    <p className="text-xs text-muted-foreground">
+                      📍 {incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}
+                    </p>
+                    {incident.source && (
+                      <p className="text-xs text-muted-foreground">
+                        Source: {incident.source === 'satellite' ? '🛰️ Satellite' : 
+                                 incident.source === 'sms' ? '💬 SMS' : 
+                                 '📱 App'}
+                      </p>
+                    )}
+                    <Badge variant={getSeverityColor(incident.severity)} className="text-xs">
+                      {incident.severity} severity
+                    </Badge>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Active Threats List */}
@@ -201,6 +227,13 @@ const ThreatMap = () => {
                         <Badge variant={getSeverityColor(incident.severity)} className="text-xs">
                           {incident.severity}
                         </Badge>
+                        {incident.source && (
+                          <Badge variant="outline" className="text-xs">
+                            {incident.source === 'satellite' ? '🛰️' : 
+                             incident.source === 'sms' ? '💬' : 
+                             '📱'}
+                          </Badge>
+                        )}
                       </div>
                       <p className="text-xs text-muted-foreground">
                         📍 Coordinates: {incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}
