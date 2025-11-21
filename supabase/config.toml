@@ -26,3 +26,6 @@ verify_jwt = true
 
 [functions.sms-response]
 verify_jwt = false
+
+[functions.assign-ranger]
+verify_jwt = true

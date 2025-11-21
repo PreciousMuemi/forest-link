@@ -87,16 +87,57 @@ export type Database = {
           },
         ]
       }
+      incident_messages: {
+        Row: {
+          created_at: string
+          id: string
+          incident_id: string
+          message: string
+          user_id: string
+          user_name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          incident_id: string
+          message: string
+          user_id: string
+          user_name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          incident_id?: string
+          message?: string
+          user_id?: string
+          user_name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incident_messages_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       incidents: {
         Row: {
           alert_status: string
+          assigned_at: string | null
+          assigned_ranger_id: string | null
           created_at: string
           description: string | null
+          eta_minutes: number | null
           id: string
           image_url: string | null
+          incident_status: string | null
           lat: number
           lon: number
           notes: string | null
+          resolved_at: string | null
+          responded_at: string | null
           sender_phone: string | null
           severity: string
           source: string | null
@@ -108,13 +149,19 @@ export type Database = {
         }
         Insert: {
           alert_status?: string
+          assigned_at?: string | null
+          assigned_ranger_id?: string | null
           created_at?: string
           description?: string | null
+          eta_minutes?: number | null
           id?: string
           image_url?: string | null
+          incident_status?: string | null
           lat: number
           lon: number
           notes?: string | null
+          resolved_at?: string | null
+          responded_at?: string | null
           sender_phone?: string | null
           severity: string
           source?: string | null
@@ -126,13 +173,19 @@ export type Database = {
         }
         Update: {
           alert_status?: string
+          assigned_at?: string | null
+          assigned_ranger_id?: string | null
           created_at?: string
           description?: string | null
+          eta_minutes?: number | null
           id?: string
           image_url?: string | null
+          incident_status?: string | null
           lat?: number
           lon?: number
           notes?: string | null
+          resolved_at?: string | null
+          responded_at?: string | null
           sender_phone?: string | null
           severity?: string
           source?: string | null
@@ -142,7 +195,15 @@ export type Database = {
           updated_at?: string
           verified?: boolean | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "incidents_assigned_ranger_id_fkey"
+            columns: ["assigned_ranger_id"]
+            isOneToOne: false
+            referencedRelation: "rangers"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -179,6 +240,53 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      rangers: {
+        Row: {
+          created_at: string
+          current_incident_id: string | null
+          id: string
+          lat: number
+          lon: number
+          name: string
+          phone_number: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          current_incident_id?: string | null
+          id?: string
+          lat: number
+          lon: number
+          name: string
+          phone_number: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          current_incident_id?: string | null
+          id?: string
+          lat?: number
+          lon?: number
+          name?: string
+          phone_number?: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rangers_current_incident_id_fkey"
+            columns: ["current_incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
