@@ -362,17 +362,18 @@ export default function RangerIncidentDetail() {
                 <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <Button
-                        asChild
+                        onClick={() => {
+                            // Use geo: URI for mobile compatibility, fallback to Google Maps
+                            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                            const url = isMobile 
+                                ? `geo:${incident.lat},${incident.lon}?q=${incident.lat},${incident.lon}`
+                                : `https://maps.google.com/?q=${incident.lat},${incident.lon}`;
+                            window.location.href = url;
+                        }}
                         className="bg-blue-600 hover:bg-blue-700"
                     >
-                        <a
-                            href={`https://www.google.com/maps/search/?api=1&query=${incident.lat},${incident.lon}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            <Navigation className="h-4 w-4 mr-2" />
-                            Navigate
-                        </a>
+                        <Navigation className="h-4 w-4 mr-2" />
+                        Navigate
                     </Button>
 
                     {incident.incident_status === 'reported' && (
