@@ -157,7 +157,7 @@ export default function AdminUsers() {
     <div className="p-4 md:p-8 space-y-6 md:space-y-8">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold">Users & Roles</h2>
+          <h2 className="text-2xl md:text-3xl font-bold text-foreground">Users & Roles</h2>
           <p className="text-muted-foreground">Manage user accounts and permissions</p>
         </div>
         <Button onClick={fetchUsers} size="sm" variant="outline">
@@ -168,19 +168,19 @@ export default function AdminUsers() {
 
       <Card>
         <CardHeader>
-          <CardTitle>User Management</CardTitle>
+          <CardTitle className="text-foreground">User Management</CardTitle>
           <CardDescription>View and modify user roles and permissions</CardDescription>
         </CardHeader>
         <CardContent className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead className="hidden md:table-cell">Email</TableHead>
-                <TableHead className="hidden lg:table-cell">Organization</TableHead>
-                <TableHead>Roles</TableHead>
-                <TableHead className="hidden md:table-cell">Joined</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead className="text-foreground">Name</TableHead>
+                <TableHead className="hidden md:table-cell text-foreground">Email</TableHead>
+                <TableHead className="hidden lg:table-cell text-foreground">Organization</TableHead>
+                <TableHead className="text-foreground">Roles</TableHead>
+                <TableHead className="hidden md:table-cell text-foreground">Joined</TableHead>
+                <TableHead className="text-foreground">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

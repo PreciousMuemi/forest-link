@@ -217,7 +217,7 @@ export default function AdminIncidents() {
     <div className="p-8 space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-bold">Incident Management & Approval</h2>
+          <h2 className="text-3xl font-bold text-foreground">Incident Management & Approval</h2>
           <p className="text-muted-foreground">Review and verify community threat reports</p>
           <div className="flex gap-3 mt-3">
             <Badge variant="outline" className="gap-2 px-3 py-1 border-orange-500 text-orange-600">
@@ -269,7 +269,7 @@ export default function AdminIncidents() {
 
       <div className="flex flex-wrap gap-4">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Source:</span>
+          <span className="text-sm font-medium text-foreground">Source:</span>
           <Select value={sourceFilter} onValueChange={setSourceFilter}>
             <SelectTrigger className="w-[140px]">
               <SelectValue />
@@ -285,7 +285,7 @@ export default function AdminIncidents() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Severity:</span>
+          <span className="text-sm font-medium text-foreground">Severity:</span>
           <Select value={severityFilter} onValueChange={setSeverityFilter}>
             <SelectTrigger className="w-[140px]">
               <SelectValue />
@@ -301,7 +301,7 @@ export default function AdminIncidents() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Status:</span>
+          <span className="text-sm font-medium text-foreground">Status:</span>
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[140px]">
               <SelectValue />
@@ -318,7 +318,7 @@ export default function AdminIncidents() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">Verification:</span>
+          <span className="text-sm font-medium text-foreground">Verification:</span>
           <Select value={verificationFilter} onValueChange={setVerificationFilter}>
             <SelectTrigger className="w-[160px]">
               <SelectValue />
