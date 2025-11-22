@@ -46,10 +46,11 @@ interface Incident {
     verified_by: string | null;
     resolved_at: string | null;
     resolved_by: string | null;
-    ranger_followup_photos: string[];
-    ranger_notes: Array<{ note: string; timestamp: string; author: string }>;
+    ranger_followup_photos: string[] | null;
+    ranger_notes: any[] | null;
     sender_phone: string | null;
-    ml_confidence: number | null;
+    assigned_ranger: string | null;
+    region: string | null;
 }
 
 export default function RangerIncidentDetail() {
@@ -76,10 +77,16 @@ export default function RangerIncidentDetail() {
                 .from('incidents')
                 .select('*')
                 .eq('id', id)
-                .single();
+                .maybeSingle();
 
             if (error) throw error;
-            setIncident(data);
+            if (data) {
+                setIncident({
+                    ...data,
+                    ranger_followup_photos: data.ranger_followup_photos || [],
+                    ranger_notes: data.ranger_notes || [],
+                });
+            }
         } catch (error) {
             console.error('Error fetching incident:', error);
             toast.error('Failed to load incident details');
@@ -304,13 +311,6 @@ export default function RangerIncidentDetail() {
                         </div>
                     </div>
 
-                    {incident.ml_confidence && (
-                        <div className="p-3 bg-blue-50 rounded-lg border border-blue-200">
-                            <p className="text-sm font-semibold text-blue-900">
-                                ML Confidence: {(incident.ml_confidence * 100).toFixed(1)}%
-                            </p>
-                        </div>
-                    )}
 
                     <div>
                         <h3 className="font-semibold mb-2">Description</h3>

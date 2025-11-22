@@ -29,10 +29,14 @@ interface Incident {
     verified: boolean;
     image_url: string | null;
     source: string;
-    assigned_ranger: string;
-    region: string;
+    assigned_ranger: string | null;
+    region: string | null;
     verified_at: string | null;
+    verified_by: string | null;
     resolved_at: string | null;
+    resolved_by: string | null;
+    ranger_followup_photos: string[] | null;
+    ranger_notes: any[] | null;
 }
 
 export default function RangerDashboard() {

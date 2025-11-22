@@ -198,7 +198,7 @@ export default function AdminDashboard() {
 
       <Card>
         <CardContent className="p-0">
-          <ThreatMap incidents={incidents} />
+          <ThreatMap />
         </CardContent>
       </Card>
 
