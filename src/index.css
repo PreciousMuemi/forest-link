@@ -286,8 +286,15 @@
     --secondary: 150 10% 95%;
     --secondary-foreground: 150 60% 10%;
     --muted: 150 10% 93%;
-    --muted-foreground: 150 30% 30%;
+    --muted-foreground: 150 30% 20%;
     --border: 150 15% 88%;
     --input: 150 15% 88%;
+    --ring: 136 45% 45%;
+    --sidebar: 0 0% 100%;
+    --sidebar-foreground: 150 50% 5%;
+    --sidebar-primary: 136 45% 45%;
+    --sidebar-accent: 150 10% 95%;
+    --sidebar-accent-foreground: 150 50% 5%;
+    --sidebar-border: 150 15% 88%;
   }
 }

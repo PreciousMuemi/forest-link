@@ -113,7 +113,7 @@ export default function AdminLayout() {
                   <Shield className="h-6 w-6 text-primary-foreground" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">KFEAN Admin</h2>
+                  <h2 className="font-bold text-lg text-foreground">KFEAN Admin</h2>
                   <p className="text-xs text-muted-foreground">Forest Protection</p>
                 </div>
               </div>
@@ -157,9 +157,9 @@ export default function AdminLayout() {
 
         <div className="flex-1 flex flex-col">
           <header className="h-16 border-b border-border bg-card flex items-center px-6 shadow-sm">
-            <SidebarTrigger />
+            <SidebarTrigger className="text-foreground" />
             <div className="ml-4">
-              <h1 className="text-lg font-semibold">
+              <h1 className="text-lg font-semibold text-foreground">
                 {menuItems.find(item => 
                   item.url === location.pathname || 
                   (item.url !== '/admin' && location.pathname.startsWith(item.url))

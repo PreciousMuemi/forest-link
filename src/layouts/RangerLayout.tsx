@@ -191,7 +191,7 @@ export default function RangerLayout() {
             <div className="flex-1 flex flex-col">
                 <header className="border-b border-border bg-card p-4 shadow-sm">
                     <div className="flex items-center gap-4">
-                        <SidebarTrigger className="text-primary" />
+                        <SidebarTrigger className="text-foreground" />
                         <div className="flex items-center gap-2">
                             <MapPin className="h-5 w-5 text-primary" />
                             <h1 className="text-xl font-bold text-foreground">
