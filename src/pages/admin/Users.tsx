@@ -5,9 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RefreshCw, Shield, User, Trash2, Mail } from 'lucide-react';
+import { RefreshCw, Shield, User, Trash2, Mail, UserPlus } from 'lucide-react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Input } from '@/components/ui/input';
 import {
   Dialog,
   DialogContent,
@@ -37,6 +38,15 @@ export default function AdminUsers() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [userToDelete, setUserToDelete] = useState<any>(null);
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false);
+  const [newUserData, setNewUserData] = useState({
+    email: '',
+    password: '',
+    fullName: '',
+    phoneNumber: '',
+    organization: '',
+    role: 'user'
+  });
 
   useEffect(() => {
     fetchUsers();
@@ -133,6 +143,36 @@ export default function AdminUsers() {
     }
   };
 
+  const handleAddUser = async () => {
+    try {
+      if (!newUserData.email || !newUserData.password) {
+        toast.error('Email and password are required');
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke('create-user', {
+        body: newUserData
+      });
+
+      if (error) throw error;
+
+      toast.success('User created successfully');
+      setIsAddUserDialogOpen(false);
+      setNewUserData({
+        email: '',
+        password: '',
+        fullName: '',
+        phoneNumber: '',
+        organization: '',
+        role: 'user'
+      });
+      fetchUsers();
+    } catch (error) {
+      console.error('Error creating user:', error);
+      toast.error('Failed to create user');
+    }
+  };
+
   const getRoleBadgeVariant = (role: string) => {
     switch (role) {
       case 'admin':
@@ -160,10 +200,16 @@ export default function AdminUsers() {
           <h2 className="text-2xl md:text-3xl font-bold text-foreground">Users & Roles</h2>
           <p className="text-muted-foreground">Manage user accounts and permissions</p>
         </div>
-        <Button onClick={fetchUsers} size="sm" variant="outline">
-          <RefreshCw className="h-4 w-4 mr-2" />
-          Refresh
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => setIsAddUserDialogOpen(true)} size="sm">
+            <UserPlus className="h-4 w-4 mr-2" />
+            Add User
+          </Button>
+          <Button onClick={fetchUsers} size="sm" variant="outline">
+            <RefreshCw className="h-4 w-4 mr-2" />
+            Refresh
+          </Button>
+        </div>
       </div>
 
       <Card>
@@ -309,6 +355,97 @@ export default function AdminUsers() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New User</DialogTitle>
+            <DialogDescription>
+              Create a new user account with email and password
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Email *</Label>
+              <Input
+                type="email"
+                value={newUserData.email}
+                onChange={(e) => setNewUserData({ ...newUserData, email: e.target.value })}
+                placeholder="user@example.com"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Password *</Label>
+              <Input
+                type="password"
+                value={newUserData.password}
+                onChange={(e) => setNewUserData({ ...newUserData, password: e.target.value })}
+                placeholder="••••••••"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Full Name</Label>
+              <Input
+                value={newUserData.fullName}
+                onChange={(e) => setNewUserData({ ...newUserData, fullName: e.target.value })}
+                placeholder="John Doe"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Phone Number</Label>
+              <Input
+                value={newUserData.phoneNumber}
+                onChange={(e) => setNewUserData({ ...newUserData, phoneNumber: e.target.value })}
+                placeholder="+254712345678"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Organization</Label>
+              <Input
+                value={newUserData.organization}
+                onChange={(e) => setNewUserData({ ...newUserData, organization: e.target.value })}
+                placeholder="Kenya Forest Service"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Role</Label>
+              <Select value={newUserData.role} onValueChange={(value) => setNewUserData({ ...newUserData, role: value })}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="user">
+                    <div className="flex items-center gap-2">
+                      <User className="h-4 w-4" />
+                      User
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="moderator">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      Moderator
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="admin">
+                    <div className="flex items-center gap-2">
+                      <Shield className="h-4 w-4" />
+                      Admin
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsAddUserDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleAddUser}>
+              Create User
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
