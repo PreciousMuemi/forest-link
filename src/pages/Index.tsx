@@ -67,7 +67,7 @@ const Index = () => {
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-xl shadow-soft">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 group">
-            <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center glow-pulse">
+            <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
               <Leaf className="h-6 w-6 text-white transform group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <div>
@@ -134,7 +134,7 @@ const Index = () => {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 md:p-8 hover:shadow-lg transition-all duration-500 hover-lift animate-scale-in group"
+                className="p-6 md:p-8 card-hover animate-slide-up group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft group-hover:scale-110 transition-transform duration-300">

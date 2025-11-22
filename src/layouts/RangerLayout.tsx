@@ -128,33 +128,33 @@ export default function RangerLayout() {
     }
 
     return (
-        <SidebarProvider>
-            <div className="min-h-screen flex w-full bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950">
-                <Sidebar className="border-r border-red-200 dark:border-red-800">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background admin-light">
+        <Sidebar className="border-r border-border bg-card">
                     <SidebarContent>
-                        <div className="p-6 border-b border-red-200 dark:border-red-800">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-lg bg-red-600">
-                                    <Shield className="h-6 w-6 text-white" />
+                    <div className="p-6 border-b border-border">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-lg bg-primary">
+                                <Shield className="h-6 w-6 text-white" />
                                 </div>
-                                <div>
-                                    <h2 className="font-bold text-lg text-red-900 dark:text-red-100">Ranger Portal</h2>
-                                    <p className="text-xs text-red-600 dark:text-red-400">Field Response</p>
-                                </div>
+                            <div>
+                                <h2 className="font-bold text-lg text-foreground">Ranger Portal</h2>
+                                <p className="text-xs text-muted-foreground">Field Response</p>
+                            </div>
                             </div>
                         </div>
 
-                        <SidebarGroup>
-                            <SidebarGroupLabel className="text-red-700 dark:text-red-300">Navigation</SidebarGroupLabel>
-                            <SidebarGroupContent>
-                                <SidebarMenu>
-                                    {menuItems.map((item) => (
-                                        <SidebarMenuItem key={item.url}>
-                                            <SidebarMenuButton
-                                                asChild
-                                                isActive={location.pathname === item.url}
-                                                className="hover:bg-red-100 dark:hover:bg-red-900"
-                                            >
+                    <SidebarGroup>
+                        <SidebarGroupLabel className="text-muted-foreground">Navigation</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                {menuItems.map((item) => (
+                                    <SidebarMenuItem key={item.url}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={location.pathname === item.url}
+                                            className="hover:bg-accent"
+                                        >
                                                 <Link to={item.url}>
                                                     <item.icon className="h-4 w-4" />
                                                     <span>{item.title}</span>
@@ -171,16 +171,16 @@ export default function RangerLayout() {
                             </SidebarGroupContent>
                         </SidebarGroup>
 
-                        <div className="mt-auto p-4 border-t border-red-200 dark:border-red-800">
-                            <div className="mb-3 p-3 rounded-lg bg-red-100 dark:bg-red-900">
-                                <p className="text-xs font-semibold text-red-900 dark:text-red-100">Logged in as:</p>
-                                <p className="text-xs text-red-700 dark:text-red-300 truncate">{user?.email}</p>
-                            </div>
-                            <Button
-                                onClick={handleSignOut}
-                                variant="outline"
-                                className="w-full border-red-300 hover:bg-red-100 dark:border-red-700 dark:hover:bg-red-900"
-                            >
+                    <div className="mt-auto p-4 border-t border-border">
+                        <div className="mb-3 p-3 rounded-lg bg-accent/10">
+                            <p className="text-xs font-semibold text-foreground">Logged in as:</p>
+                            <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                        </div>
+                        <Button
+                            onClick={handleSignOut}
+                            variant="outline"
+                            className="w-full"
+                        >
                                 <LogOut className="h-4 w-4 mr-2" />
                                 Sign Out
                             </Button>
@@ -188,18 +188,18 @@ export default function RangerLayout() {
                     </SidebarContent>
                 </Sidebar>
 
-                <div className="flex-1 flex flex-col">
-                    <header className="border-b border-red-200 dark:border-red-800 bg-white dark:bg-red-950 p-4">
-                        <div className="flex items-center gap-4">
-                            <SidebarTrigger className="text-red-600" />
-                            <div className="flex items-center gap-2">
-                                <MapPin className="h-5 w-5 text-red-600" />
-                                <h1 className="text-xl font-bold text-red-900 dark:text-red-100">
-                                    Kenya Forest Service - Ranger Response
-                                </h1>
-                            </div>
+            <div className="flex-1 flex flex-col">
+                <header className="border-b border-border bg-card p-4 shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <SidebarTrigger className="text-primary" />
+                        <div className="flex items-center gap-2">
+                            <MapPin className="h-5 w-5 text-primary" />
+                            <h1 className="text-xl font-bold text-foreground">
+                                Kenya Forest Service - Ranger Response
+                            </h1>
                         </div>
-                    </header>
+                    </div>
+                </header>
 
                     <main className="flex-1 overflow-auto p-6">
                         <Outlet />
