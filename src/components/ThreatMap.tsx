@@ -22,9 +22,7 @@ import {
 
 type Incident = Tables<'incidents'>;
 
-const MAPBOX_TOKEN =
-  import.meta.env.VITE_MAPBOX_ACCESS_TOKEN ||
-  'pk.eyJ1IjoibG92YWJsZS1haS1kZW1vIiwiYSI6ImNseTB5YmNqeTBhcXEyanM3YmRlbGU4bTcifQ.VVWgR_SN5iRiMlLbd-Bvbg';
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const DEFAULT_VIEW_STATE = {
   latitude: -1.2921,
