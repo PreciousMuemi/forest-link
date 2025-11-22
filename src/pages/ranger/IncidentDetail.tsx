@@ -408,14 +408,26 @@ export default function RangerIncidentDetail() {
                     )}
 
                     {incident.incident_status !== 'resolved' && incident.incident_status !== 'false_alarm' && (
-                        <Button
-                            onClick={() => updateStatus('resolved')}
-                            disabled={updating}
-                            className="bg-green-600 hover:bg-green-700"
-                        >
-                            {updating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <CheckCircle className="h-4 w-4 mr-2" />}
-                            Resolve
-                        </Button>
+                        <>
+                            <Button
+                                onClick={() => updateStatus('resolved')}
+                                disabled={updating}
+                                className="bg-green-600 hover:bg-green-700"
+                            >
+                                {updating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <CheckCircle className="h-4 w-4 mr-2" />}
+                                Resolve
+                            </Button>
+                            
+                            <Button
+                                onClick={() => updateStatus('false_alarm')}
+                                disabled={updating}
+                                variant="outline"
+                                className="border-yellow-500 text-yellow-700 hover:bg-yellow-50"
+                            >
+                                {updating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <AlertTriangle className="h-4 w-4 mr-2" />}
+                                False Alarm
+                            </Button>
+                        </>
                     )}
 
                     <Button
