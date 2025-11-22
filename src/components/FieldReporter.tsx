@@ -170,11 +170,11 @@ const FieldReporter = () => {
   };
 
   return (
-    <Card className="p-8 shadow-xl bg-white border-2 border-border">
+    <Card className="p-8 shadow-xl glass-card border-2 border-primary/20">
       <div className="mb-8">
         <h2 className="text-3xl font-bold flex items-center gap-3 mb-3 text-foreground">
-          <div className="bg-primary/10 p-3 rounded-xl">
-            <Camera className="w-7 h-7 text-primary" />
+          <div className="bg-gradient-primary p-3 rounded-xl shadow-soft">
+            <Camera className="w-7 h-7 text-white" />
           </div>
           Field Reporter
         </h2>
@@ -255,9 +255,9 @@ const FieldReporter = () => {
         </div>
       )}
 
-      {/* Processing Status - Light Design */}
+      {/* Processing Status */}
       {(uploading || analyzing) && (
-        <div className="flex items-center justify-center gap-4 p-6 bg-primary/5 border-2 border-primary/20 rounded-xl mb-6">
+        <div className="flex items-center justify-center gap-4 p-6 bg-gradient-card border-2 border-primary/30 rounded-xl mb-6 backdrop-blur-sm">
           <Loader2 className="w-7 h-7 animate-spin text-primary" />
           <div>
             <p className="font-semibold text-foreground">
@@ -271,9 +271,9 @@ const FieldReporter = () => {
         </div>
       )}
 
-      {/* Location - Clean Badge */}
+      {/* Location Badge */}
       {location && (
-        <div className="flex items-center gap-3 p-4 bg-accent/10 border-2 border-accent/20 rounded-xl mb-6">
+        <div className="flex items-center gap-3 p-4 bg-gradient-card border-2 border-accent/30 rounded-xl mb-6 backdrop-blur-sm">
           <MapPin className="w-6 h-6 text-accent" />
           <div className="text-sm">
             <p className="font-semibold text-foreground">Location captured</p>
@@ -284,11 +284,11 @@ const FieldReporter = () => {
         </div>
       )}
 
-      {/* Results - Simplified User-Friendly Message */}
+      {/* Results */}
       {result && (
         <div className="space-y-4">
           {result.threatDetected ? (
-            <div className="p-6 bg-success/10 border-2 border-success/30 rounded-xl">
+            <div className="p-6 bg-gradient-card border-2 border-success/30 rounded-xl backdrop-blur-sm">
               <div className="flex items-start gap-4">
                 <CheckCircle className="w-8 h-8 text-success flex-shrink-0 mt-1" />
                 <div className="flex-1">
@@ -296,21 +296,21 @@ const FieldReporter = () => {
                   <p className="text-base text-foreground mb-4">
                     Your report has been received. Our team will review it shortly and take appropriate action.
                   </p>
-                  <div className="p-4 bg-white rounded-lg border border-border">
+                  <div className="p-4 bg-gradient-glass rounded-lg border border-border/50 backdrop-blur-md">
                     <p className="text-sm font-semibold text-muted-foreground mb-2">Report Details:</p>
                     <div className="space-y-1 text-sm">
                       <p><span className="text-muted-foreground">Type:</span> <span className="font-semibold text-foreground">{result.incident?.threat_type}</span></p>
-                      <p><span className="text-muted-foreground">Status:</span> <span className="font-semibold text-orange-600">Pending Review</span></p>
+                      <p><span className="text-muted-foreground">Status:</span> <span className="font-semibold text-accent">Pending Review</span></p>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground mt-4">
-                    💚 Thank you for helping protect Kenya's forests!
+                    💚 Thank you for helping protect Kenya&apos;s forests!
                   </p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-6 bg-muted/50 border-2 border-border rounded-xl">
+            <div className="p-6 bg-gradient-card border-2 border-border rounded-xl backdrop-blur-sm">
               <div className="flex items-start gap-4">
                 <CheckCircle className="w-8 h-8 text-muted-foreground flex-shrink-0 mt-1" />
                 <div>
@@ -336,13 +336,13 @@ const FieldReporter = () => {
         </div>
       )}
 
-      {/* Instructions - Clean Info Box */}
+      {/* Instructions */}
       {!preview && !uploading && !analyzing && (
-        <div className="p-5 bg-muted/50 border-2 border-border rounded-xl">
+        <div className="p-5 bg-gradient-card border-2 border-border rounded-xl backdrop-blur-sm">
           <p className="text-sm font-semibold mb-3 text-foreground">How it works:</p>
           <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
             <li>Take a photo or upload an image</li>
-            <li>We'll capture your GPS location automatically</li>
+            <li>We&apos;ll capture your GPS location automatically</li>
             <li>Our ML models analyze the image for threats</li>
             <li>If detected, an incident is created and alerts are sent</li>
           </ol>
