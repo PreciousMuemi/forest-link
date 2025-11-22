@@ -6,9 +6,9 @@ const corsHeaders = {
 };
 
 interface BroadcastRequest {
-  incident_id: string;
-  radius_km: number;
-  custom_message?: string;
+  incidentId: string;
+  radiusKm: number;
+  message?: string;
 }
 
 Deno.serve(async (req) => {
@@ -17,9 +17,9 @@ Deno.serve(async (req) => {
   }
 
   try {
-    const { incident_id, radius_km, custom_message }: BroadcastRequest = await req.json();
+    const { incidentId, radiusKm, message: customMessage }: BroadcastRequest = await req.json();
 
-    console.log('Broadcasting alert for incident:', incident_id, 'radius:', radius_km);
+    console.log('Broadcasting alert for incident:', incidentId, 'radius:', radiusKm);
 
     // Initialize Supabase
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     const { data: incident, error: incidentError } = await supabase
       .from('incidents')
       .select('*')
-      .eq('id', incident_id)
+      .eq('id', incidentId)
       .single();
 
     if (incidentError || !incident) {
@@ -39,8 +39,8 @@ Deno.serve(async (req) => {
 
     // Find users within radius using Haversine formula
     // Simple approximation: 1 degree ≈ 111km
-    const latRange = radius_km / 111;
-    const lonRange = radius_km / (111 * Math.cos(incident.lat * Math.PI / 180));
+    const latRange = radiusKm / 111;
+    const lonRange = radiusKm / (111 * Math.cos(incident.lat * Math.PI / 180));
 
     const { data: nearbyUsers, error: usersError } = await supabase
       .from('profiles')
@@ -69,10 +69,10 @@ Deno.serve(async (req) => {
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
       const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
       const distance = R * c;
-      return distance <= radius_km;
+      return distance <= radiusKm;
     });
 
-    console.log(`Found ${validUsers.length} users within ${radius_km}km`);
+    console.log(`Found ${validUsers.length} users within ${radiusKm}km`);
 
     if (validUsers.length === 0) {
       return new Response(
@@ -86,8 +86,8 @@ Deno.serve(async (req) => {
     }
 
     // Prepare alert message
-    const defaultMessage = `⚠️ FOREST ALERT: ${incident.threat_type.toUpperCase()} detected ${radius_km}km from your location. ${incident.severity.toUpperCase()} severity. Rangers responding. Reply: SAFE, NEED_HELP, or EVACUATING. ID: #${incident.id.substring(0, 8).toUpperCase()}`;
-    const message = custom_message || defaultMessage;
+    const defaultMessage = `⚠️ FOREST ALERT: ${incident.threat_type.toUpperCase()} detected ${radiusKm}km from your location. ${incident.severity.toUpperCase()} severity. Rangers responding. Reply: SAFE, NEED_HELP, or EVACUATING. ID: #${incident.id.substring(0, 8).toUpperCase()}`;
+    const alertMessage = customMessage || defaultMessage;
 
     // Send SMS to each user via Twilio
     const twilioAccountSid = Deno.env.get('TWILIO_ACCOUNT_SID');
@@ -115,7 +115,7 @@ Deno.serve(async (req) => {
             body: new URLSearchParams({
               To: user.phone_number,
               From: twilioPhoneNumber,
-              Body: message,
+              Body: alertMessage,
             }),
           }
         );
@@ -137,10 +137,10 @@ Deno.serve(async (req) => {
     const { error: logError } = await supabase
       .from('alert_logs')
       .insert({
-        incident_id,
+        incident_id: incidentId,
         sent_to: phoneNumbers,
-        message,
-        radius_km,
+        message: alertMessage,
+        radius_km: radiusKm,
       });
 
     if (logError) {
