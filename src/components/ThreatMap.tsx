@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import type { Tables } from '@/integrations/supabase/types';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import {
@@ -18,6 +18,7 @@ import {
   Radio,
   Satellite,
   TreeDeciduous,
+  Filter,
 } from 'lucide-react';
 
 type Incident = Tables<'incidents'>;
@@ -33,9 +34,13 @@ const DEFAULT_VIEW_STATE = {
 const ThreatMap = () => {
   const [incidents, setIncidents] = useState<Incident[]>([]);
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
-  const [showSatelliteOnly, setShowSatelliteOnly] = useState(false);
-  const [showVerifiedOnly, setShowVerifiedOnly] = useState(false);
   const [viewport, setViewport] = useState(DEFAULT_VIEW_STATE);
+  
+  // Filter states
+  const [sourceFilter, setSourceFilter] = useState<string>('all');
+  const [severityFilter, setSeverityFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [verificationFilter, setVerificationFilter] = useState<string>('all');
 
   useEffect(() => {
     const fetchIncidents = async () => {
@@ -74,11 +79,27 @@ const ThreatMap = () => {
 
   const filteredIncidents = useMemo(() => {
     return incidents.filter((incident) => {
-      if (showSatelliteOnly && incident.source !== 'satellite') return false;
-      if (showVerifiedOnly && !incident.verified) return false;
+      // Source filter
+      if (sourceFilter !== 'all') {
+        if (sourceFilter === 'pwa' && incident.source !== 'pwa') return false;
+        if (sourceFilter === 'sms' && incident.source !== 'sms') return false;
+        if (sourceFilter === 'ussd' && incident.source !== 'ussd') return false;
+        if (sourceFilter === 'satellite' && incident.source !== 'satellite') return false;
+      }
+      
+      // Severity filter
+      if (severityFilter !== 'all' && incident.severity?.toLowerCase() !== severityFilter) return false;
+      
+      // Status filter
+      if (statusFilter !== 'all' && incident.incident_status !== statusFilter) return false;
+      
+      // Verification filter
+      if (verificationFilter === 'verified' && !incident.verified) return false;
+      if (verificationFilter === 'satellite' && incident.source !== 'satellite') return false;
+      
       return true;
     });
-  }, [incidents, showSatelliteOnly, showVerifiedOnly]);
+  }, [incidents, sourceFilter, severityFilter, statusFilter, verificationFilter]);
 
   const getMarkerColor = (incident: Incident) => {
     if (incident.incident_status === 'resolved') return '#22C55E';
@@ -100,29 +121,90 @@ const ThreatMap = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap gap-4 items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Radio className="h-4 w-4 text-primary" />
-          <p className="text-sm text-muted-foreground">
-            Live incidents plotted from community reports, SMS, USSD, and NASA satellite detections.
-          </p>
-        </div>
+      {/* Filter Controls */}
+      <Card className="p-6 bg-gradient-card">
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Filter className="h-5 w-5 text-primary" />
+            <h3 className="font-semibold text-foreground">Filter Incidents</h3>
+            <p className="text-sm text-muted-foreground ml-2">
+              Adjust filters to view specific threats
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="source-filter" className="text-sm font-medium">Source:</Label>
+              <Select value={sourceFilter} onValueChange={setSourceFilter}>
+                <SelectTrigger id="source-filter">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Sources</SelectItem>
+                  <SelectItem value="pwa">📱 App</SelectItem>
+                  <SelectItem value="sms">💬 SMS</SelectItem>
+                  <SelectItem value="ussd">📞 USSD</SelectItem>
+                  <SelectItem value="satellite">🛰️ Satellite</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
-        <div className="flex flex-wrap gap-4">
-          <div className="flex items-center space-x-2">
-            <Switch id="satellite-toggle" checked={showSatelliteOnly} onCheckedChange={setShowSatelliteOnly} />
-            <Label htmlFor="satellite-toggle" className="text-sm">
-              Satellite only
-            </Label>
+            <div className="space-y-2">
+              <Label htmlFor="severity-filter" className="text-sm font-medium">Severity:</Label>
+              <Select value={severityFilter} onValueChange={setSeverityFilter}>
+                <SelectTrigger id="severity-filter">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Severities</SelectItem>
+                  <SelectItem value="critical">🔴 Critical</SelectItem>
+                  <SelectItem value="high">🟠 High</SelectItem>
+                  <SelectItem value="medium">🟡 Medium</SelectItem>
+                  <SelectItem value="low">🟢 Low</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="status-filter" className="text-sm font-medium">Status:</Label>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger id="status-filter">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="reported">📋 Reported</SelectItem>
+                  <SelectItem value="assigned">👮 Assigned</SelectItem>
+                  <SelectItem value="en_route">🚗 En Route</SelectItem>
+                  <SelectItem value="on_scene">📍 On Scene</SelectItem>
+                  <SelectItem value="resolved">✅ Resolved</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="verification-filter" className="text-sm font-medium">Verification:</Label>
+              <Select value={verificationFilter} onValueChange={setVerificationFilter}>
+                <SelectTrigger id="verification-filter">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Reports</SelectItem>
+                  <SelectItem value="verified">✓ Verified</SelectItem>
+                  <SelectItem value="satellite">🛰️ Satellite</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <Switch id="verified-toggle" checked={showVerifiedOnly} onCheckedChange={setShowVerifiedOnly} />
-            <Label htmlFor="verified-toggle" className="text-sm">
-              Verified only
-            </Label>
+
+          <div className="flex items-center gap-2 pt-2 border-t border-border">
+            <Radio className="h-4 w-4 text-primary" />
+            <p className="text-sm text-muted-foreground">
+              Live incidents plotted from community reports, SMS, USSD, and NASA satellite detections.
+            </p>
           </div>
         </div>
-      </div>
+      </Card>
 
       <div className="relative h-[520px] rounded-2xl overflow-hidden border border-border">
         <Map
