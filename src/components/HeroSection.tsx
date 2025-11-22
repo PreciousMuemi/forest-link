@@ -73,16 +73,16 @@ const HeroSection = () => {
 
           {/* Main Headline */}
           <h1 className="mb-4 text-5xl md:text-7xl font-bold text-white leading-tight animate-fade-in-up [animation-delay:200ms]">
-            See It. Snap It.
+            Protect Kenya's Forests.
             <br />
-            <span className="text-secondary">Save the Forest.</span>
+            <span className="text-accent">Report. Verify. Reward.</span>
           </h1>
 
           {/* Subtext */}
           <p className="mb-10 text-xl md:text-2xl text-white/90 max-w-3xl mx-auto font-light animate-fade-in-up [animation-delay:400ms]">
-            Real-time environmental threat reporting for Kenya's forests.
+            Community-powered forest protection with instant SMS alerts,
             <br />
-            Powered by AI, blockchain, and community action.
+            AI verification, and rewards for verified reports.
           </p>
 
           {/* Action Buttons */}
