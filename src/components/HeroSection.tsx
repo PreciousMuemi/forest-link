@@ -67,59 +67,59 @@ const HeroSection = () => {
           <div className="mb-8 inline-flex items-center gap-3 rounded-full border-2 border-accent/40 bg-accent/15 px-6 py-3 backdrop-blur-md animate-fade-in glow-pulse">
             <AlertTriangle className="h-5 w-5 text-accent animate-pulse" />
             <span className="text-base font-bold text-white tracking-wide">
-              KENYA FOREST EMERGENCY ALERT NETWORK
+              KENYA FOREST SERVICE INTELLIGENCE PLATFORM
             </span>
           </div>
 
           {/* Main Headline */}
           <h1 className="mb-6 text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-none tracking-tighter animate-fade-in-up [animation-delay:200ms] text-balance">
-            Protect Kenya&apos;s Forests.
+            Unified Forest Intelligence
             <br />
-            <span className="text-accent glow-pulse inline-block">Report. Verify. Reward.</span>
+            <span className="text-accent glow-pulse inline-block">for Kenya Forest Service</span>
           </h1>
 
           {/* Subtext */}
           <p className="mb-12 text-xl md:text-2xl lg:text-3xl text-white/95 max-w-4xl mx-auto font-medium leading-relaxed animate-fade-in-up [animation-delay:400ms] text-balance">
-            Community-powered forest protection with instant SMS alerts,
+            One Dashboard. All Threats. Coordinated Response.
             <br className="hidden md:block" />
-            AI verification, and rewards for verified reports.
+            Aggregate NASA FIRMS, SMS, USSD, and web reports into a single command center.
           </p>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up [animation-delay:600ms]">
             <Button
               size="lg"
-              onClick={scrollToReporter}
+              onClick={() => navigate('/admin')}
               className="bg-accent hover:bg-accent/90 text-foreground font-bold px-10 py-7 text-xl rounded-2xl shadow-government-lg hover:shadow-glow-accent transition-all duration-300 hover-lift group"
             >
-              <Camera className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
-              Report a Threat
+              <Map className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+              Access Command Center
             </Button>
             
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate('/admin')}
+              onClick={scrollToReporter}
               className="border-3 border-white text-white hover:bg-white hover:text-primary font-bold px-10 py-7 text-xl rounded-2xl backdrop-blur-sm bg-white/10 transition-all duration-300 hover-lift group"
             >
-              <Map className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-              View Live Incidents
+              <Camera className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
+              View Threat Map
             </Button>
           </div>
 
           {/* Stats Bar */}
           <div className="mt-20 grid grid-cols-3 gap-10 max-w-4xl mx-auto animate-fade-in [animation-delay:800ms]">
             <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">24/7</div>
-              <div className="text-sm md:text-base text-white/90 font-medium">Real-time Monitoring</div>
+              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">4</div>
+              <div className="text-sm md:text-base text-white/90 font-medium">Data Sources</div>
             </div>
             <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">100%</div>
-              <div className="text-sm md:text-base text-white/90 font-medium">Verified Reports</div>
+              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">Real-time</div>
+              <div className="text-sm md:text-base text-white/90 font-medium">AI Verification</div>
             </div>
             <div className="text-center group">
-              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">AI+Blockchain</div>
-              <div className="text-sm md:text-base text-white/90 font-medium">Powered Detection</div>
+              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">Coordinated</div>
+              <div className="text-sm md:text-base text-white/90 font-medium">Ranger Dispatch</div>
             </div>
           </div>
         </div>
