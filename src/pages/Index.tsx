@@ -51,6 +51,13 @@ const Index = () => {
     toast.success('Logged out successfully');
   };
 
+  const scrollToReporter = () => {
+    const reporterSection = document.getElementById('field-reporter');
+    if (reporterSection) {
+      reporterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background relative">
       <ForestAmbiance />
@@ -98,93 +105,200 @@ const Index = () => {
       {/* Hero Section with Slideshow */}
       <HeroSection />
 
-      {/* Platform Capabilities Section */}
-      <section className="py-20 px-4 bg-gradient-card relative z-10">
-        <div className="container mx-auto">
+      {/* Why This Matters Section */}
+      <section className="py-16 md:py-20 px-4 bg-background relative z-10">
+        <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Platform Capabilities
+              Why This Matters
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             {[
               {
-                icon: Activity,
-                title: 'Unified Data',
-                description: 'NASA FIRMS + SMS + USSD + Web in one dashboard',
-                color: 'text-accent',
-              },
-              {
-                icon: Eye,
-                title: 'AI Verification',
-                description: 'Automated screening reduces manual work by 80%',
-                color: 'text-primary',
-              },
-              {
                 icon: Zap,
-                title: 'Ranger Dispatch',
-                description: 'Track location, ETA, and auto-send SMS alerts',
-                color: 'text-accent',
+                title: 'Faster Response',
+                description: 'Real-time alerts enable rangers to respond to threats within minutes, not hours.',
               },
               {
-                icon: Globe,
-                title: 'Analytics',
-                description: 'Heatmaps, trends, and response metrics',
-                color: 'text-success',
+                icon: CheckCircle,
+                title: 'Verified Reports',
+                description: 'AI screening filters false alarms so rangers focus on real threats.',
+              },
+              {
+                icon: Shield,
+                title: 'Community Power',
+                description: 'Empowering local communities to report and protect their forests together.',
               },
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="p-8 hover:shadow-government-lg transition-all duration-500 hover-lift glass-card border-border/50 animate-scale-in group"
+                className="p-6 md:p-8 hover:shadow-lg transition-all duration-500 hover-lift animate-scale-in group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`h-12 w-12 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft group-hover:shadow-glow transition-all duration-300 ${feature.color}`}>
-                  <feature.icon className="h-6 w-6 text-white group-hover:scale-110 transition-transform duration-300" />
+                <div className="h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="h-7 w-7 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-foreground mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground text-sm">{feature.description}</p>
+                <h3 className="text-xl font-bold text-foreground mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
               </Card>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Live Intelligence Map */}
-      <section className="py-24 px-4 bg-background relative z-10">
-        <div className="container mx-auto">
-          <div className="text-center mb-12 animate-fade-in-up">
+      {/* How It Works Section */}
+      <section className="py-16 md:py-20 px-4 bg-gradient-card relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Live Threat Map
+              How It Works
             </h2>
-            <p className="text-base text-muted-foreground">
-              Real-time visualization of all incident sources
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+            {[
+              {
+                step: '1',
+                icon: AlertTriangle,
+                title: 'Report Threat',
+                description: 'Community members report via SMS, USSD, web, or satellite detects fire.',
+              },
+              {
+                step: '2',
+                icon: Eye,
+                title: 'AI Verifies',
+                description: 'System analyzes location, severity, and filters false positives automatically.',
+              },
+              {
+                step: '3',
+                icon: MapIcon,
+                title: 'Rangers Respond',
+                description: 'Nearest ranger is dispatched with GPS tracking and real-time updates.',
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className="text-center animate-fade-in-up"
+                style={{ animationDelay: `${index * 150}ms` }}
+              >
+                <div className="relative mb-6">
+                  <div className="h-20 w-20 rounded-full bg-gradient-primary flex items-center justify-center mx-auto shadow-lg">
+                    <item.icon className="h-10 w-10 text-white" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 h-8 w-8 rounded-full bg-accent flex items-center justify-center text-foreground font-bold text-sm">
+                    {item.step}
+                  </div>
+                </div>
+                <h3 className="text-xl font-bold text-foreground mb-3">{item.title}</h3>
+                <p className="text-muted-foreground">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Who Uses It Section */}
+      <section className="py-16 md:py-20 px-4 bg-background relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Who Uses It
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Shield, name: 'Kenya Forest Service', role: 'Command & Control' },
+              { icon: User, name: 'Community Scouts', role: 'Field Reporting' },
+              { icon: MapIcon, name: 'Forest Rangers', role: 'Response Teams' },
+              { icon: Globe, name: 'NGO Partners', role: 'Conservation Support' },
+            ].map((user, index) => (
+              <Card
+                key={index}
+                className="p-6 text-center hover:shadow-lg transition-all duration-300 hover-lift animate-scale-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="h-16 w-16 rounded-full bg-gradient-primary flex items-center justify-center mx-auto mb-4 shadow-soft">
+                  <user.icon className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="font-bold text-foreground mb-1">{user.name}</h3>
+                <p className="text-sm text-muted-foreground">{user.role}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Data Integrations Section */}
+      <section className="py-16 md:py-20 px-4 bg-gradient-card relative z-10">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Unified Data Sources
+            </h2>
+            <p className="text-muted-foreground">
+              All threat intelligence in one place
             </p>
           </div>
 
-          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10 glass-card">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: Globe, name: 'NASA FIRMS', desc: 'Satellite Fire Data' },
+              { icon: Bell, name: 'SMS Alerts', desc: 'Community Reports' },
+              { icon: Activity, name: 'USSD', desc: 'Mobile Reports' },
+              { icon: Leaf, name: 'Web Portal', desc: 'Direct Submissions' },
+            ].map((source, index) => (
+              <Card
+                key={index}
+                className="p-6 text-center hover:shadow-lg transition-all duration-300 hover-lift animate-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <source.icon className="h-12 w-12 text-primary mx-auto mb-3" />
+                <h3 className="font-bold text-foreground mb-1">{source.name}</h3>
+                <p className="text-sm text-muted-foreground">{source.desc}</p>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Dashboard Preview Section */}
+      <section className="py-16 md:py-24 px-4 bg-background relative z-10">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-12 animate-fade-in-up">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Live Command Dashboard
+            </h2>
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+              Real-time visualization of all threats, maps, and ranger dispatch status
+            </p>
+          </div>
+
+          <Card className="overflow-hidden shadow-lg border-2 border-border">
             <ThreatMap />
           </Card>
         </div>
       </section>
 
-      {/* Verified Threats Gallery - Minimized */}
+      {/* Verified Threats Gallery */}
       <section className="py-16 px-4 bg-gradient-card relative z-10">
-        <div className="container mx-auto">
+        <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-8 animate-fade-in-up">
-            <h3 className="text-2xl font-bold text-foreground mb-2">
-              Recent Verified Reports
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
+              Recent Verified Threats
             </h3>
           </div>
           <ThreatGallery />
         </div>
       </section>
 
-      {/* Field Reporter Section - Moved Lower */}
-      <section id="field-reporter" className="py-20 px-4 bg-background relative z-10">
-        <div className="container mx-auto">
+      {/* Field Reporter Section */}
+      <section id="field-reporter" className="py-16 md:py-20 px-4 bg-background relative z-10">
+        <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-8 animate-fade-in-up">
-            <h3 className="text-2xl font-bold text-foreground mb-2">
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-2">
               Report a Threat
             </h3>
             <p className="text-sm text-muted-foreground">
@@ -192,38 +306,37 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <Card className="p-8 shadow-government-lg border-2 border-primary/10 glass-card">
-              <FieldReporter />
-            </Card>
-          </div>
-
+          <Card className="p-6 md:p-8 shadow-lg border-2 border-border">
+            <FieldReporter />
+          </Card>
         </div>
       </section>
 
       {/* Call to Action */}
-      <section className="py-24 px-4 bg-gradient-primary text-white relative z-10 overflow-hidden">
+      <section className="py-16 md:py-24 px-4 bg-gradient-primary text-white relative z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
-        <div className="container mx-auto text-center relative z-10">
+        <div className="container mx-auto text-center relative z-10 max-w-4xl px-4">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">
-            Access Command Center
+            Ready to Protect Kenya's Forests?
           </h2>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in-up mt-6">
+          <p className="text-lg md:text-xl text-white/90 mb-8 animate-fade-in-up">
+            Join the unified threat intelligence network
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up">
             <Button
               size="lg"
               onClick={() => navigate('/admin')}
-              className="bg-accent hover:bg-accent/90 text-foreground font-bold shadow-glow-accent hover-lift"
+              className="bg-accent hover:bg-accent/90 text-foreground font-semibold px-8 py-6 text-lg shadow-lg hover-lift w-full sm:w-auto"
             >
-              <Shield className="mr-2 h-4 w-4" />
-              Dashboard
+              Request Access
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate('/auth')}
-              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold hover-lift"
+              onClick={scrollToReporter}
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-6 text-lg hover-lift w-full sm:w-auto"
             >
-              Sign In
+              View Demo
             </Button>
           </div>
         </div>
