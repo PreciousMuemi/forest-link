@@ -98,60 +98,39 @@ const Index = () => {
       {/* Hero Section with Slideshow */}
       <HeroSection />
 
-      {/* Problem Statement Section */}
-      <section className="py-20 px-4 bg-background relative z-10">
-        <div className="container mx-auto max-w-4xl">
-          <div className="text-center mb-12 animate-fade-in">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-destructive/10 border-2 border-destructive/30 mb-6 backdrop-blur-sm">
-              <AlertTriangle className="h-5 w-5 text-destructive" />
-              <span className="text-sm font-bold text-destructive tracking-wide">THE CHALLENGE</span>
-            </div>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              Fragmented Data. Slow Response.
-            </h2>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
-              KFS receives forest threat data from <strong>4 separate channels</strong>—NASA FIRMS satellites, SMS reports, USSD codes, and web submissions—but lacks a unified system to aggregate, verify, and coordinate ranger response in real-time.
-            </p>
-          </div>
-        </div>
-      </section>
-
       {/* Platform Capabilities Section */}
       <section className="py-20 px-4 bg-gradient-card relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              Unified Intelligence Platform
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Platform Capabilities
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              One dashboard for all threat sources. Real-time verification. Coordinated ranger dispatch.
-            </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
                 icon: Activity,
-                title: 'Unified Data Aggregation',
-                description: 'NASA FIRMS + SMS + USSD + Web reports consolidated into one command center',
+                title: 'Unified Data',
+                description: 'NASA FIRMS + SMS + USSD + Web in one dashboard',
                 color: 'text-accent',
               },
               {
                 icon: Eye,
-                title: 'AI Verification Pipeline',
-                description: 'AI-powered initial screening reduces manual verification work by 80%',
+                title: 'AI Verification',
+                description: 'Automated screening reduces manual work by 80%',
                 color: 'text-primary',
               },
               {
                 icon: Zap,
-                title: 'Ranger Dispatch Coordination',
-                description: 'Assign incidents, track ranger location & ETA, send SMS alerts automatically',
+                title: 'Ranger Dispatch',
+                description: 'Track location, ETA, and auto-send SMS alerts',
                 color: 'text-accent',
               },
               {
                 icon: Globe,
-                title: 'Analytics Dashboard',
-                description: 'Heatmaps, threat trends, response time metrics, and historical analytics',
+                title: 'Analytics',
+                description: 'Heatmaps, trends, and response metrics',
                 color: 'text-success',
               },
             ].map((feature, index) => (
@@ -160,11 +139,11 @@ const Index = () => {
                 className="p-8 hover:shadow-government-lg transition-all duration-500 hover-lift glass-card border-border/50 animate-scale-in group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`h-16 w-16 rounded-2xl bg-gradient-primary flex items-center justify-center mb-6 shadow-soft group-hover:shadow-glow transition-all duration-300 ${feature.color}`}>
-                  <feature.icon className="h-8 w-8 text-white group-hover:scale-110 transition-transform duration-300" />
+                <div className={`h-12 w-12 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft group-hover:shadow-glow transition-all duration-300 ${feature.color}`}>
+                  <feature.icon className="h-6 w-6 text-white group-hover:scale-110 transition-transform duration-300" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed text-base">{feature.description}</p>
+                <h3 className="text-lg font-bold text-foreground mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm">{feature.description}</p>
               </Card>
             ))}
           </div>
@@ -174,16 +153,12 @@ const Index = () => {
       {/* Live Intelligence Map */}
       <section className="py-24 px-4 bg-background relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border-2 border-accent/30 mb-6 backdrop-blur-sm">
-              <MapIcon className="h-5 w-5 text-accent" />
-              <span className="text-sm font-bold text-accent tracking-wide">LIVE INTELLIGENCE</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              Real-Time Threat Intelligence Map
+          <div className="text-center mb-12 animate-fade-in-up">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Live Threat Map
             </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              All incidents from NASA FIRMS, SMS, USSD, and web reports visualized in real-time
+            <p className="text-base text-muted-foreground">
+              Real-time visualization of all incident sources
             </p>
           </div>
 
@@ -196,13 +171,10 @@ const Index = () => {
       {/* Verified Threats Gallery - Minimized */}
       <section className="py-16 px-4 bg-gradient-card relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 tracking-tight">
+          <div className="text-center mb-8 animate-fade-in-up">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
               Recent Verified Reports
             </h3>
-            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Community reports verified and approved by KFS admins
-            </p>
           </div>
           <ThreatGallery />
         </div>
@@ -211,12 +183,12 @@ const Index = () => {
       {/* Field Reporter Section - Moved Lower */}
       <section id="field-reporter" className="py-20 px-4 bg-background relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-12 animate-fade-in-up">
-            <h3 className="text-2xl md:text-4xl font-bold text-foreground mb-4 tracking-tight">
-              Community Input Channels
+          <div className="text-center mb-8 animate-fade-in-up">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
+              Report a Threat
             </h3>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Citizens can report threats via SMS, USSD, or web form—all verified by KFS before ranger dispatch
+            <p className="text-sm text-muted-foreground">
+              Submit via SMS, USSD, or web form
             </p>
           </div>
 
@@ -233,29 +205,25 @@ const Index = () => {
       <section className="py-24 px-4 bg-gradient-primary text-white relative z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
         <div className="container mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight animate-fade-in-up">
-            Ready to Unify Your Forest Intelligence?
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">
+            Access Command Center
           </h2>
-          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed font-medium animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            Access the command center. View all threats. Coordinate ranger response in real-time.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in-up mt-6">
             <Button
               size="lg"
               onClick={() => navigate('/admin')}
-              className="bg-accent hover:bg-accent/90 text-foreground font-bold shadow-glow-accent hover-lift text-lg px-8 py-6"
+              className="bg-accent hover:bg-accent/90 text-foreground font-bold shadow-glow-accent hover-lift"
             >
-              <Shield className="mr-2 h-5 w-5" />
-              Access Dashboard
+              <Shield className="mr-2 h-4 w-4" />
+              Dashboard
             </Button>
             <Button
               size="lg"
               variant="outline"
               onClick={() => navigate('/auth')}
-              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold hover-lift text-lg px-8 py-6"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold hover-lift"
             >
-              <User className="mr-2 h-5 w-5" />
-              KFS Admin Sign In
+              Sign In
             </Button>
           </div>
         </div>
@@ -275,8 +243,8 @@ const Index = () => {
                   <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
                 </div>
               </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Unified threat intelligence platform aggregating NASA FIRMS, SMS, USSD, and web reports for KFS.
+              <p className="text-sm text-muted-foreground">
+                Unified threat intelligence for Kenya Forest Service
               </p>
             </div>
 
