@@ -2,26 +2,26 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import HeroSection from '@/components/HeroSection';
 import ThreatMap from '@/components/ThreatMap';
+import FieldReporter from '@/components/FieldReporter';
+import TestIncidentButton from '@/components/TestIncidentButton';
+import { ThreatGallery } from '@/components/ThreatGallery';
+import { ForestAmbiance } from '@/components/ForestAmbiance';
 import {
+  AlertTriangle,
   Shield,
-  Zap,
-  Target,
+  Leaf,
+  Globe,
   Activity,
-  Satellite,
-  Smartphone,
-  MessageSquare,
-  Users,
+  Zap,
+  Eye,
   CheckCircle,
   LogOut,
   User,
-  AlertTriangle,
-  Radio,
-  TrendingUp,
-  Clock,
-  Eye,
-  ShieldCheck,
-  ArrowRight
+  Bell,
+  Lock,
+  Map as MapIcon
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import type { User as SupabaseUser } from '@supabase/supabase-js';
@@ -53,18 +53,19 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <ForestAmbiance />
       <OfflineIndicator />
 
       {/* Navigation Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/95 backdrop-blur-xl">
-        <div className="container mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3 group cursor-pointer" onClick={() => navigate('/')}>
-            <div className="h-9 w-9 rounded-lg bg-gradient-primary flex items-center justify-center shadow-glow">
-              <Shield className="h-5 w-5 text-primary-foreground transform group-hover:scale-110 transition-transform duration-300" />
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-xl shadow-soft">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-3 group">
+            <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center glow-pulse">
+              <Leaf className="h-6 w-6 text-white transform group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <div>
-              <h2 className="font-bold text-foreground text-base">KFS Command</h2>
-              <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Threat Intelligence</p>
+              <h2 className="font-bold text-foreground text-lg">ForestWatch KE</h2>
+              <p className="text-xs text-muted-foreground font-medium">Kenya Forest Service</p>
             </div>
           </div>
 
@@ -94,322 +95,161 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-24 px-6 overflow-hidden">
-        {/* Grid background */}
-        <div className="absolute inset-0 cyber-grid opacity-30"></div>
-        
-        {/* Radial gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-radial from-primary/5 via-transparent to-transparent"></div>
+      {/* Hero Section with Slideshow */}
+      <HeroSection />
 
-        <div className="container mx-auto relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            {/* Status Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-primary/20 mb-8 animate-fade-in">
-              <div className="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
-              <span className="text-sm font-medium text-foreground">System Online • Real-time Monitoring Active</span>
-            </div>
+      {/* Platform Capabilities Section */}
+      <section className="py-20 px-4 bg-gradient-card relative z-10">
+        <div className="container mx-auto">
+          <div className="text-center mb-12 animate-fade-in">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
+              Platform Capabilities
+            </h2>
+          </div>
 
-            {/* Main Headline */}
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 text-foreground tracking-tight animate-fade-in-up">
-              One Dashboard for All
-              <span className="block bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent text-glow mt-2">
-                Forest Threats
-              </span>
-            </h1>
-
-            {/* Subtext */}
-            <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up">
-              Unify NASA satellite alerts, SMS reports, USSD inputs, and community data into a single command center for faster ranger response.
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up mb-16">
-              <Button
-                size="lg"
-                onClick={() => navigate('/auth')}
-                className="bg-gradient-primary hover:opacity-90 text-primary-foreground font-bold shadow-glow h-14 px-8 text-lg group"
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                icon: Activity,
+                title: 'Unified Data',
+                description: 'NASA FIRMS + SMS + USSD + Web in one dashboard',
+                color: 'text-accent',
+              },
+              {
+                icon: Eye,
+                title: 'AI Verification',
+                description: 'Automated screening reduces manual work by 80%',
+                color: 'text-primary',
+              },
+              {
+                icon: Zap,
+                title: 'Ranger Dispatch',
+                description: 'Track location, ETA, and auto-send SMS alerts',
+                color: 'text-accent',
+              },
+              {
+                icon: Globe,
+                title: 'Analytics',
+                description: 'Heatmaps, trends, and response metrics',
+                color: 'text-success',
+              },
+            ].map((feature, index) => (
+              <Card
+                key={index}
+                className="p-8 hover:shadow-government-lg transition-all duration-500 hover-lift glass-card border-border/50 animate-scale-in group"
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                Request Access
-                <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => navigate('/admin')}
-                className="border-2 border-primary/30 hover:border-primary hover:bg-primary/5 font-bold h-14 px-8 text-lg"
-              >
-                View Demo
-              </Button>
-            </div>
-
-            {/* Data Source Pills */}
-            <div className="flex flex-wrap gap-3 justify-center items-center text-sm text-muted-foreground">
-              <span className="font-medium">Data Sources:</span>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
-                <Satellite className="h-4 w-4 text-accent" />
-                <span>NASA FIRMS</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
-                <MessageSquare className="h-4 w-4 text-primary" />
-                <span>SMS</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
-                <Smartphone className="h-4 w-4 text-accent" />
-                <span>USSD</span>
-              </div>
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-border">
-                <Users className="h-4 w-4 text-primary" />
-                <span>Web Portal</span>
-              </div>
-            </div>
+                <div className={`h-12 w-12 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft group-hover:shadow-glow transition-all duration-300 ${feature.color}`}>
+                  <feature.icon className="h-6 w-6 text-white group-hover:scale-110 transition-transform duration-300" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm">{feature.description}</p>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Live Map Preview */}
-      <section className="py-16 px-6 bg-card/30 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
-        
-        <div className="container mx-auto relative z-10">
-          <div className="text-center mb-10">
+      {/* Live Intelligence Map */}
+      <section className="py-24 px-4 bg-background relative z-10">
+        <div className="container mx-auto">
+          <div className="text-center mb-12 animate-fade-in-up">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
-              Live Threat Intelligence Map
+              Live Threat Map
             </h2>
-            <p className="text-muted-foreground">Real-time visualization of all incident sources across Kenya</p>
+            <p className="text-base text-muted-foreground">
+              Real-time visualization of all incident sources
+            </p>
           </div>
 
-          <Card className="overflow-hidden shadow-2xl border-2 border-primary/20 bg-card">
+          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10 glass-card">
             <ThreatMap />
           </Card>
         </div>
       </section>
 
-      {/* Value Proposition Cards */}
-      <section className="py-24 px-6 bg-background relative">
+      {/* Verified Threats Gallery - Minimized */}
+      <section className="py-16 px-4 bg-gradient-card relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Why KFS Command Center
-            </h2>
-            <p className="text-muted-foreground text-lg">Built for speed, accuracy, and coordinated response</p>
+          <div className="text-center mb-8 animate-fade-in-up">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
+              Recent Verified Reports
+            </h3>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {[
-              {
-                icon: Clock,
-                title: 'Faster Response',
-                description: 'Reduce ranger response time by 70% with automated prioritization and routing',
-                color: 'text-primary',
-                bgColor: 'bg-primary/10'
-              },
-              {
-                icon: Radio,
-                title: 'Unified Alerts',
-                description: 'One dashboard for NASA satellites, SMS, USSD, and community reports—no more fragmented data',
-                color: 'text-accent',
-                bgColor: 'bg-accent/10'
-              },
-              {
-                icon: Target,
-                title: 'Smart Prioritization',
-                description: 'AI-powered threat scoring identifies critical incidents automatically for immediate action',
-                color: 'text-primary',
-                bgColor: 'bg-primary/10'
-              }
-            ].map((value, index) => (
-              <Card
-                key={index}
-                className="p-8 bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 group hover:shadow-2xl"
-              >
-                <div className={`h-16 w-16 rounded-xl ${value.bgColor} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
-                  <value.icon className={`h-8 w-8 ${value.color}`} />
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-3">{value.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{value.description}</p>
-              </Card>
-            ))}
-          </div>
+          <ThreatGallery />
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-24 px-6 bg-card/30 relative">
+      {/* Field Reporter Section - Moved Lower */}
+      <section id="field-reporter" className="py-20 px-4 bg-background relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              How It Works
-            </h2>
-            <p className="text-muted-foreground text-lg">From detection to resolution in three steps</p>
+          <div className="text-center mb-8 animate-fade-in-up">
+            <h3 className="text-2xl font-bold text-foreground mb-2">
+              Report a Threat
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              Submit via SMS, USSD, or web form
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-12 max-w-6xl mx-auto">
-            {[
-              {
-                step: '01',
-                icon: Activity,
-                title: 'Ingest & Unify',
-                description: 'All threat data flows into one system—NASA FIRMS, SMS, USSD, web uploads'
-              },
-              {
-                step: '02',
-                icon: Eye,
-                title: 'AI Screening',
-                description: 'ML models verify, classify, and prioritize threats automatically'
-              },
-              {
-                step: '03',
-                icon: Zap,
-                title: 'Dispatch Rangers',
-                description: 'Assign closest rangers, track ETA, send SMS alerts to community'
-              }
-            ].map((step, index) => (
-              <div key={index} className="relative">
-                {/* Connection Line */}
-                {index < 2 && (
-                  <div className="hidden md:block absolute top-12 left-full w-12 h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
-                )}
-                
-                <div className="text-center">
-                  <div className="inline-flex items-center justify-center h-24 w-24 rounded-2xl bg-gradient-primary shadow-glow mb-6">
-                    <step.icon className="h-12 w-12 text-primary-foreground" />
-                  </div>
-                  <div className="text-5xl font-bold text-primary/20 mb-4">{step.step}</div>
-                  <h3 className="text-2xl font-bold text-foreground mb-3">{step.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{step.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Partner Integration */}
-      <section className="py-24 px-6 bg-background relative">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Plug Into Existing Workflows
-            </h2>
-            <p className="text-muted-foreground text-lg">Integrates with your current systems and processes</p>
-          </div>
-
-          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
-            {[
-              { name: 'NASA FIRMS', icon: Satellite },
-              { name: 'Africa\'s Talking', icon: MessageSquare },
-              { name: 'Scroll Blockchain', icon: Shield },
-              { name: 'Mapbox', icon: Activity }
-            ].map((partner, index) => (
-              <Card
-                key={index}
-                className="p-8 bg-card border-2 border-border hover:border-primary/50 transition-all duration-300 text-center group"
-              >
-                <partner.icon className="h-12 w-12 text-primary mx-auto mb-4 group-hover:scale-110 transition-transform" />
-                <h4 className="font-bold text-foreground">{partner.name}</h4>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Trust & Accuracy */}
-      <section className="py-24 px-6 bg-card/30 relative">
-        <div className="container mx-auto">
           <div className="max-w-4xl mx-auto">
-            <Card className="p-12 bg-card border-2 border-primary/20 relative overflow-hidden">
-              {/* Background glow */}
-              <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="h-16 w-16 rounded-2xl bg-gradient-primary flex items-center justify-center shadow-glow">
-                    <ShieldCheck className="h-8 w-8 text-primary-foreground" />
-                  </div>
-                  <div>
-                    <h2 className="text-3xl font-bold text-foreground">Trust & Accuracy</h2>
-                    <p className="text-primary font-medium">AI + Human Validation</p>
-                  </div>
-                </div>
-
-                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-                  Our system combines automated AI verification with human review to ensure every alert is accurate. Machine learning reduces false positives by 80%, while KFS personnel maintain final oversight for mission-critical decisions.
-                </p>
-
-                <div className="grid md:grid-cols-3 gap-6">
-                  {[
-                    { label: 'Accuracy Rate', value: '94%' },
-                    { label: 'False Positive Reduction', value: '80%' },
-                    { label: 'Average Response Time', value: '18min' }
-                  ].map((stat, index) => (
-                    <div key={index} className="text-center p-4 rounded-xl bg-background/50">
-                      <div className="text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                      <div className="text-sm text-muted-foreground">{stat.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+            <Card className="p-8 shadow-government-lg border-2 border-primary/10 glass-card">
+              <FieldReporter />
             </Card>
           </div>
+
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-24 px-6 bg-gradient-primary text-primary-foreground relative overflow-hidden">
-        {/* Animated grid */}
-        <div className="absolute inset-0 cyber-grid opacity-20"></div>
-        
+      {/* Call to Action */}
+      <section className="py-24 px-4 bg-gradient-primary text-white relative z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
         <div className="container mx-auto text-center relative z-10">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Ready to Centralize Your Threat Intelligence?
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">
+            Access Command Center
           </h2>
-          <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto">
-            Join KFS rangers and administrators using the command center to protect Kenya's forests
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center animate-fade-in-up mt-6">
             <Button
               size="lg"
-              onClick={() => navigate('/auth')}
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold h-14 px-8 text-lg shadow-glow-accent group"
+              onClick={() => navigate('/admin')}
+              className="bg-accent hover:bg-accent/90 text-foreground font-bold shadow-glow-accent hover-lift"
             >
-              Request Access
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <Shield className="mr-2 h-4 w-4" />
+              Dashboard
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate('/admin')}
-              className="border-2 border-primary-foreground/30 hover:border-primary-foreground hover:bg-primary-foreground/10 text-primary-foreground font-bold h-14 px-8 text-lg"
+              onClick={() => navigate('/auth')}
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold hover-lift"
             >
-              View Demo
+              Sign In
             </Button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-card border-t border-border">
+      <footer className="py-12 px-4 bg-gradient-card border-t border-border">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center shadow-glow">
-                  <Shield className="h-6 w-6 text-primary-foreground" />
+                <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
+                  <Leaf className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground">KFS Command</h3>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider">Threat Intelligence</p>
+                  <h3 className="font-bold text-foreground">ForestWatch KE</h3>
+                  <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Unified threat intelligence platform for Kenya Forest Service
+                Unified threat intelligence for Kenya Forest Service
               </p>
             </div>
 
             <div>
-              <h4 className="font-semibold text-foreground mb-4">Quick Access</h4>
+              <h4 className="font-semibold text-foreground mb-4">Quick Links</h4>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><a href="/auth" className="hover:text-primary transition-colors">Sign In</a></li>
                 <li><a href="/admin" className="hover:text-primary transition-colors">Dashboard</a></li>
@@ -418,19 +258,26 @@ const Index = () => {
             </div>
 
             <div>
-              <h4 className="font-semibold text-foreground mb-4">Report Threats</h4>
+              <h4 className="font-semibold text-foreground mb-4">Emergency Contact</h4>
               <p className="text-sm text-muted-foreground mb-2">SMS: Text FIRE to +254...</p>
               <p className="text-sm text-muted-foreground mb-2">USSD: Dial *384*33248#</p>
-              <p className="text-sm text-muted-foreground">Web: Use portal above</p>
+              <p className="text-sm text-muted-foreground">24/7 Response Team</p>
             </div>
           </div>
 
           <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            <p>© 2025 KFS Command Center - Kenya Forest Service. All rights reserved.</p>
-            <p className="mt-2">Powered by NASA FIRMS • Africa's Talking • Scroll Blockchain</p>
+            <p>© 2025 ForestWatch KE - Kenya Forest Emergency Alert Network. All rights reserved.</p>
+            <p className="mt-2">Built for 🇰🇪 Kenya | Powered by NASA FIRMS, Africa's Talking & Scroll Blockchain</p>
           </div>
         </div>
       </footer>
+
+      {/* Admin Test Button (bottom-right corner) */}
+      {!adminLoading && isAdmin && (
+        <div className="fixed bottom-4 right-4 z-40">
+          <TestIncidentButton />
+        </div>
+      )}
     </div>
   );
 };
