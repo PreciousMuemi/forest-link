@@ -126,6 +126,7 @@ export type Database = {
         Row: {
           alert_status: string
           assigned_at: string | null
+          assigned_ranger: string | null
           assigned_ranger_id: string | null
           created_at: string
           description: string | null
@@ -136,7 +137,11 @@ export type Database = {
           lat: number
           lon: number
           notes: string | null
+          ranger_followup_photos: string[] | null
+          ranger_notes: Json[] | null
+          region: string | null
           resolved_at: string | null
+          resolved_by: string | null
           responded_at: string | null
           sender_phone: string | null
           severity: string
@@ -146,10 +151,13 @@ export type Database = {
           tx_hash: string | null
           updated_at: string
           verified: boolean | null
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           alert_status?: string
           assigned_at?: string | null
+          assigned_ranger?: string | null
           assigned_ranger_id?: string | null
           created_at?: string
           description?: string | null
@@ -160,7 +168,11 @@ export type Database = {
           lat: number
           lon: number
           notes?: string | null
+          ranger_followup_photos?: string[] | null
+          ranger_notes?: Json[] | null
+          region?: string | null
           resolved_at?: string | null
+          resolved_by?: string | null
           responded_at?: string | null
           sender_phone?: string | null
           severity: string
@@ -170,10 +182,13 @@ export type Database = {
           tx_hash?: string | null
           updated_at?: string
           verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           alert_status?: string
           assigned_at?: string | null
+          assigned_ranger?: string | null
           assigned_ranger_id?: string | null
           created_at?: string
           description?: string | null
@@ -184,7 +199,11 @@ export type Database = {
           lat?: number
           lon?: number
           notes?: string | null
+          ranger_followup_photos?: string[] | null
+          ranger_notes?: Json[] | null
+          region?: string | null
           resolved_at?: string | null
+          resolved_by?: string | null
           responded_at?: string | null
           sender_phone?: string | null
           severity?: string
@@ -194,6 +213,8 @@ export type Database = {
           tx_hash?: string | null
           updated_at?: string
           verified?: boolean | null
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
           {
@@ -240,6 +261,47 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      ranger_alerts: {
+        Row: {
+          alert_type: string
+          created_at: string | null
+          id: string
+          incident_id: string | null
+          message: string | null
+          ranger_id: string
+          read: boolean | null
+          title: string
+        }
+        Insert: {
+          alert_type: string
+          created_at?: string | null
+          id?: string
+          incident_id?: string | null
+          message?: string | null
+          ranger_id: string
+          read?: boolean | null
+          title: string
+        }
+        Update: {
+          alert_type?: string
+          created_at?: string | null
+          id?: string
+          incident_id?: string | null
+          message?: string | null
+          ranger_id?: string
+          read?: boolean | null
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ranger_alerts_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       rangers: {
         Row: {
