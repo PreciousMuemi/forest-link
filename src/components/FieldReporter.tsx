@@ -2,6 +2,10 @@ import { useState, useRef } from 'react';
 import { Camera, Upload, MapPin, Loader2, CheckCircle, XCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import { AIDetectionScanner } from './AIDetectionScanner';
@@ -12,8 +16,9 @@ const FieldReporter = () => {
   const [result, setResult] = useState<any>(null);
   const [location, setLocation] = useState<{ lat: number; lon: number } | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [threatType, setThreatType] = useState<string>('Deforestation');
+  const [threatType, setThreatType] = useState<string>('fire');
   const [description, setDescription] = useState<string>('');
+  const [severity, setSeverity] = useState<number[]>([5]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const uploadInputRef = useRef<HTMLInputElement>(null);
 
@@ -183,6 +188,54 @@ const FieldReporter = () => {
         </p>
       </div>
 
+      {/* Report Details Form */}
+      <div className="space-y-6 mb-8 p-6 bg-gradient-card border-2 border-border rounded-xl">
+        <div className="space-y-2">
+          <Label htmlFor="category" className="text-base font-semibold">Threat Category</Label>
+          <Select value={threatType} onValueChange={setThreatType}>
+            <SelectTrigger id="category" className="h-12 text-base">
+              <SelectValue placeholder="Select threat type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="fire">🔥 Fire</SelectItem>
+              <SelectItem value="logging">🪓 Illegal Logging</SelectItem>
+              <SelectItem value="charcoal">⚫ Charcoal Production</SelectItem>
+              <SelectItem value="wildlife">🦁 Wildlife Issue</SelectItem>
+              <SelectItem value="other">❓ Other</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="description" className="text-base font-semibold">What did you see? (Optional)</Label>
+          <Textarea
+            id="description"
+            placeholder="Describe what you observed... any additional details help our rangers respond faster"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            className="min-h-[100px] text-base resize-none"
+          />
+        </div>
+
+        <div className="space-y-3">
+          <Label htmlFor="severity" className="text-base font-semibold">Severity Level</Label>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground font-medium min-w-[60px]">Low</span>
+            <Slider
+              id="severity"
+              value={severity}
+              onValueChange={setSeverity}
+              min={1}
+              max={10}
+              step={1}
+              className="flex-1"
+            />
+            <span className="text-sm text-muted-foreground font-medium min-w-[60px] text-right">Critical</span>
+          </div>
+          <p className="text-sm text-muted-foreground">Current level: <span className="font-bold text-foreground">{severity[0]}/10</span></p>
+        </div>
+      </div>
+
       {/* Hidden file inputs */}
       <input
         ref={fileInputRef}
@@ -328,6 +381,8 @@ const FieldReporter = () => {
               setPreview(null);
               setResult(null);
               setLocation(null);
+              setDescription('');
+              setSeverity([5]);
             }}
             className="w-full h-14 text-lg font-bold hover-lift"
           >
