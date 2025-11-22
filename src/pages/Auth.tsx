@@ -31,13 +31,23 @@ const Auth = () => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/');
+        // Demo mode: redirect based on email
+        if (session.user.email === 'ranger-demo@example.com') {
+          navigate('/ranger');
+        } else {
+          navigate('/admin');
+        }
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
-        navigate('/');
+        // Demo mode: redirect based on email
+        if (session.user.email === 'ranger-demo@example.com') {
+          navigate('/ranger');
+        } else {
+          navigate('/admin');
+        }
       }
     });
 
@@ -46,7 +56,7 @@ const Auth = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const validated = loginSchema.parse(loginData);
       setLoading(true);
@@ -79,7 +89,7 @@ const Auth = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       const validated = signupSchema.parse(signupData);
       setLoading(true);
