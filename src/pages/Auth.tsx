@@ -33,7 +33,10 @@ const Auth = () => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       console.log('[Auth] Initial session check:', session?.user?.email);
       if (session) {
-        const hasRangerAccess = await checkRangerAccess(session.user.id);
+        const hasRangerAccess = await checkRangerAccess({
+          userId: session.user.id,
+          email: session.user.email,
+        });
         const destination = hasRangerAccess ? '/ranger' : '/admin';
         console.log('[Auth] Redirecting existing session to', destination);
         navigate(destination);
@@ -43,7 +46,10 @@ const Auth = () => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('[Auth] Auth state changed:', event, session?.user?.email);
       if (session) {
-        const hasRangerAccess = await checkRangerAccess(session.user.id);
+        const hasRangerAccess = await checkRangerAccess({
+          userId: session.user.id,
+          email: session.user.email,
+        });
         const destination = hasRangerAccess ? '/ranger' : '/admin';
         console.log('[Auth] Redirecting auth state change to', destination);
         navigate(destination);
