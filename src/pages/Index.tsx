@@ -53,11 +53,11 @@ const Index = () => {
       <OfflineIndicator />
 
       {/* Navigation Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-background/95 backdrop-blur-sm">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border bg-background/95 backdrop-blur-sm shadow-soft">
         <div className="container mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-lg bg-accent flex items-center justify-center">
-              <TreePine className="h-5 w-5 text-accent-foreground" />
+            <div className="h-9 w-9 rounded-lg bg-secondary flex items-center justify-center">
+              <TreePine className="h-5 w-5 text-secondary-foreground" />
             </div>
             <div>
               <h2 className="font-bold text-foreground text-base">ForestWatch KE</h2>
@@ -83,7 +83,7 @@ const Index = () => {
                 </Button>
               </>
             ) : (
-              <Button size="sm" onClick={() => navigate('/auth')}>
+              <Button size="sm" onClick={() => navigate('/auth')} className="bg-accent hover:bg-accent/90 text-accent-foreground">
                 Sign In
               </Button>
             )}
@@ -95,7 +95,7 @@ const Index = () => {
       <HeroSection />
 
       {/* Why This Matters Section */}
-      <section className="py-20 px-6 bg-card/30">
+      <section className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
@@ -107,8 +107,8 @@ const Index = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="p-8 bg-card border-border/50 hover:shadow-medium transition-shadow">
-              <div className="h-14 w-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
+            <Card className="p-8 bg-card border-border hover:shadow-medium transition-shadow">
+              <div className="h-14 w-14 rounded-xl bg-accent/15 flex items-center justify-center mb-6">
                 <Zap className="h-7 w-7 text-accent" />
               </div>
               <h3 className="text-xl font-bold text-foreground mb-3">Faster Response</h3>
@@ -117,9 +117,9 @@ const Index = () => {
               </p>
             </Card>
 
-            <Card className="p-8 bg-card border-border/50 hover:shadow-medium transition-shadow">
-              <div className="h-14 w-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
-                <CheckCircle className="h-7 w-7 text-accent" />
+            <Card className="p-8 bg-card border-border hover:shadow-medium transition-shadow">
+              <div className="h-14 w-14 rounded-xl bg-secondary/15 flex items-center justify-center mb-6">
+                <CheckCircle className="h-7 w-7 text-secondary" />
               </div>
               <h3 className="text-xl font-bold text-foreground mb-3">Verified Reports</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -127,9 +127,9 @@ const Index = () => {
               </p>
             </Card>
 
-            <Card className="p-8 bg-card border-border/50 hover:shadow-medium transition-shadow">
-              <div className="h-14 w-14 rounded-xl bg-accent/10 flex items-center justify-center mb-6">
-                <Users className="h-7 w-7 text-accent" />
+            <Card className="p-8 bg-card border-border hover:shadow-medium transition-shadow">
+              <div className="h-14 w-14 rounded-xl bg-primary/15 flex items-center justify-center mb-6">
+                <Users className="h-7 w-7 text-primary" />
               </div>
               <h3 className="text-xl font-bold text-foreground mb-3">Community Power</h3>
               <p className="text-muted-foreground leading-relaxed">
@@ -187,7 +187,7 @@ const Index = () => {
       </section>
 
       {/* Who Uses It Section */}
-      <section className="py-20 px-6 bg-card/30">
+      <section className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
@@ -205,8 +205,8 @@ const Index = () => {
               { title: 'Conservation NGOs', icon: TreePine },
               { title: 'Local Residents', icon: MapPin },
             ].map((userType, index) => (
-              <Card key={index} className="p-6 text-center bg-card border-border/50">
-                <userType.icon className="h-10 w-10 text-accent mx-auto mb-4" />
+              <Card key={index} className="p-6 text-center bg-card border-border hover:shadow-soft transition-shadow">
+                <userType.icon className="h-10 w-10 text-secondary mx-auto mb-4" />
                 <h3 className="font-bold text-foreground">{userType.title}</h3>
               </Card>
             ))}
@@ -228,14 +228,14 @@ const Index = () => {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { title: 'NASA FIRMS', subtitle: 'Satellite hotspots', icon: Satellite },
-              { title: 'SMS Reports', subtitle: 'Text to report', icon: MessageSquare },
-              { title: 'USSD', subtitle: 'Dial *384*33248#', icon: Radio },
-              { title: 'Web & Social', subtitle: 'Community input', icon: Share2 },
+              { title: 'NASA FIRMS', subtitle: 'Satellite hotspots', icon: Satellite, color: 'text-accent' },
+              { title: 'SMS Reports', subtitle: 'Text to report', icon: MessageSquare, color: 'text-secondary' },
+              { title: 'USSD', subtitle: 'Dial *384*33248#', icon: Radio, color: 'text-primary' },
+              { title: 'Web & Social', subtitle: 'Community input', icon: Share2, color: 'text-accent' },
             ].map((source, index) => (
               <div key={index} className="text-center">
-                <div className="h-16 w-16 rounded-xl bg-accent/10 flex items-center justify-center mx-auto mb-4">
-                  <source.icon className="h-8 w-8 text-accent" />
+                <div className={`h-16 w-16 rounded-xl bg-muted flex items-center justify-center mx-auto mb-4`}>
+                  <source.icon className={`h-8 w-8 ${source.color}`} />
                 </div>
                 <h3 className="font-bold text-foreground mb-1">{source.title}</h3>
                 <p className="text-sm text-muted-foreground">{source.subtitle}</p>
@@ -246,7 +246,7 @@ const Index = () => {
       </section>
 
       {/* Dashboard Preview Section */}
-      <section className="py-20 px-6 bg-card/30">
+      <section className="py-20 px-6 bg-muted/30">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-4">
@@ -257,7 +257,7 @@ const Index = () => {
             </p>
           </div>
 
-          <Card className="p-8 bg-card border-border/50">
+          <Card className="p-8 bg-card border-border shadow-soft">
             <div className="grid md:grid-cols-2 gap-8">
               <div className="flex items-start gap-4">
                 <MapPin className="h-8 w-8 text-accent flex-shrink-0 mt-1" />
@@ -270,7 +270,7 @@ const Index = () => {
               </div>
 
               <div className="flex items-start gap-4">
-                <BarChart3 className="h-8 w-8 text-accent flex-shrink-0 mt-1" />
+                <BarChart3 className="h-8 w-8 text-secondary flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-bold text-foreground mb-2">Response Analytics</h3>
                   <p className="text-muted-foreground text-sm">
@@ -302,13 +302,13 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-6 bg-gradient-primary relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjAzIiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-40"></div>
+      <section className="py-24 px-6 bg-primary text-primary-foreground relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-30"></div>
         <div className="container mx-auto text-center relative z-10 max-w-3xl">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-foreground">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
             Join Kenya's Forest Protection Network
           </h2>
-          <p className="text-foreground/80 text-lg mb-8 max-w-2xl mx-auto">
+          <p className="text-primary-foreground/90 text-lg mb-8 max-w-2xl mx-auto">
             Request access to the command center or view a live demo of the platform in action
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -324,7 +324,7 @@ const Index = () => {
               size="lg"
               variant="outline"
               onClick={() => navigate('/auth')}
-              className="border-2 border-foreground/30 text-foreground hover:bg-foreground/10 font-semibold"
+              className="border-2 border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10 font-semibold"
             >
               View Demo
             </Button>
@@ -333,13 +333,13 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 bg-card/50 border-t border-border/40">
+      <footer className="py-12 px-6 bg-card border-t border-border">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <div className="h-9 w-9 rounded-lg bg-accent flex items-center justify-center">
-                  <TreePine className="h-5 w-5 text-accent-foreground" />
+                <div className="h-9 w-9 rounded-lg bg-secondary flex items-center justify-center">
+                  <TreePine className="h-5 w-5 text-secondary-foreground" />
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground">ForestWatch KE</h3>
@@ -368,7 +368,7 @@ const Index = () => {
             </div>
           </div>
 
-          <div className="pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
+          <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
             <p>© 2025 ForestWatch KE - Kenya Forest Service. All rights reserved.</p>
             <p className="mt-2">Built for Kenya | Powered by NASA FIRMS & Community Intelligence</p>
           </div>
