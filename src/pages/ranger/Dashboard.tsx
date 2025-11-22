@@ -91,6 +91,10 @@ export default function RangerDashboard() {
             if (error) throw error;
 
             setIncidents(data || []);
+            console.debug('[RangerDashboard] Incidents loaded', {
+                total: data?.length || 0,
+                filter,
+            });
         } catch (error) {
             console.error('Error fetching incidents:', error);
             toast.error('Failed to load incidents');
@@ -146,33 +150,33 @@ export default function RangerDashboard() {
         <div className="space-y-6">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <Card className="p-6 bg-gradient-to-br from-red-50 to-red-100 border-red-200">
+                <Card className="p-6 bg-gradient-to-br from-[#3C0D0D] to-[#7A1E07] border border-[#FF7043]/40 text-[#FFE0D1] shadow-lg">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-red-700">Active Incidents</p>
-                            <p className="text-3xl font-bold text-red-900">{activeCount}</p>
+                            <p className="text-sm font-medium text-[#FFCCBC]/80">Active Incidents</p>
+                            <p className="text-3xl font-bold text-white">{activeCount}</p>
                         </div>
-                        <AlertTriangle className="h-12 w-12 text-red-600" />
+                        <AlertTriangle className="h-12 w-12 text-[#FF8A65]" />
                     </div>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-orange-50 to-orange-100 border-orange-200">
+                <Card className="p-6 bg-gradient-to-br from-[#4A1504] to-[#B23C17] border border-[#FF8A65]/40 text-[#FFE0D1] shadow-lg">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-orange-700">High Priority</p>
-                            <p className="text-3xl font-bold text-orange-900">{highSeverityCount}</p>
+                            <p className="text-sm font-medium text-[#FFCCBC]/80">High Priority</p>
+                            <p className="text-3xl font-bold text-white">{highSeverityCount}</p>
                         </div>
-                        <Flame className="h-12 w-12 text-orange-600" />
+                        <Flame className="h-12 w-12 text-[#FFCCBC]" />
                     </div>
                 </Card>
 
-                <Card className="p-6 bg-gradient-to-br from-green-50 to-green-100 border-green-200">
+                <Card className="p-6 bg-gradient-to-br from-[#0D3C2D] to-[#17694E] border border-emerald-400/40 text-[#E8FFF9] shadow-lg">
                     <div className="flex items-center justify-between">
                         <div>
-                            <p className="text-sm font-medium text-green-700">Resolved</p>
-                            <p className="text-3xl font-bold text-green-900">{resolvedCount}</p>
+                            <p className="text-sm font-medium text-emerald-200/80">Resolved</p>
+                            <p className="text-3xl font-bold text-white">{resolvedCount}</p>
                         </div>
-                        <CheckCircle className="h-12 w-12 text-green-600" />
+                        <CheckCircle className="h-12 w-12 text-emerald-200" />
                     </div>
                 </Card>
             </div>
@@ -182,21 +186,21 @@ export default function RangerDashboard() {
                 <Button
                     variant={filter === 'active' ? 'default' : 'outline'}
                     onClick={() => setFilter('active')}
-                    className={filter === 'active' ? 'bg-red-600 hover:bg-red-700' : ''}
+                    className={filter === 'active' ? 'bg-[#D32F2F] hover:bg-[#B71C1C]' : 'border-[#FF7043] text-[#B23C17]'}
                 >
                     Active ({activeCount})
                 </Button>
                 <Button
                     variant={filter === 'all' ? 'default' : 'outline'}
                     onClick={() => setFilter('all')}
-                    className={filter === 'all' ? 'bg-red-600 hover:bg-red-700' : ''}
+                    className={filter === 'all' ? 'bg-[#D32F2F] hover:bg-[#B71C1C]' : 'border-[#FF7043] text-[#B23C17]'}
                 >
                     All ({incidents.length})
                 </Button>
                 <Button
                     variant={filter === 'resolved' ? 'default' : 'outline'}
                     onClick={() => setFilter('resolved')}
-                    className={filter === 'resolved' ? 'bg-red-600 hover:bg-red-700' : ''}
+                    className={filter === 'resolved' ? 'bg-[#D32F2F] hover:bg-[#B71C1C]' : 'border-[#FF7043] text-[#B23C17]'}
                 >
                     Resolved ({resolvedCount})
                 </Button>
@@ -218,7 +222,7 @@ export default function RangerDashboard() {
                     incidents.map((incident) => (
                         <Card
                             key={incident.id}
-                            className="p-6 hover:shadow-lg transition-shadow cursor-pointer border-l-4"
+                            className="p-6 hover:shadow-2xl transition-shadow cursor-pointer border border-[#FF7043]/30 bg-[#1C0909] text-[#FFE0D1] shadow-government"
                             style={{
                                 borderLeftColor:
                                     incident.severity === 'high' || incident.severity === 'critical'
@@ -232,28 +236,28 @@ export default function RangerDashboard() {
                             <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1 space-y-3">
                                     <div className="flex items-center gap-3 flex-wrap">
-                                        <div className={`p-2 rounded-lg ${getSeverityColor(incident.severity)}`}>
+                                        <div className={`p-2 rounded-xl ring-1 ring-white/10 ${getSeverityColor(incident.severity)}`}>
                                             {getThreatIcon(incident.threat_type)}
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-lg">{incident.threat_type}</h3>
-                                            <p className="text-sm text-muted-foreground">
+                                            <h3 className="font-bold text-lg text-white">{incident.threat_type}</h3>
+                                            <p className="text-sm text-[#FFCCBC]/70">
                                                 ID: {incident.id.substring(0, 8).toUpperCase()}
                                             </p>
                                         </div>
-                                        <Badge className={getSeverityColor(incident.severity)}>
+                                        <Badge className={`${getSeverityColor(incident.severity)} border-0 shadow`}>
                                             {incident.severity.toUpperCase()}
                                         </Badge>
-                                        <Badge className={getStatusColor(incident.incident_status)} variant="outline">
+                                        <Badge className={`${getStatusColor(incident.incident_status)} border-0 shadow`}>
                                             {incident.incident_status?.replace('_', ' ').toUpperCase() || 'REPORTED'}
                                         </Badge>
                                     </div>
 
-                                    <p className="text-sm text-muted-foreground line-clamp-2">
+                                    <p className="text-sm text-[#FFE0D1]/80 line-clamp-2">
                                         {incident.description}
                                     </p>
 
-                                    <div className="flex items-center gap-4 text-sm text-muted-foreground flex-wrap">
+                                    <div className="flex items-center gap-4 text-sm text-[#FFCCBC]/70 flex-wrap">
                                         <div className="flex items-center gap-1">
                                             <MapPin className="h-4 w-4" />
                                             <span>
@@ -264,7 +268,7 @@ export default function RangerDashboard() {
                                             <Clock className="h-4 w-4" />
                                             <span>{format(new Date(incident.created_at), 'MMM d, h:mm a')}</span>
                                         </div>
-                                        <Badge variant="secondary" className="text-xs">
+                                        <Badge variant="secondary" className="text-xs bg-[#260B0B] text-[#FFCCBC] border border-[#FF7043]/40">
                                             {incident.source.toUpperCase()}
                                         </Badge>
                                     </div>
@@ -290,7 +294,7 @@ export default function RangerDashboard() {
                                             '_blank'
                                         );
                                     }}
-                                    className="border-red-300 hover:bg-red-50"
+                                    className="border-[#FF7043] text-[#FFCCBC] hover:bg-[#2A0D0D]"
                                 >
                                     <Navigation className="h-4 w-4 mr-2" />
                                     Navigate
@@ -301,7 +305,7 @@ export default function RangerDashboard() {
                                         e.stopPropagation();
                                         navigate(`/ranger/incidents/${incident.id}`);
                                     }}
-                                    className="bg-red-600 hover:bg-red-700"
+                                    className="bg-[#D32F2F] hover:bg-[#B71C1C] text-white"
                                 >
                                     <Eye className="h-4 w-4 mr-2" />
                                     View Details

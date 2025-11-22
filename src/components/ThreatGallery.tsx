@@ -152,8 +152,7 @@ export const ThreatGallery = () => {
           return (
             <Card
               key={incident.id}
-              className={`group overflow-hidden hover:shadow-2xl transition-all duration-500 border-2 ${incident.verified ? 'border-success/30' : 'border-orange-500/30'
-                }`}
+              className={`group overflow-hidden hover:shadow-2xl transition-all duration-500 border border-[#FF7043]/30 bg-[#140404] text-[#FFE0D1] shadow-government ${incident.verified ? 'ring-1 ring-emerald-500/40' : 'ring-1 ring-orange-500/30'}`}
             >
               <div className="relative aspect-video bg-muted overflow-hidden">
                 {incident.image_url && (
@@ -191,13 +190,13 @@ export const ThreatGallery = () => {
                 </div>
               </div>
 
-              <div className="p-6 bg-white">
-                <h3 className="text-xl font-bold text-foreground mb-2">{incident.threat_type}</h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+              <div className="p-6 bg-gradient-to-b from-transparent via-[#1f0a0a] to-[#170707]">
+                <h3 className="text-xl font-bold text-white mb-2 font-display tracking-tight">{incident.threat_type}</h3>
+                <p className="text-sm text-[#FFCCBC]/80 mb-4 line-clamp-2">
                   {incident.description || 'Community-reported environmental threat'}
                 </p>
 
-                <div className="space-y-2 text-xs text-muted-foreground">
+                <div className="space-y-2 text-xs text-[#FFCCBC]/70">
                   <div className="flex items-center gap-2">
                     <MapPin className="h-3 w-3" />
                     <span>{incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}</span>
@@ -210,22 +209,22 @@ export const ThreatGallery = () => {
 
                 {/* Status Message */}
                 {incident.verified ? (
-                  <div className="mt-4 p-3 bg-success/10 rounded-lg">
-                    <div className="flex items-center gap-2 text-xs text-success font-semibold">
+                  <div className="mt-4 p-3 rounded-lg bg-emerald-950/60 border border-emerald-500/30">
+                    <div className="flex items-center gap-2 text-xs text-emerald-200 font-semibold">
                       <CheckCircle2 className="h-4 w-4" />
                       Verified by Admin Team
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-[#CFFFE4] mt-1">
                       This report has been reviewed and confirmed
                     </p>
                   </div>
                 ) : (
-                  <div className="mt-4 p-3 bg-orange-50 rounded-lg border border-orange-200">
-                    <div className="flex items-center gap-2 text-xs text-orange-600 font-semibold">
+                  <div className="mt-4 p-3 rounded-lg bg-[#2B0C04] border border-[#FF8A65]/40">
+                    <div className="flex items-center gap-2 text-xs text-[#FFB38A] font-semibold">
                       <Clock className="h-4 w-4" />
                       Under Review
                     </div>
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-xs text-[#FFD7C5] mt-1">
                       Our admin team is reviewing your report. You'll be notified once verified!
                     </p>
                   </div>
@@ -237,21 +236,21 @@ export const ThreatGallery = () => {
       </div>
 
       {/* Info banner */}
-      <Card className="p-6 bg-gradient-to-r from-primary/5 to-orange-50 border-2 border-primary/20">
+      <Card className="p-6 bg-gradient-to-r from-[#320C0C] via-[#511A09] to-[#300A07] border border-[#FF7043]/30 text-[#FFE0D1] shadow-lg">
         <div className="flex items-start gap-4">
-          <div className="bg-primary/10 p-3 rounded-xl">
-            <CheckCircle2 className="h-6 w-6 text-primary" />
+          <div className="bg-[#FF7043]/20 p-3 rounded-xl">
+            <CheckCircle2 className="h-6 w-6 text-[#FFCCBC]" />
           </div>
           <div className="flex-1">
-            <h4 className="font-semibold text-foreground mb-2">
+            <h4 className="font-semibold text-white mb-2 font-display tracking-tight">
               Track Your Community Reports
             </h4>
-            <div className="space-y-2 text-sm text-muted-foreground">
+            <div className="space-y-2 text-sm text-[#FFCCBC]/80">
               <p>
-                <strong className="text-orange-600">🟠 Pending Review:</strong> Your report has been received and is being reviewed by our admin team. You'll receive an SMS notification once it's verified!
+                <strong className="text-[#FFB38A]">🟠 Pending Review:</strong> Your report has been received and is being reviewed by our admin team. You'll receive an SMS notification once it's verified!
               </p>
               <p>
-                <strong className="text-success">🟢 Verified:</strong> Report confirmed by our team with photographic evidence and GPS coordinates. Thank you for keeping Kenya's forests safe!
+                <strong className="text-emerald-300">🟢 Verified:</strong> Report confirmed by our team with photographic evidence and GPS coordinates. Thank you for keeping Kenya's forests safe!
               </p>
             </div>
           </div>
