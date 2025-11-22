@@ -98,15 +98,33 @@ const Index = () => {
       {/* Hero Section with Slideshow */}
       <HeroSection />
 
-      {/* Features Section */}
+      {/* Problem Statement Section */}
+      <section className="py-20 px-4 bg-background relative z-10">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-12 animate-fade-in">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-destructive/10 border-2 border-destructive/30 mb-6 backdrop-blur-sm">
+              <AlertTriangle className="h-5 w-5 text-destructive" />
+              <span className="text-sm font-bold text-destructive tracking-wide">THE CHALLENGE</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
+              Fragmented Data. Slow Response.
+            </h2>
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed">
+              KFS receives forest threat data from <strong>4 separate channels</strong>—NASA FIRMS satellites, SMS reports, USSD codes, and web submissions—but lacks a unified system to aggregate, verify, and coordinate ranger response in real-time.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Platform Capabilities Section */}
       <section className="py-20 px-4 bg-gradient-card relative z-10">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              Government-Grade Forest Protection
+              Unified Intelligence Platform
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Advanced AI and satellite technology empowering Kenya&apos;s communities
+              One dashboard for all threat sources. Real-time verification. Coordinated ranger dispatch.
             </p>
           </div>
 
@@ -114,26 +132,26 @@ const Index = () => {
             {[
               {
                 icon: Activity,
-                title: 'Real-Time Monitoring',
-                description: 'Live NASA FIRMS satellite feeds with AI-powered threat detection',
+                title: 'Unified Data Aggregation',
+                description: 'NASA FIRMS + SMS + USSD + Web reports consolidated into one command center',
                 color: 'text-accent',
               },
               {
-                icon: Lock,
-                title: 'Blockchain Verified',
-                description: 'Immutable records on Scroll blockchain ensure transparency',
+                icon: Eye,
+                title: 'AI Verification Pipeline',
+                description: 'AI-powered initial screening reduces manual verification work by 80%',
                 color: 'text-primary',
               },
               {
-                icon: Bell,
-                title: "Africa's Talking SMS",
-                description: 'Instant SMS alerts reach communities within seconds via AT',
+                icon: Zap,
+                title: 'Ranger Dispatch Coordination',
+                description: 'Assign incidents, track ranger location & ETA, send SMS alerts automatically',
                 color: 'text-accent',
               },
               {
                 icon: Globe,
-                title: 'Reward System',
-                description: 'Earn points and rewards for verified environmental reports',
+                title: 'Analytics Dashboard',
+                description: 'Heatmaps, threat trends, response time metrics, and historical analytics',
                 color: 'text-success',
               },
             ].map((feature, index) => (
@@ -153,19 +171,52 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Field Reporter Section */}
-      <section id="field-reporter" className="py-24 px-4 bg-background relative z-10">
+      {/* Live Intelligence Map */}
+      <section className="py-24 px-4 bg-background relative z-10">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in-up">
             <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border-2 border-accent/30 mb-6 backdrop-blur-sm">
-              <AlertTriangle className="h-5 w-5 text-accent animate-pulse" />
-              <span className="text-sm font-bold text-accent tracking-wide">COMMUNITY REPORTING</span>
+              <MapIcon className="h-5 w-5 text-accent" />
+              <span className="text-sm font-bold text-accent tracking-wide">LIVE INTELLIGENCE</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              Report Environmental Threats
+              Real-Time Threat Intelligence Map
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Your eyes on the ground. Snap a photo, share your location, and help protect our forests.
+              All incidents from NASA FIRMS, SMS, USSD, and web reports visualized in real-time
+            </p>
+          </div>
+
+          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10 glass-card">
+            <ThreatMap />
+          </Card>
+        </div>
+      </section>
+
+      {/* Verified Threats Gallery - Minimized */}
+      <section className="py-16 px-4 bg-gradient-card relative z-10">
+        <div className="container mx-auto">
+          <div className="text-center mb-12 animate-fade-in-up">
+            <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4 tracking-tight">
+              Recent Verified Reports
+            </h3>
+            <p className="text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Community reports verified and approved by KFS admins
+            </p>
+          </div>
+          <ThreatGallery />
+        </div>
+      </section>
+
+      {/* Field Reporter Section - Moved Lower */}
+      <section id="field-reporter" className="py-20 px-4 bg-background relative z-10">
+        <div className="container mx-auto">
+          <div className="text-center mb-12 animate-fade-in-up">
+            <h3 className="text-2xl md:text-4xl font-bold text-foreground mb-4 tracking-tight">
+              Community Input Channels
+            </h3>
+            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Citizens can report threats via SMS, USSD, or web form—all verified by KFS before ranger dispatch
             </p>
           </div>
 
@@ -178,74 +229,33 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Verified Threats Gallery */}
-      <section className="py-24 px-4 bg-gradient-card relative z-10">
-        <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-success/10 border-2 border-success/30 mb-6 backdrop-blur-sm">
-              <CheckCircle className="h-5 w-5 text-success" />
-              <span className="text-sm font-bold text-success tracking-wide">COMMUNITY REPORTS</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              Community Threat Reports
-            </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Real incidents reported by community members. Verified reports are displayed after admin approval.
-            </p>
-          </div>
-          <ThreatGallery />
-        </div>
-      </section>
-
-      {/* Interactive Threat Map */}
-      <section className="py-24 px-4 bg-background relative z-10">
-        <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in-up">
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border-2 border-accent/30 mb-6 backdrop-blur-sm">
-              <MapIcon className="h-5 w-5 text-accent" />
-              <span className="text-sm font-bold text-accent tracking-wide">INTERACTIVE MAP</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
-              All Reported Incidents
-            </h2>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Click on any marker to view incident details and community responses
-            </p>
-          </div>
-
-          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10 glass-card">
-            <ThreatMap />
-          </Card>
-        </div>
-      </section>
-
       {/* Call to Action */}
       <section className="py-24 px-4 bg-gradient-primary text-white relative z-10 overflow-hidden">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
         <div className="container mx-auto text-center relative z-10">
           <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight animate-fade-in-up">
-            Join Kenya&apos;s Forest Protection Network
+            Ready to Unify Your Forest Intelligence?
           </h2>
           <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed font-medium animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-            Every verified report earns you points. Redeem for airtime, data bundles, and more!
+            Access the command center. View all threats. Coordinate ranger response in real-time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <Button
               size="lg"
-              onClick={() => navigate('/auth')}
+              onClick={() => navigate('/admin')}
               className="bg-accent hover:bg-accent/90 text-foreground font-bold shadow-glow-accent hover-lift text-lg px-8 py-6"
             >
-              <User className="mr-2 h-5 w-5" />
-              Create Account & Earn Points
+              <Shield className="mr-2 h-5 w-5" />
+              Access Dashboard
             </Button>
             <Button
               size="lg"
               variant="outline"
-              onClick={() => navigate('/admin')}
+              onClick={() => navigate('/auth')}
               className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold hover-lift text-lg px-8 py-6"
             >
-              <Eye className="mr-2 h-5 w-5" />
-              View Dashboard
+              <User className="mr-2 h-5 w-5" />
+              KFS Admin Sign In
             </Button>
           </div>
         </div>
@@ -266,7 +276,7 @@ const Index = () => {
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Community-powered forest protection with AI, NASA FIRMS, and Africa's Talking SMS.
+                Unified threat intelligence platform aggregating NASA FIRMS, SMS, USSD, and web reports for KFS.
               </p>
             </div>
 
