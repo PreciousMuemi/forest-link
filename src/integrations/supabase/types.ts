@@ -350,6 +350,110 @@ export type Database = {
           },
         ]
       }
+      reward_redemptions: {
+        Row: {
+          amount: string | null
+          completed_at: string | null
+          id: string
+          points_cost: number
+          redeemed_at: string
+          reward_type: string
+          status: string
+          user_phone: string
+        }
+        Insert: {
+          amount?: string | null
+          completed_at?: string | null
+          id?: string
+          points_cost: number
+          redeemed_at?: string
+          reward_type: string
+          status?: string
+          user_phone: string
+        }
+        Update: {
+          amount?: string | null
+          completed_at?: string | null
+          id?: string
+          points_cost?: number
+          redeemed_at?: string
+          reward_type?: string
+          status?: string
+          user_phone?: string
+        }
+        Relationships: []
+      }
+      reward_transactions: {
+        Row: {
+          created_at: string
+          id: string
+          incident_id: string | null
+          points_earned: number
+          reward_type: string
+          user_phone: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          incident_id?: string | null
+          points_earned?: number
+          reward_type: string
+          user_phone: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          incident_id?: string | null
+          points_earned?: number
+          reward_type?: string
+          user_phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reward_transactions_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_rewards: {
+        Row: {
+          created_at: string
+          id: string
+          phone_number: string
+          reports_submitted: number
+          reports_verified: number
+          reports_with_photos: number
+          total_points: number
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          phone_number: string
+          reports_submitted?: number
+          reports_verified?: number
+          reports_with_photos?: number
+          total_points?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          phone_number?: string
+          reports_submitted?: number
+          reports_verified?: number
+          reports_with_photos?: number
+          total_points?: number
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string | null
@@ -385,6 +489,15 @@ export type Database = {
       }
     }
     Functions: {
+      award_report_points: {
+        Args: {
+          p_incident_id: string
+          p_phone_number: string
+          p_points: number
+          p_reward_type: string
+        }
+        Returns: undefined
+      }
       get_dashboard_stats: { Args: never; Returns: Json }
       has_role: {
         Args: {
