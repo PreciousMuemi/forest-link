@@ -64,35 +64,35 @@ const HeroSection = () => {
       <div className="relative z-20 flex h-full items-center justify-center px-4">
         <div className="max-w-5xl text-center">
           {/* Animated Alert Badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 backdrop-blur-sm animate-fade-in">
-            <AlertTriangle className="h-4 w-4 text-accent animate-pulse" />
-            <span className="text-sm font-medium text-white">
-              Kenya Forest Emergency Alert Network
+          <div className="mb-8 inline-flex items-center gap-3 rounded-full border-2 border-accent/40 bg-accent/15 px-6 py-3 backdrop-blur-md animate-fade-in glow-pulse">
+            <AlertTriangle className="h-5 w-5 text-accent animate-pulse" />
+            <span className="text-base font-bold text-white tracking-wide">
+              KENYA FOREST EMERGENCY ALERT NETWORK
             </span>
           </div>
 
           {/* Main Headline */}
-          <h1 className="mb-4 text-5xl md:text-7xl font-bold text-white leading-tight animate-fade-in-up [animation-delay:200ms]">
-            Protect Kenya's Forests.
+          <h1 className="mb-6 text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-none tracking-tighter animate-fade-in-up [animation-delay:200ms] text-balance">
+            Protect Kenya&apos;s Forests.
             <br />
-            <span className="text-accent">Report. Verify. Reward.</span>
+            <span className="text-accent glow-pulse inline-block">Report. Verify. Reward.</span>
           </h1>
 
           {/* Subtext */}
-          <p className="mb-10 text-xl md:text-2xl text-white/90 max-w-3xl mx-auto font-light animate-fade-in-up [animation-delay:400ms]">
+          <p className="mb-12 text-xl md:text-2xl lg:text-3xl text-white/95 max-w-4xl mx-auto font-medium leading-relaxed animate-fade-in-up [animation-delay:400ms] text-balance">
             Community-powered forest protection with instant SMS alerts,
-            <br />
+            <br className="hidden md:block" />
             AI verification, and rewards for verified reports.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up [animation-delay:600ms]">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up [animation-delay:600ms]">
             <Button
               size="lg"
               onClick={scrollToReporter}
-              className="bg-accent hover:bg-accent/90 text-white font-semibold px-8 py-6 text-lg rounded-full shadow-government-lg hover:shadow-glow-accent transition-all duration-300 hover:scale-105 group"
+              className="bg-accent hover:bg-accent/90 text-foreground font-bold px-10 py-7 text-xl rounded-2xl shadow-government-lg hover:shadow-glow-accent transition-all duration-300 hover-lift group"
             >
-              <Camera className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+              <Camera className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
               Report a Threat
             </Button>
             
@@ -100,26 +100,26 @@ const HeroSection = () => {
               size="lg"
               variant="outline"
               onClick={() => navigate('/admin')}
-              className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-6 text-lg rounded-full backdrop-blur-sm bg-white/10 transition-all duration-300 hover:scale-105 group"
+              className="border-3 border-white text-white hover:bg-white hover:text-primary font-bold px-10 py-7 text-xl rounded-2xl backdrop-blur-sm bg-white/10 transition-all duration-300 hover-lift group"
             >
-              <Map className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+              <Map className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
               View Live Incidents
             </Button>
           </div>
 
           {/* Stats Bar */}
-          <div className="mt-16 grid grid-cols-3 gap-8 max-w-3xl mx-auto animate-fade-in [animation-delay:800ms]">
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-secondary">24/7</div>
-              <div className="text-sm text-white/80 mt-1">Real-time Monitoring</div>
+          <div className="mt-20 grid grid-cols-3 gap-10 max-w-4xl mx-auto animate-fade-in [animation-delay:800ms]">
+            <div className="text-center group">
+              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">24/7</div>
+              <div className="text-sm md:text-base text-white/90 font-medium">Real-time Monitoring</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-secondary">100%</div>
-              <div className="text-sm text-white/80 mt-1">Verified Reports</div>
+            <div className="text-center group">
+              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">100%</div>
+              <div className="text-sm md:text-base text-white/90 font-medium">Verified Reports</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-secondary">AI+Blockchain</div>
-              <div className="text-sm text-white/80 mt-1">Powered Detection</div>
+            <div className="text-center group">
+              <div className="text-4xl md:text-5xl font-extrabold text-accent mb-2 group-hover:scale-110 transition-transform">AI+Blockchain</div>
+              <div className="text-sm md:text-base text-white/90 font-medium">Powered Detection</div>
             </div>
           </div>
         </div>

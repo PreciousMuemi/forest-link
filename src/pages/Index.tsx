@@ -7,6 +7,7 @@ import ThreatMap from '@/components/ThreatMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { ThreatGallery } from '@/components/ThreatGallery';
+import { ForestAmbiance } from '@/components/ForestAmbiance';
 import {
   AlertTriangle,
   Shield,
@@ -51,19 +52,20 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
+      <ForestAmbiance />
       <OfflineIndicator />
 
       {/* Navigation Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-lg shadow-soft">
+      <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/90 backdrop-blur-xl shadow-soft">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <Leaf className="h-6 w-6 text-white" />
+          <div className="flex items-center gap-3 group">
+            <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center glow-pulse">
+              <Leaf className="h-6 w-6 text-white transform group-hover:rotate-12 transition-transform duration-300" />
             </div>
             <div>
-              <h2 className="font-bold text-foreground">ForestWatch KE</h2>
-              <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
+              <h2 className="font-bold text-foreground text-lg">ForestWatch KE</h2>
+              <p className="text-xs text-muted-foreground font-medium">Kenya Forest Service</p>
             </div>
           </div>
 
@@ -97,14 +99,14 @@ const Index = () => {
       <HeroSection />
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-gradient-card">
+      <section className="py-20 px-4 bg-gradient-card relative z-10">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
               Government-Grade Forest Protection
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Advanced AI and satellite technology empowering Kenya's communities
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Advanced AI and satellite technology empowering Kenya&apos;s communities
             </p>
           </div>
 
@@ -137,14 +139,14 @@ const Index = () => {
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 hover:shadow-government-lg transition-all duration-300 hover:scale-105 glass-card border-border/50 animate-scale-in"
+                className="p-8 hover:shadow-government-lg transition-all duration-500 hover-lift glass-card border-border/50 animate-scale-in group"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className={`h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft ${feature.color}`}>
-                  <feature.icon className="h-7 w-7 text-white" />
+                <div className={`h-16 w-16 rounded-2xl bg-gradient-primary flex items-center justify-center mb-6 shadow-soft group-hover:shadow-glow transition-all duration-300 ${feature.color}`}>
+                  <feature.icon className="h-8 w-8 text-white group-hover:scale-110 transition-transform duration-300" />
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
+                <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3 tracking-tight">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed text-base">{feature.description}</p>
               </Card>
             ))}
           </div>
@@ -152,17 +154,17 @@ const Index = () => {
       </section>
 
       {/* Field Reporter Section */}
-      <section id="field-reporter" className="py-20 px-4 bg-background">
+      <section id="field-reporter" className="py-24 px-4 bg-background relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
-              <AlertTriangle className="h-4 w-4 text-accent" />
-              <span className="text-sm font-semibold text-accent">Community Reporting</span>
+          <div className="text-center mb-16 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border-2 border-accent/30 mb-6 backdrop-blur-sm">
+              <AlertTriangle className="h-5 w-5 text-accent animate-pulse" />
+              <span className="text-sm font-bold text-accent tracking-wide">COMMUNITY REPORTING</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
               Report Environmental Threats
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Your eyes on the ground. Snap a photo, share your location, and help protect our forests.
             </p>
           </div>
@@ -177,17 +179,17 @@ const Index = () => {
       </section>
 
       {/* Verified Threats Gallery */}
-      <section className="py-20 px-4 bg-gradient-card">
+      <section className="py-24 px-4 bg-gradient-card relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/10 border border-success/30 mb-4">
-              <CheckCircle className="h-4 w-4 text-success" />
-              <span className="text-sm font-semibold text-success">Community Reports</span>
+          <div className="text-center mb-16 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-success/10 border-2 border-success/30 mb-6 backdrop-blur-sm">
+              <CheckCircle className="h-5 w-5 text-success" />
+              <span className="text-sm font-bold text-success tracking-wide">COMMUNITY REPORTS</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
               Community Threat Reports
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Real incidents reported by community members. Verified reports are displayed after admin approval.
             </p>
           </div>
@@ -196,17 +198,17 @@ const Index = () => {
       </section>
 
       {/* Interactive Threat Map */}
-      <section className="py-20 px-4 bg-background">
+      <section className="py-24 px-4 bg-background relative z-10">
         <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
-              <MapIcon className="h-4 w-4 text-accent" />
-              <span className="text-sm font-semibold text-accent">Interactive Map</span>
+          <div className="text-center mb-16 animate-fade-in-up">
+            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-accent/10 border-2 border-accent/30 mb-6 backdrop-blur-sm">
+              <MapIcon className="h-5 w-5 text-accent" />
+              <span className="text-sm font-bold text-accent tracking-wide">INTERACTIVE MAP</span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-6 tracking-tight">
               All Reported Incidents
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Click on any marker to view incident details and community responses
             </p>
           </div>
@@ -218,19 +220,20 @@ const Index = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 px-4 bg-gradient-primary text-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Join Kenya's Forest Protection Network
+      <section className="py-24 px-4 bg-gradient-primary text-white relative z-10 overflow-hidden">
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS1vcGFjaXR5PSIwLjA1IiBzdHJva2Utd2lkdGg9IjEiLz48L3BhdHRlcm4+PC9kZWZzPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JpZCkiLz48L3N2Zz4=')] opacity-20"></div>
+        <div className="container mx-auto text-center relative z-10">
+          <h2 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight animate-fade-in-up">
+            Join Kenya&apos;s Forest Protection Network
           </h2>
-          <p className="text-lg text-white/90 max-w-2xl mx-auto mb-8">
+          <p className="text-xl md:text-2xl text-white/90 max-w-3xl mx-auto mb-10 leading-relaxed font-medium animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             Every verified report earns you points. Redeem for airtime, data bundles, and more!
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
             <Button
               size="lg"
               onClick={() => navigate('/auth')}
-              className="bg-accent hover:bg-accent/90 text-foreground font-semibold shadow-glow-accent"
+              className="bg-accent hover:bg-accent/90 text-foreground font-bold shadow-glow-accent hover-lift text-lg px-8 py-6"
             >
               <User className="mr-2 h-5 w-5" />
               Create Account & Earn Points
@@ -239,7 +242,7 @@ const Index = () => {
               size="lg"
               variant="outline"
               onClick={() => navigate('/admin')}
-              className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold hover-lift text-lg px-8 py-6"
             >
               <Eye className="mr-2 h-5 w-5" />
               View Dashboard
