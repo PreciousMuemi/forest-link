@@ -39,7 +39,7 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
   if (!isScanning && threatDetected === null) return null;
 
   return (
-    <div className="relative rounded-2xl overflow-hidden bg-white border-2 border-border shadow-lg p-6">
+    <div className="relative rounded-2xl overflow-hidden glass-card border-2 border-primary/30 shadow-lg p-6 backdrop-blur-md">
       {imageUrl && (
         <div className="relative mb-6 rounded-xl overflow-hidden shadow-md">
           <img src={imageUrl} alt="Scanning" className="w-full h-64 object-cover" />
@@ -86,7 +86,7 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
               <span className="text-muted-foreground font-medium">{scanProgress}%</span>
             </div>
             
-            <div className="relative h-3 bg-muted rounded-full overflow-hidden">
+            <div className="relative h-3 bg-gradient-card rounded-full overflow-hidden border border-border/30 backdrop-blur-sm">
               <div 
                 className="absolute inset-y-0 left-0 bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-300"
                 style={{ width: `${scanProgress}%` }}
@@ -97,15 +97,15 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
 
             {/* AI Processing indicators */}
             <div className="grid grid-cols-3 gap-3 text-sm">
-              <div className={`flex items-center gap-2 p-3 rounded-lg ${scanProgress > 20 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+              <div className={`flex items-center gap-2 p-3 rounded-lg backdrop-blur-sm ${scanProgress > 20 ? 'bg-gradient-card text-primary border border-primary/30' : 'bg-gradient-card text-muted-foreground border border-border'}`}>
                 <div className={`w-2 h-2 rounded-full ${scanProgress > 20 ? 'bg-primary' : 'bg-muted-foreground'} animate-pulse`} />
                 Vision AI
               </div>
-              <div className={`flex items-center gap-2 p-3 rounded-lg ${scanProgress > 50 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+              <div className={`flex items-center gap-2 p-3 rounded-lg backdrop-blur-sm ${scanProgress > 50 ? 'bg-gradient-card text-primary border border-primary/30' : 'bg-gradient-card text-muted-foreground border border-border'}`}>
                 <div className={`w-2 h-2 rounded-full ${scanProgress > 50 ? 'bg-primary' : 'bg-muted-foreground'} animate-pulse`} />
                 ML Model
               </div>
-              <div className={`flex items-center gap-2 p-3 rounded-lg ${scanProgress > 80 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+              <div className={`flex items-center gap-2 p-3 rounded-lg backdrop-blur-sm ${scanProgress > 80 ? 'bg-gradient-card text-primary border border-primary/30' : 'bg-gradient-card text-muted-foreground border border-border'}`}>
                 <div className={`w-2 h-2 rounded-full ${scanProgress > 80 ? 'bg-primary' : 'bg-muted-foreground'} animate-pulse`} />
                 Classification
               </div>
@@ -115,10 +115,10 @@ export const AIDetectionScanner = ({ isScanning, threatDetected, imageUrl }: AID
 
         {/* Result */}
         {!isScanning && threatDetected !== null && (
-          <div className={`flex items-center gap-4 p-5 rounded-xl border-2 ${
+          <div className={`flex items-center gap-4 p-5 rounded-xl border-2 backdrop-blur-sm ${
             threatDetected 
-              ? 'bg-destructive/10 border-destructive/30' 
-              : 'bg-success/10 border-success/30'
+              ? 'bg-gradient-card border-destructive/40' 
+              : 'bg-gradient-card border-success/40'
           }`}>
             {threatDetected ? (
               <>
