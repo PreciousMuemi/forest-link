@@ -4,7 +4,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { ThreatChart } from '@/components/ThreatChart';
 import { ResponseTimeAnalytics } from '@/components/ResponseTimeAnalytics';
 import { RiskHeatMap } from '@/components/RiskHeatMap';
-import { CommunityLeaderboard } from '@/components/CommunityLeaderboard';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, TrendingUp, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
@@ -125,9 +124,8 @@ export default function AdminAnalytics() {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2">
         <ResponseTimeAnalytics />
-        <CommunityLeaderboard />
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
