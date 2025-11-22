@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import ThreatMap from '@/components/ThreatMap';
 import SatelliteMap from '@/components/SatelliteMap';
+import { NASAFireAlerts } from '@/components/NASAFireAlerts';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -203,13 +204,15 @@ export default function AdminDashboard() {
       </Card>
 
       {/* NASA Satellite Monitoring */}
+      <NASAFireAlerts />
+      
       <Card>
         <CardHeader>
           <div className="flex items-center gap-2">
             <Satellite className="h-5 w-5 text-primary" />
             <div>
-              <CardTitle>NASA Satellite Fire Detection</CardTitle>
-              <CardDescription>Real-time fire hotspot detection from NASA FIRMS</CardDescription>
+              <CardTitle>NASA Satellite Fire Detection Map</CardTitle>
+              <CardDescription>Interactive satellite hotspot visualization</CardDescription>
             </div>
           </div>
         </CardHeader>

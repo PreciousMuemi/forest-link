@@ -62,7 +62,7 @@ const Index = () => {
               <Leaf className="h-6 w-6 text-white" />
             </div>
             <div>
-              <h2 className="font-bold text-foreground">ForestGuard</h2>
+              <h2 className="font-bold text-foreground">ForestWatch KE</h2>
               <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
             </div>
           </div>
@@ -97,14 +97,14 @@ const Index = () => {
       <HeroSection />
 
       {/* Features Section */}
-      <section className="py-20 px-4 bg-card">
+      <section className="py-20 px-4 bg-gradient-card">
         <div className="container mx-auto">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Government-Grade Environmental Protection
+              Government-Grade Forest Protection
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Advanced technology empowering communities to protect Kenya's precious forests
+              Advanced AI and satellite technology empowering Kenya's communities
             </p>
           </div>
 
@@ -113,31 +113,31 @@ const Index = () => {
               {
                 icon: Activity,
                 title: 'Real-Time Monitoring',
-                description: 'Live satellite feeds and AI-powered threat detection across all forest regions',
+                description: 'Live NASA FIRMS satellite feeds with AI-powered threat detection',
                 color: 'text-accent',
               },
               {
                 icon: Lock,
                 title: 'Blockchain Verified',
-                description: 'Immutable records on Scroll blockchain ensure transparency and accountability',
+                description: 'Immutable records on Scroll blockchain ensure transparency',
                 color: 'text-primary',
               },
               {
                 icon: Bell,
-                title: 'Instant Alerts',
-                description: 'SMS and USSD notifications reach communities within seconds of detection',
+                title: "Africa's Talking SMS",
+                description: 'Instant SMS alerts reach communities within seconds via AT',
                 color: 'text-accent',
               },
               {
                 icon: Globe,
-                title: 'Nationwide Coverage',
-                description: 'Protecting forests from Mau to Karura with comprehensive monitoring',
-                color: 'text-primary',
+                title: 'Reward System',
+                description: 'Earn points and rewards for verified environmental reports',
+                color: 'text-success',
               },
             ].map((feature, index) => (
               <Card
                 key={index}
-                className="p-6 hover:shadow-government transition-all duration-300 hover:scale-105 bg-gradient-card border-border/50 animate-scale-in"
+                className="p-6 hover:shadow-government-lg transition-all duration-300 hover:scale-105 glass-card border-border/50 animate-scale-in"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className={`h-14 w-14 rounded-xl bg-gradient-primary flex items-center justify-center mb-4 shadow-soft ${feature.color}`}>
@@ -168,7 +168,7 @@ const Index = () => {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <Card className="p-8 shadow-government-lg border-2 border-primary/10">
+            <Card className="p-8 shadow-government-lg border-2 border-primary/10 glass-card">
               <FieldReporter />
             </Card>
           </div>
@@ -177,7 +177,7 @@ const Index = () => {
       </section>
 
       {/* Verified Threats Gallery */}
-      <section className="py-20 px-4 bg-card">
+      <section className="py-20 px-4 bg-gradient-card">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/10 border border-success/30 mb-4">
@@ -196,7 +196,7 @@ const Index = () => {
       </section>
 
       {/* Interactive Threat Map */}
-      <section className="py-20 px-4 bg-card">
+      <section className="py-20 px-4 bg-background">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 border border-accent/30 mb-4">
@@ -211,7 +211,7 @@ const Index = () => {
             </p>
           </div>
 
-          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10">
+          <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10 glass-card">
             <ThreatMap />
           </Card>
         </div>
@@ -221,20 +221,19 @@ const Index = () => {
       <section className="py-20 px-4 bg-gradient-primary text-white">
         <div className="container mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Join the Forest Protection Network
+            Join Kenya's Forest Protection Network
           </h2>
           <p className="text-lg text-white/90 max-w-2xl mx-auto mb-8">
-            Every report matters. Together, we can save Kenya's forests for future generations.
+            Every verified report earns you points. Redeem for airtime, data bundles, and more!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
               size="lg"
-              variant="accent"
               onClick={() => navigate('/auth')}
-              className="bg-accent hover:bg-accent/90 text-white font-semibold shadow-glow-accent"
+              className="bg-accent hover:bg-accent/90 text-foreground font-semibold shadow-glow-accent"
             >
               <User className="mr-2 h-5 w-5" />
-              Create Account
+              Create Account & Earn Points
             </Button>
             <Button
               size="lg"
@@ -250,7 +249,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-4 bg-card border-t border-border">
+      <footer className="py-12 px-4 bg-gradient-card border-t border-border">
         <div className="container mx-auto">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
@@ -259,12 +258,12 @@ const Index = () => {
                   <Leaf className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground">ForestGuard AI</h3>
+                  <h3 className="font-bold text-foreground">ForestWatch KE</h3>
                   <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Government-grade environmental threat reporting system powered by AI, blockchain, and community action.
+                Community-powered forest protection with AI, NASA FIRMS, and Africa's Talking SMS.
               </p>
             </div>
 
@@ -286,8 +285,8 @@ const Index = () => {
           </div>
 
           <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            <p>© 2025 ForestGuard AI - Kenya Forest Emergency Alert Network. All rights reserved.</p>
-            <p className="mt-2">Built with 💚 for Kenya's Forests | Wangari Maathai Hackathon 2025</p>
+            <p>© 2025 ForestWatch KE - Kenya Forest Emergency Alert Network. All rights reserved.</p>
+            <p className="mt-2">Built for 🇰🇪 Kenya | Powered by NASA FIRMS, Africa's Talking & Scroll Blockchain</p>
           </div>
         </div>
       </footer>
