@@ -362,16 +362,17 @@ export default function RangerIncidentDetail() {
                 <h2 className="text-xl font-bold mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <Button
-                        onClick={() =>
-                            window.open(
-                                `https://www.google.com/maps/search/?api=1&query=${incident.lat},${incident.lon}`,
-                                '_blank'
-                            )
-                        }
+                        asChild
                         className="bg-blue-600 hover:bg-blue-700"
                     >
-                        <Navigation className="h-4 w-4 mr-2" />
-                        Navigate
+                        <a
+                            href={`https://www.google.com/maps/search/?api=1&query=${incident.lat},${incident.lon}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <Navigation className="h-4 w-4 mr-2" />
+                            Navigate
+                        </a>
                     </Button>
 
                     {incident.incident_status === 'reported' && (

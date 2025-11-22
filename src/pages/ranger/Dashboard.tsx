@@ -103,12 +103,15 @@ export default function RangerDashboard() {
         switch (status) {
             case 'resolved':
                 return 'bg-green-100 text-green-800 border-green-300';
-            case 'in_progress':
-                return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-            case 'verified':
+            case 'en_route':
+            case 'on_scene':
                 return 'bg-blue-100 text-blue-800 border-blue-300';
+            case 'assigned':
+                return 'bg-purple-100 text-purple-800 border-purple-300';
+            case 'false_alarm':
+                return 'bg-gray-100 text-gray-600 border-gray-300';
             default:
-                return 'bg-gray-100 text-gray-800 border-gray-300';
+                return 'bg-yellow-100 text-yellow-800 border-yellow-300';
         }
     };
 
@@ -133,10 +136,10 @@ export default function RangerDashboard() {
         return <TreeDeciduous className="h-5 w-5" />;
     };
 
-    const activeCount = incidents.filter(i => i.incident_status !== 'resolved').length;
+    const activeCount = incidents.filter(i => i.incident_status !== 'resolved' && i.incident_status !== 'false_alarm').length;
     const resolvedCount = incidents.filter(i => i.incident_status === 'resolved').length;
     const highSeverityCount = incidents.filter(i =>
-        (i.severity === 'high' || i.severity === 'critical') && i.incident_status !== 'resolved'
+        (i.severity === 'high' || i.severity === 'critical') && i.incident_status !== 'resolved' && i.incident_status !== 'false_alarm'
     ).length;
 
     return (
