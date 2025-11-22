@@ -15,7 +15,6 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico'],
       manifest: {
         name: 'ForestGuard AI',
         short_name: 'ForestGuard',
@@ -25,13 +24,13 @@ export default defineConfig(({ mode }) => ({
         display: 'standalone',
         icons: [
           {
-            src: '/placeholder.svg',
+            src: '/kfean-logo.svg',
             sizes: '192x192',
             type: 'image/svg+xml',
             purpose: 'any maskable'
           },
           {
-            src: '/placeholder.svg',
+            src: '/kfean-logo.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'any maskable'
