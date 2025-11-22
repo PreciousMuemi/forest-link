@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Camera, Map, AlertTriangle } from 'lucide-react';
 
 // Import hero images
 import heroWildfire from '@/assets/hero-wildfire.jpg';
@@ -18,18 +19,26 @@ const heroImages = [
 ];
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImage((prev) => (prev + 1) % heroImages.length);
-    }, 6000);
+    }, 6000); // Change image every 6 seconds
 
     return () => clearInterval(interval);
   }, []);
 
+  const scrollToReporter = () => {
+    const reporterSection = document.getElementById('field-reporter');
+    if (reporterSection) {
+      reporterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   return (
-    <section className="relative min-h-[85vh] w-full overflow-hidden flex items-center">
+    <section className="relative h-screen w-full overflow-hidden">
       {/* Slideshow Background */}
       <div className="absolute inset-0 z-0">
         {heroImages.map((image, index) => (
@@ -42,58 +51,71 @@ const HeroSection = () => {
               backgroundImage: `url(${image})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
+              animation: index === currentImage ? 'slideshow 18s ease-in-out infinite' : 'none',
             }}
           />
         ))}
       </div>
 
-      {/* Subtle Overlay */}
+      {/* Dark Gradient Overlay */}
       <div className="absolute inset-0 z-10 bg-gradient-overlay" />
 
       {/* Content */}
-      <div className="relative z-20 w-full px-6 py-20">
-        <div className="max-w-4xl mx-auto text-center">
+      <div className="relative z-20 flex h-full items-center justify-center px-4">
+      <div className="max-w-5xl text-center">
           {/* Main Headline */}
-          <h1 className="mb-6 text-4xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight tracking-tight">
-            Unified Forest Threat Intelligence for Kenya
+          <h1 className="mb-8 text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-none tracking-tighter animate-fade-in-up text-balance">
+            Forest Intelligence
+            <br />
+            <span className="text-accent inline-block">Command Center</span>
           </h1>
 
           {/* Subtext */}
-          <p className="mb-10 text-lg md:text-xl text-foreground/80 max-w-2xl mx-auto leading-relaxed">
-            Bringing together NASA FIRMS, SMS alerts, USSD reports, and community submissions into one national coordination platform.
+          <p className="mb-12 text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed animate-fade-in-up [animation-delay:200ms]">
+            Real-time threat monitoring and coordinated ranger response.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up [animation-delay:400ms]">
             <Button
               size="lg"
-              className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold px-8 py-6 text-lg rounded-lg shadow-medium transition-all duration-300 group"
+              onClick={() => navigate('/admin')}
+              className="bg-accent hover:bg-accent/90 text-foreground font-bold px-10 py-7 text-xl rounded-2xl shadow-lg transition-all duration-300 hover-lift group"
             >
-              Request Access
-              <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+              <Map className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
+              Access Command Center
             </Button>
             
             <Button
               size="lg"
               variant="outline"
-              className="border-2 border-foreground/30 text-foreground hover:bg-foreground/10 font-semibold px-8 py-6 text-lg rounded-lg transition-all duration-300"
+              onClick={scrollToReporter}
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold px-10 py-7 text-xl rounded-2xl transition-all duration-300 hover-lift group"
             >
-              View Demo
+              <Camera className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
+              View Threat Map
             </Button>
           </div>
         </div>
       </div>
 
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+        <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center pt-2">
+          <div className="w-1 h-3 bg-white/50 rounded-full" />
+        </div>
+      </div>
+
       {/* Slideshow Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+      <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-20 flex gap-2">
         {heroImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentImage(index)}
-            className={`h-1.5 rounded-full transition-all duration-300 ${
+            className={`h-2 rounded-full transition-all duration-300 ${
               index === currentImage
                 ? 'w-8 bg-accent'
-                : 'w-1.5 bg-foreground/40 hover:bg-foreground/60'
+                : 'w-2 bg-white/50 hover:bg-white/70'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />
