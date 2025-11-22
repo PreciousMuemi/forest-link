@@ -51,6 +51,7 @@ interface Incident {
     sender_phone: string | null;
     assigned_ranger: string | null;
     region: string | null;
+    assigned_at: string | null;
 }
 
 export default function RangerIncidentDetail() {
@@ -105,7 +106,8 @@ export default function RangerIncidentDetail() {
                 incident_status: newStatus,
             };
 
-            if (newStatus === 'verified' && !incident.verified) {
+            // Handle verification separately from status
+            if (newStatus === 'en_route' && !incident.verified) {
                 updates.verified = true;
                 updates.verified_by = 'ranger-demo@example.com';
                 updates.verified_at = new Date().toISOString();
@@ -238,16 +240,22 @@ export default function RangerIncidentDetail() {
     const statusTimeline = [
         { status: 'reported', label: 'Reported', timestamp: incident.created_at, completed: true },
         {
-            status: 'verified',
-            label: 'Verified',
-            timestamp: incident.verified_at,
-            completed: incident.verified,
+            status: 'assigned',
+            label: 'Assigned to Ranger',
+            timestamp: incident.assigned_at,
+            completed: incident.incident_status !== 'reported',
         },
         {
-            status: 'in_progress',
-            label: 'In Progress',
+            status: 'en_route',
+            label: 'En Route',
             timestamp: null,
-            completed: incident.incident_status === 'in_progress' || incident.incident_status === 'resolved',
+            completed: ['en_route', 'on_scene', 'resolved'].includes(incident.incident_status),
+        },
+        {
+            status: 'on_scene',
+            label: 'On Scene',
+            timestamp: null,
+            completed: ['on_scene', 'resolved'].includes(incident.incident_status),
         },
         {
             status: 'resolved',
@@ -366,29 +374,40 @@ export default function RangerIncidentDetail() {
                         Navigate
                     </Button>
 
-                    {!incident.verified && (
+                    {incident.incident_status === 'reported' && (
                         <Button
-                            onClick={() => updateStatus('verified')}
+                            onClick={() => updateStatus('assigned')}
                             disabled={updating}
-                            className="bg-green-600 hover:bg-green-700"
+                            className="bg-blue-600 hover:bg-blue-700"
                         >
                             {updating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <CheckCircle className="h-4 w-4 mr-2" />}
-                            Verify
+                            Accept Assignment
                         </Button>
                     )}
 
-                    {incident.verified && incident.incident_status !== 'in_progress' && incident.incident_status !== 'resolved' && (
+                    {incident.incident_status === 'assigned' && (
                         <Button
-                            onClick={() => updateStatus('in_progress')}
+                            onClick={() => updateStatus('en_route')}
+                            disabled={updating}
+                            className="bg-orange-600 hover:bg-orange-700"
+                        >
+                            {updating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Navigation className="h-4 w-4 mr-2" />}
+                            En Route
+                        </Button>
+                    )}
+
+                    {incident.incident_status === 'en_route' && (
+                        <Button
+                            onClick={() => updateStatus('on_scene')}
                             disabled={updating}
                             className="bg-orange-600 hover:bg-orange-700"
                         >
                             {updating ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <AlertTriangle className="h-4 w-4 mr-2" />}
-                            In Progress
+                            On Scene
                         </Button>
                     )}
 
-                    {incident.incident_status !== 'resolved' && (
+                    {incident.incident_status !== 'resolved' && incident.incident_status !== 'false_alarm' && (
                         <Button
                             onClick={() => updateStatus('resolved')}
                             disabled={updating}
