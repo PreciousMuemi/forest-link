@@ -187,10 +187,10 @@ export const IncidentTable = ({ incidents, onUpdate, user, selectedIds = [], onT
 
   return (
     <>
-      <div className="rounded-md border overflow-x-auto">
+      <div className="rounded-md border overflow-x-auto glass-card">
         <Table>
           <TableHeader>
-            <TableRow>
+            <TableRow className="hover:bg-secondary/50">
               {onToggleSelectAll && (
                 <TableHead className="w-[50px]">
                   <Checkbox
@@ -200,14 +200,14 @@ export const IncidentTable = ({ incidents, onUpdate, user, selectedIds = [], onT
                   />
                 </TableHead>
               )}
-              <TableHead>Type</TableHead>
-              <TableHead>Source</TableHead>
-              <TableHead>Severity</TableHead>
-              <TableHead>Ranger</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="text-foreground font-semibold">Type</TableHead>
+              <TableHead className="text-foreground font-semibold">Source</TableHead>
+              <TableHead className="text-foreground font-semibold">Severity</TableHead>
+              <TableHead className="text-foreground font-semibold">Status</TableHead>
+              <TableHead className="text-foreground font-semibold">Ranger</TableHead>
+              <TableHead className="text-foreground font-semibold">Location</TableHead>
+              <TableHead className="text-foreground font-semibold">Date</TableHead>
+              <TableHead className="text-right text-foreground font-semibold">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -219,7 +219,10 @@ export const IncidentTable = ({ incidents, onUpdate, user, selectedIds = [], onT
               </TableRow>
             ) : (
               incidents.map((incident) => (
-                <TableRow key={incident.id} className={selectedIds.includes(incident.id) ? 'bg-muted/50' : ''}>
+                <TableRow 
+                  key={incident.id} 
+                  className={`${selectedIds.includes(incident.id) ? 'bg-accent/5 border-l-4 border-l-accent' : ''} hover:bg-secondary/30 transition-colors`}
+                >
                   {onToggleSelect && (
                     <TableCell>
                       <Checkbox
@@ -229,22 +232,25 @@ export const IncidentTable = ({ incidents, onUpdate, user, selectedIds = [], onT
                       />
                     </TableCell>
                   )}
-                  <TableCell className="font-medium">{incident.threat_type}</TableCell>
+                  <TableCell className="font-medium text-foreground">{incident.threat_type}</TableCell>
                   <TableCell>
-                    <Badge variant="outline" className="gap-1">
+                    <Badge variant="outline" className="gap-1 bg-gradient-card border-primary/20">
                       {getSourceIcon(incident.source)}
                       {getSourceLabel(incident.source)}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={getSeverityColor(incident.severity)}>
+                    <Badge variant={getSeverityColor(incident.severity)} className="font-semibold">
                       {incident.severity}
                     </Badge>
                   </TableCell>
                   <TableCell>
+                    {getIncidentStatusBadge(incident.incident_status || 'reported')}
+                  </TableCell>
+                  <TableCell>
                     {incident.rangers ? (
                       <div className="text-sm">
-                        <div className="font-medium">{incident.rangers.name}</div>
+                        <div className="font-medium text-foreground">{incident.rangers.name}</div>
                         {incident.eta_minutes && (
                           <div className="flex items-center gap-1 text-xs text-muted-foreground">
                             <Clock className="h-3 w-3" />
@@ -253,21 +259,18 @@ export const IncidentTable = ({ incidents, onUpdate, user, selectedIds = [], onT
                         )}
                       </div>
                     ) : (
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" className="text-xs bg-muted/50">
                         Unassigned
                       </Badge>
                     )}
                   </TableCell>
                   <TableCell>
-                    {getIncidentStatusBadge(incident.incident_status || 'reported')}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1 text-sm">
-                      <MapPin className="h-3 w-3" />
+                    <div className="flex items-center gap-1 text-sm text-foreground">
+                      <MapPin className="h-3 w-3 text-accent" />
                       {incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}
                     </div>
                   </TableCell>
-                  <TableCell className="text-sm">
+                  <TableCell className="text-sm text-muted-foreground">
                     {new Date(incident.timestamp).toLocaleDateString()}
                   </TableCell>
                   <TableCell className="text-right space-x-2">
