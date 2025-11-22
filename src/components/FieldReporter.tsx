@@ -284,44 +284,39 @@ const FieldReporter = () => {
         </div>
       )}
 
-      {/* Results - Clean Cards */}
+      {/* Results - Simplified User-Friendly Message */}
       {result && (
         <div className="space-y-4">
           {result.threatDetected ? (
-            <div className="p-6 bg-destructive/10 border-2 border-destructive/30 rounded-xl">
+            <div className="p-6 bg-success/10 border-2 border-success/30 rounded-xl">
               <div className="flex items-start gap-4">
-                <XCircle className="w-8 h-8 text-destructive flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-bold text-xl text-destructive mb-3">Threat Detected!</h3>
-                  <p className="text-sm mb-2">
-                    Type: <span className="font-semibold">{result.incident?.threat_type}</span>
+                <CheckCircle className="w-8 h-8 text-success flex-shrink-0 mt-1" />
+                <div className="flex-1">
+                  <h3 className="font-bold text-2xl text-success mb-3">🙏 Thank You!</h3>
+                  <p className="text-base text-foreground mb-4">
+                    Your report has been received. Our team will review it shortly and take appropriate action.
                   </p>
-                  <p className="text-sm mb-2">
-                    Severity: <span className="font-semibold capitalize">{result.incident?.severity}</span>
-                  </p>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {result.incident?.description}
-                  </p>
-                  <div className="mt-4 p-4 bg-white rounded-lg border border-border">
-                    <p className="text-sm font-semibold mb-2">Actions Taken:</p>
-                    <ul className="text-sm text-muted-foreground space-y-1.5">
-                      <li>✓ Incident logged to database</li>
-                      <li>✓ Alert sent via WhatsApp</li>
-                      <li>✓ Location marked on map</li>
-                      <li>✓ Photo saved for records</li>
-                    </ul>
+                  <div className="p-4 bg-white rounded-lg border border-border">
+                    <p className="text-sm font-semibold text-muted-foreground mb-2">Report Details:</p>
+                    <div className="space-y-1 text-sm">
+                      <p><span className="text-muted-foreground">Type:</span> <span className="font-semibold text-foreground">{result.incident?.threat_type}</span></p>
+                      <p><span className="text-muted-foreground">Status:</span> <span className="font-semibold text-orange-600">Pending Review</span></p>
+                    </div>
                   </div>
+                  <p className="text-sm text-muted-foreground mt-4">
+                    💚 Thank you for helping protect Kenya's forests!
+                  </p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-6 bg-success/10 border-2 border-success/30 rounded-xl">
+            <div className="p-6 bg-muted/50 border-2 border-border rounded-xl">
               <div className="flex items-start gap-4">
-                <CheckCircle className="w-8 h-8 text-success flex-shrink-0 mt-1" />
+                <CheckCircle className="w-8 h-8 text-muted-foreground flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold text-xl text-success mb-2">No Threats Detected</h3>
+                  <h3 className="font-bold text-xl text-foreground mb-2">No Threats Detected</h3>
                   <p className="text-sm text-muted-foreground">
-                    The ML analysis found no signs of deforestation or forest fires in this image.
+                    Our analysis found no environmental threats in this image. Thank you for staying vigilant!
                   </p>
                 </div>
               </div>

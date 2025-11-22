@@ -7,7 +7,6 @@ import ThreatMap from '@/components/ThreatMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { ThreatGallery } from '@/components/ThreatGallery';
-import { SMSInstructions } from '@/components/SMSInstructions';
 import {
   AlertTriangle,
   Shield,
@@ -174,10 +173,6 @@ const Index = () => {
             </Card>
           </div>
 
-          {/* SMS/USSD Instructions */}
-          <div className="mt-12 max-w-4xl mx-auto">
-            <SMSInstructions />
-          </div>
         </div>
       </section>
 

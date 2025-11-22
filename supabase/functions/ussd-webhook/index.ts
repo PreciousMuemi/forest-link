@@ -38,7 +38,7 @@ Deno.serve(async (req) => {
 
     // Get or create session data
     let session = sessions.get(sessionId) || { step: 'main' };
-    
+
     // Parse user input (text contains the full input path: "1*2" means menu 1, then option 2)
     // Empty string means first request (main menu)
     const inputs = text && text.trim() !== '' ? text.split('*') : [];
@@ -51,17 +51,21 @@ Deno.serve(async (req) => {
 
     // Main menu - show when no input or empty text
     if (inputs.length === 0 || text === '') {
-      response = `CON Welcome to KFEAN Forest Alert System
+      response = `CON 🌳 ForestGuard Kenya
+Protect Our Forests
+
 1. Report Fire 🔥
-2. Report Logging 🪓
-3. Report Charcoal Production
-4. Check My Last Report
-5. Emergency Contact`;
+2. Report Illegal Logging 🪓
+3. Report Charcoal Production ⚫
+4. Report Other Threat ⚠️
+5. Check My Reports 📋
+6. Report Another Incident
+0. Emergency Contacts 📞`;
     }
     // User selected an option from main menu
     else if (inputs.length === 1) {
       const option = inputs[0];
-      
+
       if (option === '1') {
         session.threatType = 'fire';
         session.step = 'location';
@@ -78,47 +82,76 @@ Enter location name (e.g., Mau Forest, Aberdare):`;
         response = `CON Report Charcoal Production
 Enter location name:`;
       } else if (option === '4') {
-        // Check last report
-        const { data: lastReport } = await supabase
+        session.threatType = 'other';
+        session.step = 'custom_threat';
+        response = `CON Report Other Threat
+Enter threat type (e.g., Wildlife Poaching, Drought, Wildfire):`;
+      } else if (option === '5') {
+        // Check all reports from this number
+        const { data: reports } = await supabase
           .from('incidents')
-          .select('id, threat_type, created_at, incident_status')
+          .select('id, threat_type, created_at, incident_status, verified')
           .eq('sender_phone', phoneNumber)
           .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
+          .limit(3);
 
-        if (lastReport) {
-          const incidentId = lastReport.id.substring(0, 8).toUpperCase();
-          const status = lastReport.incident_status || 'reported';
-          const date = new Date(lastReport.created_at).toLocaleDateString();
-          response = `END Your Last Report
-ID: #${incidentId}
-Type: ${lastReport.threat_type}
-Status: ${status}
-Date: ${date}
-
-Thank you for protecting our forests!`;
+        if (reports && reports.length > 0) {
+          let reportsList = 'Your Recent Reports:\n\n';
+          reports.forEach((report: any, index: number) => {
+            const incidentId = report.id.substring(0, 8).toUpperCase();
+            const status = report.verified ? '✅ Verified' : '⏳ Pending';
+            reportsList += `${index + 1}. #${incidentId} - ${report.threat_type}\n   Status: ${status}\n\n`;
+          });
+          response = `END ${reportsList}Thank you for protecting our forests! 🌳`;
         } else {
-          response = `END No reports found from your number. Press OK to exit.`;
+          response = `END No reports found from your number.\n\nDial ${serviceCode} to report a threat.`;
         }
         endSession = true;
-      } else if (option === '5') {
-        response = `END Emergency Hotline: +254 700 000 000
+      } else if (option === '6') {
+        // Return to main menu
+        response = `CON 🌳 ForestGuard Kenya
+Protect Our Forests
 
-Kenya Forest Service
-Email: alerts@kfs.go.ke
+1. Report Fire 🔥
+2. Report Illegal Logging 🪓
+3. Report Charcoal Production ⚫
+4. Report Other Threat ⚠️
+5. Check My Reports 📋
+6. Report Another Incident
+0. Emergency Contacts 📞`;
+      } else if (option === '0') {
+        response = `END 📞 Emergency Contacts
 
-For life-threatening emergencies, call 999.`;
+🚨 Emergency: 999
+🌳 Kenya Forest Service: +254 700 000 000
+📧 Email: alerts@kfs.go.ke
+
+ForestGuard Kenya
+Thank you for protecting our forests!`;
         endSession = true;
       } else {
         response = `END Invalid option. Please dial ${serviceCode} again.`;
         endSession = true;
       }
     }
-    // User entered location
+    // User entered custom threat type
+    else if (inputs.length === 2 && session.step === 'custom_threat') {
+      const customThreat = lastInput.trim();
+
+      if (customThreat.length < 3) {
+        response = `END Threat type too short. Please dial ${serviceCode} again.`;
+        endSession = true;
+      } else {
+        session.threatType = customThreat.toLowerCase();
+        session.step = 'location';
+        response = `CON Report ${customThreat}
+Enter location name:`;
+      }
+    }
+    // User entered location (for predefined threats)
     else if (inputs.length === 2 && session.step === 'location') {
       const location = lastInput.trim();
-      
+
       if (location.length < 2) {
         response = `END Location too short. Please dial ${serviceCode} again.`;
         endSession = true;
@@ -133,14 +166,32 @@ Location: ${location}
 2. Cancel`;
       }
     }
-    // User confirmed or cancelled
+    // User entered location (for custom threats - one more step)
+    else if (inputs.length === 3 && session.step === 'location') {
+      const location = lastInput.trim();
+
+      if (location.length < 2) {
+        response = `END Location too short. Please dial ${serviceCode} again.`;
+        endSession = true;
+      } else {
+        session.location = location;
+        session.step = 'confirm';
+        response = `CON Confirm Report:
+Type: ${session.threatType}
+Location: ${location}
+
+1. Confirm & Send
+2. Cancel`;
+      }
+    }
+    // User confirmed or cancelled (predefined threats)
     else if (inputs.length === 3 && session.step === 'confirm') {
       const confirm = lastInput;
-      
+
       if (confirm === '1') {
         // Create incident report
         const location = session.location.toLowerCase();
-        
+
         // Simple geocoding for Kenya
         const knownLocations: Record<string, [number, number]> = {
           'nairobi': [-1.2921, 36.8219],
@@ -193,7 +244,7 @@ Location: ${location}
           response = `END Error submitting report. Please try again or call our hotline.`;
         } else {
           const incidentId = incident.id.substring(0, 8).toUpperCase();
-          
+
           // Send SMS confirmation via Twilio
           try {
             const twilioSid = Deno.env.get('TWILIO_ACCOUNT_SID');
@@ -202,10 +253,10 @@ Location: ${location}
 
             if (twilioSid && twilioToken && twilioPhone) {
               const smsBody = `✅ KFEAN Report Received!\n\nID: #${incidentId}\nType: ${session.threatType}\nLocation: ${session.location}\n\nRangers alerted. Thank you for protecting our forests!`;
-              
+
               const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`;
               const twilioAuth = btoa(`${twilioSid}:${twilioToken}`);
-              
+
               await fetch(twilioUrl, {
                 method: 'POST',
                 headers: {
@@ -235,7 +286,7 @@ You will receive SMS updates.
 
 Thank you for protecting our forests! 🌳`;
         }
-        
+
         endSession = true;
         sessions.delete(sessionId); // Clean up session
       } else if (confirm === '2') {
