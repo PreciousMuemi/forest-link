@@ -4,7 +4,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/HeroSection';
 import ThreatMap from '@/components/ThreatMap';
-import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { ThreatGallery } from '@/components/ThreatGallery';
 import { ForestAmbiance } from '@/components/ForestAmbiance';
@@ -177,27 +176,6 @@ const Index = () => {
             </h3>
           </div>
           <ThreatGallery />
-        </div>
-      </section>
-
-      {/* Field Reporter Section - Moved Lower */}
-      <section id="field-reporter" className="py-20 px-4 bg-background relative z-10">
-        <div className="container mx-auto">
-          <div className="text-center mb-8 animate-fade-in-up">
-            <h3 className="text-2xl font-bold text-foreground mb-2">
-              Report a Threat
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Submit via SMS, USSD, or web form
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto">
-            <Card className="p-8 shadow-government-lg border-2 border-primary/10 glass-card">
-              <FieldReporter />
-            </Card>
-          </div>
-
         </div>
       </section>
 
