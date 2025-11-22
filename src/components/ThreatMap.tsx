@@ -124,12 +124,28 @@ const ThreatMap = () => {
       {/* Filter Controls */}
       <Card className="p-6 bg-gradient-card">
         <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <Filter className="h-5 w-5 text-primary" />
-            <h3 className="font-semibold text-foreground">Filter Incidents</h3>
-            <p className="text-sm text-muted-foreground ml-2">
-              Adjust filters to view specific threats
-            </p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Filter className="h-5 w-5 text-primary" />
+              <h3 className="font-semibold text-foreground">Filter Incidents</h3>
+              <p className="text-sm text-muted-foreground ml-2">
+                Adjust filters to view specific threats
+              </p>
+            </div>
+            {(sourceFilter !== 'all' || severityFilter !== 'all' || statusFilter !== 'all' || verificationFilter !== 'all') && (
+              <button
+                onClick={() => {
+                  setSourceFilter('all');
+                  setSeverityFilter('all');
+                  setStatusFilter('all');
+                  setVerificationFilter('all');
+                  toast.success('Filters cleared');
+                }}
+                className="text-sm text-primary hover:underline font-medium"
+              >
+                Clear Filters
+              </button>
+            )}
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -197,11 +213,19 @@ const ThreatMap = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 pt-2 border-t border-border">
-            <Radio className="h-4 w-4 text-primary" />
-            <p className="text-sm text-muted-foreground">
-              Live incidents plotted from community reports, SMS, USSD, and NASA satellite detections.
-            </p>
+          <div className="flex items-center justify-between gap-4 pt-2 border-t border-border">
+            <div className="flex items-center gap-2">
+              <Radio className="h-4 w-4 text-primary" />
+              <p className="text-sm text-muted-foreground">
+                Live incidents plotted from community reports, SMS, USSD, and NASA satellite detections.
+              </p>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full">
+              <CheckCircle className="h-4 w-4 text-primary" />
+              <span className="text-sm font-semibold text-primary">
+                {filteredIncidents.length} of {incidents.length} incidents
+              </span>
+            </div>
           </div>
         </div>
       </Card>
@@ -295,19 +319,25 @@ const ThreatMap = () => {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground">Total Incidents</p>
-          <p className="text-2xl font-bold">{incidents.length}</p>
-          <p className="text-xs text-muted-foreground">Since launch</p>
+        <Card className="p-4 bg-gradient-card hover:shadow-lg transition-shadow">
+          <p className="text-sm text-muted-foreground">Filtered Incidents</p>
+          <p className="text-2xl font-bold text-primary">{filteredIncidents.length}</p>
+          <p className="text-xs text-muted-foreground">
+            {filteredIncidents.length === incidents.length ? 'All incidents shown' : `${incidents.length - filteredIncidents.length} hidden by filters`}
+          </p>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground">Live Satellite Detections</p>
-          <p className="text-2xl font-bold">{incidents.filter((i) => i.source === 'satellite').length}</p>
+        <Card className="p-4 bg-gradient-card hover:shadow-lg transition-shadow">
+          <p className="text-sm text-muted-foreground">Satellite Detections</p>
+          <p className="text-2xl font-bold text-warning">
+            {filteredIncidents.filter((i) => i.source === 'satellite').length}
+          </p>
           <p className="text-xs text-muted-foreground">NASA FIRMS / VIIRS feed</p>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-muted-foreground">Verified Community Reports</p>
-          <p className="text-2xl font-bold">{incidents.filter((i) => i.verified).length}</p>
+        <Card className="p-4 bg-gradient-card hover:shadow-lg transition-shadow">
+          <p className="text-sm text-muted-foreground">Verified Reports</p>
+          <p className="text-2xl font-bold text-success">
+            {filteredIncidents.filter((i) => i.verified).length}
+          </p>
           <p className="text-xs text-muted-foreground">Approved by admin team</p>
         </Card>
       </div>
