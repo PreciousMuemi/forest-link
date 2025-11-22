@@ -172,13 +172,13 @@ const FieldReporter = () => {
   return (
     <Card className="p-8 shadow-xl glass-card border-2 border-primary/20">
       <div className="mb-8">
-        <h2 className="text-3xl font-bold flex items-center gap-3 mb-3 text-foreground">
-          <div className="bg-gradient-primary p-3 rounded-xl shadow-soft">
-            <Camera className="w-7 h-7 text-white" />
+        <h2 className="text-4xl font-extrabold flex items-center gap-3 mb-4 text-foreground tracking-tight">
+          <div className="bg-gradient-primary p-4 rounded-2xl shadow-soft glow-pulse">
+            <Camera className="w-8 h-8 text-white" />
           </div>
           Field Reporter
         </h2>
-        <p className="text-base text-muted-foreground">
+        <p className="text-lg text-muted-foreground leading-relaxed font-medium">
           Take or upload a photo to detect deforestation and forest fires using ML
         </p>
       </div>
@@ -202,19 +202,19 @@ const FieldReporter = () => {
         aria-label="Upload image from device"
       />
 
-      {/* Upload Buttons - Clean Design */}
+      {/* Upload Buttons */}
       {!preview && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
           <Button
             onClick={handleCameraClick}
             disabled={uploading || analyzing}
             size="lg"
-            className="h-28 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg"
+            className="h-32 text-xl font-bold bg-gradient-primary hover:opacity-90 shadow-government hover:shadow-glow transition-all duration-300 hover-lift"
           >
             {uploading || analyzing ? (
-              <Loader2 className="w-6 h-6 animate-spin mr-2" />
+              <Loader2 className="w-7 h-7 animate-spin mr-3" />
             ) : (
-              <Camera className="w-6 h-6 mr-2" />
+              <Camera className="w-7 h-7 mr-3" />
             )}
             Take Photo
           </Button>
@@ -224,9 +224,9 @@ const FieldReporter = () => {
             disabled={uploading || analyzing}
             variant="outline"
             size="lg"
-            className="h-28 text-lg font-semibold border-2 hover:bg-muted shadow-lg"
+            className="h-32 text-xl font-bold border-3 border-primary text-foreground hover:bg-gradient-card shadow-government hover:shadow-glow transition-all duration-300 hover-lift"
           >
-            <Upload className="w-6 h-6 mr-2" />
+            <Upload className="w-7 h-7 mr-3" />
             Upload Image
           </Button>
         </div>
@@ -257,14 +257,14 @@ const FieldReporter = () => {
 
       {/* Processing Status */}
       {(uploading || analyzing) && (
-        <div className="flex items-center justify-center gap-4 p-6 bg-gradient-card border-2 border-primary/30 rounded-xl mb-6 backdrop-blur-sm">
-          <Loader2 className="w-7 h-7 animate-spin text-primary" />
+        <div className="flex items-center justify-center gap-5 p-8 bg-gradient-card border-2 border-primary/30 rounded-xl mb-6 backdrop-blur-sm">
+          <Loader2 className="w-9 h-9 animate-spin text-primary" />
           <div>
-            <p className="font-semibold text-foreground">
+            <p className="font-bold text-lg text-foreground">
               {uploading && 'Uploading photo...'}
               {analyzing && 'Analyzing with ML models...'}
             </p>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground font-medium">
               This may take a few moments
             </p>
           </div>
@@ -273,11 +273,11 @@ const FieldReporter = () => {
 
       {/* Location Badge */}
       {location && (
-        <div className="flex items-center gap-3 p-4 bg-gradient-card border-2 border-accent/30 rounded-xl mb-6 backdrop-blur-sm">
-          <MapPin className="w-6 h-6 text-accent" />
-          <div className="text-sm">
-            <p className="font-semibold text-foreground">Location captured</p>
-            <p className="text-muted-foreground">
+        <div className="flex items-center gap-4 p-5 bg-gradient-card border-2 border-accent/30 rounded-xl mb-6 backdrop-blur-sm">
+          <MapPin className="w-7 h-7 text-accent" />
+          <div className="text-base">
+            <p className="font-bold text-foreground">Location captured</p>
+            <p className="text-muted-foreground font-medium">
               {location.lat.toFixed(6)}, {location.lon.toFixed(6)}
             </p>
           </div>
@@ -288,34 +288,34 @@ const FieldReporter = () => {
       {result && (
         <div className="space-y-4">
           {result.threatDetected ? (
-            <div className="p-6 bg-gradient-card border-2 border-success/30 rounded-xl backdrop-blur-sm">
-              <div className="flex items-start gap-4">
-                <CheckCircle className="w-8 h-8 text-success flex-shrink-0 mt-1" />
+            <div className="p-8 bg-gradient-card border-2 border-success/30 rounded-xl backdrop-blur-sm">
+              <div className="flex items-start gap-5">
+                <CheckCircle className="w-10 h-10 text-success flex-shrink-0 mt-1 animate-pulse" />
                 <div className="flex-1">
-                  <h3 className="font-bold text-2xl text-success mb-3">🙏 Thank You!</h3>
-                  <p className="text-base text-foreground mb-4">
+                  <h3 className="font-extrabold text-3xl text-success mb-4 tracking-tight">🙏 Thank You!</h3>
+                  <p className="text-lg text-foreground mb-6 leading-relaxed font-medium">
                     Your report has been received. Our team will review it shortly and take appropriate action.
                   </p>
-                  <div className="p-4 bg-gradient-glass rounded-lg border border-border/50 backdrop-blur-md">
-                    <p className="text-sm font-semibold text-muted-foreground mb-2">Report Details:</p>
-                    <div className="space-y-1 text-sm">
-                      <p><span className="text-muted-foreground">Type:</span> <span className="font-semibold text-foreground">{result.incident?.threat_type}</span></p>
-                      <p><span className="text-muted-foreground">Status:</span> <span className="font-semibold text-accent">Pending Review</span></p>
+                  <div className="p-5 bg-gradient-glass rounded-xl border border-border/50 backdrop-blur-md">
+                    <p className="text-base font-bold text-muted-foreground mb-3">Report Details:</p>
+                    <div className="space-y-2 text-base">
+                      <p><span className="text-muted-foreground font-medium">Type:</span> <span className="font-bold text-foreground">{result.incident?.threat_type}</span></p>
+                      <p><span className="text-muted-foreground font-medium">Status:</span> <span className="font-bold text-accent">Pending Review</span></p>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-4">
+                  <p className="text-base text-muted-foreground mt-5 font-medium">
                     💚 Thank you for helping protect Kenya&apos;s forests!
                   </p>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="p-6 bg-gradient-card border-2 border-border rounded-xl backdrop-blur-sm">
-              <div className="flex items-start gap-4">
-                <CheckCircle className="w-8 h-8 text-muted-foreground flex-shrink-0 mt-1" />
+            <div className="p-8 bg-gradient-card border-2 border-border rounded-xl backdrop-blur-sm">
+              <div className="flex items-start gap-5">
+                <CheckCircle className="w-10 h-10 text-muted-foreground flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-bold text-xl text-foreground mb-2">No Threats Detected</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <h3 className="font-extrabold text-2xl text-foreground mb-3 tracking-tight">No Threats Detected</h3>
+                  <p className="text-base text-muted-foreground leading-relaxed font-medium">
                     Our analysis found no environmental threats in this image. Thank you for staying vigilant!
                   </p>
                 </div>
@@ -329,7 +329,7 @@ const FieldReporter = () => {
               setResult(null);
               setLocation(null);
             }}
-            className="w-full h-12 text-base font-semibold"
+            className="w-full h-14 text-lg font-bold hover-lift"
           >
             Report Another Incident
           </Button>
@@ -338,13 +338,13 @@ const FieldReporter = () => {
 
       {/* Instructions */}
       {!preview && !uploading && !analyzing && (
-        <div className="p-5 bg-gradient-card border-2 border-border rounded-xl backdrop-blur-sm">
-          <p className="text-sm font-semibold mb-3 text-foreground">How it works:</p>
-          <ol className="text-sm text-muted-foreground space-y-2 list-decimal list-inside">
-            <li>Take a photo or upload an image</li>
-            <li>We&apos;ll capture your GPS location automatically</li>
-            <li>Our ML models analyze the image for threats</li>
-            <li>If detected, an incident is created and alerts are sent</li>
+        <div className="p-6 bg-gradient-card border-2 border-border rounded-xl backdrop-blur-sm">
+          <p className="text-base font-bold mb-4 text-foreground">How it works:</p>
+          <ol className="text-base text-muted-foreground space-y-3 list-decimal list-inside leading-relaxed">
+            <li className="font-medium">Take a photo or upload an image</li>
+            <li className="font-medium">We&apos;ll capture your GPS location automatically</li>
+            <li className="font-medium">Our ML models analyze the image for threats</li>
+            <li className="font-medium">If detected, an incident is created and alerts are sent</li>
           </ol>
         </div>
       )}
