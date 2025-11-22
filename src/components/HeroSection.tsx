@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { Map } from 'lucide-react';
+import { Camera, Map, AlertTriangle } from 'lucide-react';
 
 // Import hero images
 import heroWildfire from '@/assets/hero-wildfire.jpg';
@@ -30,6 +30,12 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const scrollToReporter = () => {
+    const reporterSection = document.getElementById('field-reporter');
+    if (reporterSection) {
+      reporterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -69,8 +75,8 @@ const HeroSection = () => {
             Real-time threat monitoring and coordinated ranger response.
           </p>
 
-          {/* Action Button */}
-          <div className="flex justify-center items-center animate-fade-in-up [animation-delay:400ms]">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up [animation-delay:400ms]">
             <Button
               size="lg"
               onClick={() => navigate('/admin')}
@@ -78,6 +84,16 @@ const HeroSection = () => {
             >
               <Map className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
               Access Command Center
+            </Button>
+            
+            <Button
+              size="lg"
+              variant="outline"
+              onClick={scrollToReporter}
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold px-10 py-7 text-xl rounded-2xl transition-all duration-300 hover-lift group"
+            >
+              <Camera className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
+              View Threat Map
             </Button>
           </div>
         </div>
