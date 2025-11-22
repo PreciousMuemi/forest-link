@@ -8,6 +8,7 @@ import { AlertTriangle, CheckCircle, Clock, AlertCircle, RefreshCw, Satellite } 
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
 import ThreatMap from '@/components/ThreatMap';
+import SatelliteMap from '@/components/SatelliteMap';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<any>(null);
@@ -54,10 +55,10 @@ export default function AdminDashboard() {
     try {
       setIsFetchingSatellite(true);
       toast.info('Fetching satellite fire hotspots from NASA FIRMS...');
-      
+
       const { error } = await supabase.functions.invoke('fetch-satellite-hotspots');
       if (error) throw error;
-      
+
       toast.success('Satellite data fetched successfully!');
       fetchDashboardData();
     } catch (error) {
@@ -89,9 +90,9 @@ export default function AdminDashboard() {
           <p className="text-muted-foreground">Real-time forest incident monitoring</p>
         </div>
         <div className="flex gap-2">
-          <Button 
-            onClick={handleFetchSatelliteData} 
-            size="sm" 
+          <Button
+            onClick={handleFetchSatelliteData}
+            size="sm"
             variant="outline"
             disabled={isFetchingSatellite}
           >
@@ -158,7 +159,7 @@ export default function AdminDashboard() {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium">Severity:</span>
               <Select value={severityFilter} onValueChange={setSeverityFilter}>
@@ -198,6 +199,22 @@ export default function AdminDashboard() {
       <Card>
         <CardContent className="p-0">
           <ThreatMap incidents={incidents} />
+        </CardContent>
+      </Card>
+
+      {/* NASA Satellite Monitoring */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Satellite className="h-5 w-5 text-primary" />
+            <div>
+              <CardTitle>NASA Satellite Fire Detection</CardTitle>
+              <CardDescription>Real-time fire hotspot detection from NASA FIRMS</CardDescription>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-0">
+          <SatelliteMap />
         </CardContent>
       </Card>
     </div>

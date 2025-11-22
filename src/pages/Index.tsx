@@ -4,22 +4,20 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import HeroSection from '@/components/HeroSection';
 import ThreatMap from '@/components/ThreatMap';
-import SatelliteMap from '@/components/SatelliteMap';
 import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { ThreatGallery } from '@/components/ThreatGallery';
 import { SMSInstructions } from '@/components/SMSInstructions';
-import { 
-  AlertTriangle, 
-  Shield, 
-  Leaf, 
-  Satellite, 
-  Globe, 
-  Activity, 
-  Zap, 
-  Eye, 
-  CheckCircle, 
-  LogOut, 
+import {
+  AlertTriangle,
+  Shield,
+  Leaf,
+  Globe,
+  Activity,
+  Zap,
+  Eye,
+  CheckCircle,
+  LogOut,
   User,
   Bell,
   Lock,
@@ -56,7 +54,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <OfflineIndicator />
-      
+
       {/* Navigation Header */}
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-lg shadow-soft">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -69,7 +67,7 @@ const Index = () => {
               <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {user ? (
               <>
@@ -183,40 +181,22 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Recent Threats Gallery */}
+      {/* Verified Threats Gallery */}
       <section className="py-20 px-4 bg-card">
         <div className="container mx-auto">
           <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-success/10 border border-success/30 mb-4">
+              <CheckCircle className="h-4 w-4 text-success" />
+              <span className="text-sm font-semibold text-success">Community Reports</span>
+            </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Recent Threat Reports
+              Community Threat Reports
             </h2>
             <p className="text-lg text-muted-foreground">
-              Real-time incidents verified by AI and blockchain
+              Real incidents reported by community members. Verified reports are displayed after admin approval.
             </p>
           </div>
           <ThreatGallery />
-        </div>
-      </section>
-
-      {/* Satellite Map Section */}
-      <section id="satellite-map-section" className="py-20 px-4 bg-background">
-        <div className="container mx-auto">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-4">
-              <Satellite className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-primary">NASA FIRMS Integration</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Live Satellite Monitoring
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Real-time fire hotspot detection from NASA satellites
-            </p>
-          </div>
-          
-          <Card className="overflow-hidden shadow-government-lg border-2 border-primary/10">
-            <SatelliteMap />
-          </Card>
         </div>
       </section>
 
@@ -235,7 +215,7 @@ const Index = () => {
               Click on any marker to view incident details and community responses
             </p>
           </div>
-          
+
           <Card className="overflow-hidden shadow-government-lg border-2 border-accent/10">
             <ThreatMap />
           </Card>
@@ -252,8 +232,8 @@ const Index = () => {
             Every report matters. Together, we can save Kenya's forests for future generations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="accent"
               onClick={() => navigate('/auth')}
               className="bg-accent hover:bg-accent/90 text-white font-semibold shadow-glow-accent"
@@ -261,8 +241,8 @@ const Index = () => {
               <User className="mr-2 h-5 w-5" />
               Create Account
             </Button>
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               variant="outline"
               onClick={() => navigate('/admin')}
               className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold"

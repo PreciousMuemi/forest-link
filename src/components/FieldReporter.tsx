@@ -65,14 +65,35 @@ const FieldReporter = () => {
     setResult(null);
 
     try {
-      // Get location
-      toast.info('Getting your location...');
-      const loc = await getLocation();
-      setLocation(loc);
+      // Try to get location, but don't fail if unavailable
+      let loc = location;
+      if (!loc) {
+        try {
+          toast.info('Getting your location...');
+          loc = await getLocation();
+          setLocation(loc);
+        } catch (geoError) {
+          console.warn('Geolocation unavailable, using default location:', geoError);
+          // Use default location (Nairobi, Kenya) if geolocation fails
+          loc = { lat: -1.2921, lon: 36.8219 };
+          toast.warning('Location unavailable. Using default location. You can update it later.');
+        }
+      }
 
       // Upload to Supabase Storage
       toast.info('Uploading photo...');
-      const fileName = `${Date.now()}-${file.name}`;
+
+      // Sanitize filename: remove special characters, accents, and spaces
+      const fileExtension = file.name.split('.').pop() || 'jpg';
+      const sanitizedName = file.name
+        .normalize('NFD') // Normalize accents
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-zA-Z0-9.-]/g, '_') // Replace special chars with underscore
+        .replace(/_{2,}/g, '_') // Replace multiple underscores with single
+        .substring(0, 100); // Limit length
+
+      const fileName = `${Date.now()}-${sanitizedName}`;
+
       const { data: uploadData, error: uploadError } = await supabase.storage
         .from('incident-photos')
         .upload(fileName, file, {

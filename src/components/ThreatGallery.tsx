@@ -1,179 +1,233 @@
 import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { supabase } from '@/integrations/supabase/client';
-import { Loader2, RefreshCw, AlertTriangle, Flame, TreeDeciduous, Shield } from 'lucide-react';
+import { Loader2, AlertTriangle, Flame, TreeDeciduous, Shield, MapPin, Calendar, CheckCircle2, Clock } from 'lucide-react';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 
-interface ThreatImage {
+interface VerifiedIncident {
   id: string;
-  type: string;
-  imageUrl: string;
-  generated: boolean;
+  threat_type: string;
+  image_url: string | null;
+  description: string | null;
+  lat: number;
+  lon: number;
+  created_at: string;
+  severity: string;
+  verified: boolean;
 }
 
-const threatTypes = [
-  { name: 'Fire', icon: Flame, color: 'text-destructive', bgColor: 'bg-destructive/10' },
-  { name: 'Deforestation', icon: TreeDeciduous, color: 'text-warning', bgColor: 'bg-warning/10' },
-  { name: 'Illegal Logging', icon: AlertTriangle, color: 'text-orange-500', bgColor: 'bg-orange-500/10' },
-  { name: 'Wildlife Poaching', icon: Shield, color: 'text-amber-600', bgColor: 'bg-amber-600/10' },
-];
+const threatTypes: Record<string, { icon: any; color: string; bgColor: string }> = {
+  'Fire': { icon: Flame, color: 'text-destructive', bgColor: 'bg-destructive/10' },
+  'Deforestation': { icon: TreeDeciduous, color: 'text-warning', bgColor: 'bg-warning/10' },
+  'Illegal Logging': { icon: AlertTriangle, color: 'text-orange-500', bgColor: 'bg-orange-500/10' },
+  'Wildlife Poaching': { icon: Shield, color: 'text-amber-600', bgColor: 'bg-amber-600/10' },
+  'Drought': { icon: AlertTriangle, color: 'text-yellow-600', bgColor: 'bg-yellow-600/10' },
+  'Wildfire': { icon: Flame, color: 'text-red-600', bgColor: 'bg-red-600/10' },
+};
 
 export const ThreatGallery = () => {
-  const [images, setImages] = useState<ThreatImage[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [generatingId, setGeneratingId] = useState<string | null>(null);
+  const [incidents, setIncidents] = useState<VerifiedIncident[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Initialize with placeholder images
-    setImages(
-      threatTypes.map((type, idx) => ({
-        id: `threat-${idx}`,
-        type: type.name,
-        imageUrl: '',
-        generated: false,
-      }))
-    );
+    fetchVerifiedIncidents();
+
+    // Subscribe to real-time updates for all incidents
+    const channel = supabase
+      .channel('all-incidents')
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'incidents',
+        },
+        () => {
+          console.log('🔄 Real-time update received, refreshing incidents...');
+          fetchVerifiedIncidents();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  const generateImage = async (threatType: string, id: string) => {
-    setGeneratingId(id);
+  const fetchVerifiedIncidents = async () => {
     try {
-      const { data, error } = await supabase.functions.invoke('generate-threat-image', {
-        body: { threatType },
-      });
+      setLoading(true);
+      console.log('🔍 Fetching all community reports...');
 
-      if (error) throw error;
+      // Fetch ALL incidents with images (both verified and pending)
+      const { data, error } = await supabase
+        .from('incidents')
+        .select('*')
+        .not('image_url', 'is', null)
+        .order('created_at', { ascending: false })
+        .limit(20);
 
-      if (data?.imageUrl) {
-        setImages((prev) =>
-          prev.map((img) =>
-            img.id === id
-              ? { ...img, imageUrl: data.imageUrl, generated: true }
-              : img
-          )
-        );
-        toast.success(`Generated ${threatType} image`);
+      if (error) {
+        console.error('❌ Error fetching incidents:', error);
+        throw error;
       }
+
+      console.log('✅ Fetched incidents:', data?.length || 0, 'total reports');
+      console.log('📊 Verified:', data?.filter(i => i.verified).length || 0);
+      console.log('⏳ Pending:', data?.filter(i => !i.verified).length || 0);
+      setIncidents(data || []);
     } catch (error) {
-      console.error('Error generating image:', error);
-      toast.error('Failed to generate image');
+      console.error('Error fetching incidents:', error);
+      toast.error('Failed to load community reports');
     } finally {
-      setGeneratingId(null);
+      setLoading(false);
     }
   };
 
-  const generateAllImages = async () => {
-    setLoading(true);
-    for (const img of images) {
-      if (!img.generated) {
-        await generateImage(img.type, img.id);
-        // Small delay between requests to avoid rate limits
-        await new Promise(resolve => setTimeout(resolve, 1000));
-      }
-    }
-    setLoading(false);
-  };
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="text-center space-y-4">
+          <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
+          <p className="text-muted-foreground">Loading verified threats...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const verifiedCount = incidents.filter(i => i.verified).length;
+  const pendingCount = incidents.filter(i => !i.verified).length;
+
+  if (incidents.length === 0) {
+    return (
+      <Card className="p-12 text-center">
+        <div className="max-w-md mx-auto space-y-4">
+          <div className="bg-muted/50 p-4 rounded-full w-16 h-16 flex items-center justify-center mx-auto">
+            <AlertTriangle className="h-8 w-8 text-muted-foreground" />
+          </div>
+          <h3 className="text-xl font-semibold text-foreground">No Reports Yet</h3>
+          <p className="text-muted-foreground">
+            Community threat reports will appear here once they are uploaded. You can track the status of your reports!
+          </p>
+          <p className="text-sm text-muted-foreground mt-2">
+            💡 <strong>Tip:</strong> Upload a threat report above to get started.
+          </p>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-3xl font-bold text-foreground mb-2">Threat Detection Gallery</h2>
+          <h2 className="text-3xl font-bold text-foreground mb-2">Community Threat Reports</h2>
           <p className="text-muted-foreground">
-            AI-generated examples of forest threats detected by our system
+            Track your reports and see verified threats from the community
           </p>
         </div>
-        <Button
-          onClick={generateAllImages}
-          disabled={loading}
-          className="gap-2"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Generating...
-            </>
-          ) : (
-            <>
-              <RefreshCw className="h-4 w-4" />
-              Generate Gallery
-            </>
+        <div className="flex gap-2">
+          {pendingCount > 0 && (
+            <Badge variant="outline" className="gap-2 px-4 py-2 border-orange-500 text-orange-600">
+              <Clock className="h-4 w-4" />
+              {pendingCount} Pending Review
+            </Badge>
           )}
-        </Button>
+          {verifiedCount > 0 && (
+            <Badge variant="outline" className="gap-2 px-4 py-2 border-success text-success">
+              <CheckCircle2 className="h-4 w-4" />
+              {verifiedCount} Verified
+            </Badge>
+          )}
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {images.map((img, idx) => {
-          const threatInfo = threatTypes[idx];
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {incidents.map((incident) => {
+          const threatInfo = threatTypes[incident.threat_type] || threatTypes['Fire'];
           const Icon = threatInfo.icon;
-          const isGenerating = generatingId === img.id;
 
           return (
             <Card
-              key={img.id}
-              className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-2 border-border"
+              key={incident.id}
+              className={`group overflow-hidden hover:shadow-2xl transition-all duration-500 border-2 ${incident.verified ? 'border-success/30' : 'border-orange-500/30'
+                }`}
             >
               <div className="relative aspect-video bg-muted overflow-hidden">
-                {img.generated && img.imageUrl ? (
+                {incident.image_url && (
                   <img
-                    src={img.imageUrl}
-                    alt={`${img.type} threat detection`}
+                    src={incident.image_url}
+                    alt={`${incident.threat_type} threat`}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                ) : isGenerating ? (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <div className="text-center space-y-4">
-                      <Loader2 className="h-12 w-12 animate-spin text-primary mx-auto" />
-                      <p className="text-sm text-muted-foreground">
-                        Generating {img.type} image...
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Button
-                      variant="outline"
-                      size="lg"
-                      onClick={() => generateImage(img.type, img.id)}
-                      className="gap-2"
-                    >
-                      <RefreshCw className="h-5 w-5" />
-                      Generate {img.type} Image
-                    </Button>
-                  </div>
                 )}
 
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
-                {/* Badge */}
+                {/* Threat Type Badge */}
                 <div className="absolute top-4 right-4">
                   <Badge className={`${threatInfo.bgColor} ${threatInfo.color} border-0 font-semibold`}>
                     <Icon className="h-4 w-4 mr-1" />
-                    {img.type}
+                    {incident.threat_type}
                   </Badge>
+                </div>
+
+                {/* Status Badge - Top Left */}
+                <div className="absolute top-4 left-4">
+                  {incident.verified ? (
+                    <Badge className="bg-success text-white font-semibold">
+                      <CheckCircle2 className="h-3 w-3 mr-1" />
+                      VERIFIED
+                    </Badge>
+                  ) : (
+                    <Badge className="bg-orange-500 text-white font-semibold animate-pulse">
+                      <Clock className="h-3 w-3 mr-1" />
+                      PENDING REVIEW
+                    </Badge>
+                  )}
                 </div>
               </div>
 
               <div className="p-6 bg-white">
-                <h3 className="text-xl font-bold text-foreground mb-2">{img.type} Detection</h3>
-                <p className="text-sm text-muted-foreground">
-                  {img.type === 'Fire' &&
-                    'Real-time monitoring of forest fires with immediate alert systems and response coordination.'}
-                  {img.type === 'Deforestation' &&
-                    'Satellite imagery analysis detects illegal clearing and logging activities across protected areas.'}
-                  {img.type === 'Illegal Logging' &&
-                    'AI-powered detection of unauthorized logging operations with GPS tracking and evidence collection.'}
-                  {img.type === 'Wildlife Poaching' &&
-                    'Conservation monitoring and wildlife protection through advanced threat detection systems.'}
+                <h3 className="text-xl font-bold text-foreground mb-2">{incident.threat_type}</h3>
+                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                  {incident.description || 'Community-reported environmental threat'}
                 </p>
-                
-                {img.generated && (
-                  <div className="mt-4 flex items-center gap-2 text-xs text-success">
-                    <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
-                    AI Generated • Verified
+
+                <div className="space-y-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-3 w-3" />
+                    <span>{incident.lat.toFixed(4)}, {incident.lon.toFixed(4)}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-3 w-3" />
+                    <span>{format(new Date(incident.created_at), 'MMM dd, yyyy HH:mm')}</span>
+                  </div>
+                </div>
+
+                {/* Status Message */}
+                {incident.verified ? (
+                  <div className="mt-4 p-3 bg-success/10 rounded-lg">
+                    <div className="flex items-center gap-2 text-xs text-success font-semibold">
+                      <CheckCircle2 className="h-4 w-4" />
+                      Verified by Admin Team
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      This report has been reviewed and confirmed
+                    </p>
+                  </div>
+                ) : (
+                  <div className="mt-4 p-3 bg-orange-50 rounded-lg border border-orange-200">
+                    <div className="flex items-center gap-2 text-xs text-orange-600 font-semibold">
+                      <Clock className="h-4 w-4" />
+                      Under Review
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Our admin team is reviewing your report. You'll be notified once verified!
+                    </p>
                   </div>
                 )}
               </div>
@@ -183,20 +237,23 @@ export const ThreatGallery = () => {
       </div>
 
       {/* Info banner */}
-      <Card className="p-6 bg-primary/5 border-2 border-primary/20">
+      <Card className="p-6 bg-gradient-to-r from-primary/5 to-orange-50 border-2 border-primary/20">
         <div className="flex items-start gap-4">
           <div className="bg-primary/10 p-3 rounded-xl">
-            <AlertTriangle className="h-6 w-6 text-primary" />
+            <CheckCircle2 className="h-6 w-6 text-primary" />
           </div>
-          <div>
+          <div className="flex-1">
             <h4 className="font-semibold text-foreground mb-2">
-              Powered by AI & Satellite Technology
+              Track Your Community Reports
             </h4>
-            <p className="text-sm text-muted-foreground">
-              These images are generated using advanced AI to demonstrate the types of threats our system
-              can detect. In production, the system processes real satellite imagery and field reports to
-              identify and respond to actual environmental threats in real-time.
-            </p>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p>
+                <strong className="text-orange-600">🟠 Pending Review:</strong> Your report has been received and is being reviewed by our admin team. You'll receive an SMS notification once it's verified!
+              </p>
+              <p>
+                <strong className="text-success">🟢 Verified:</strong> Report confirmed by our team with photographic evidence and GPS coordinates. Thank you for keeping Kenya's forests safe!
+              </p>
+            </div>
           </div>
         </div>
       </Card>

@@ -3,6 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { CheckCircle, XCircle, Eye, MapPin, Smartphone, MessageSquare, Satellite, Radio, UserPlus, Clock, Phone } from 'lucide-react';
 import { toast } from 'sonner';
 import { User } from '@supabase/supabase-js';
@@ -43,9 +44,12 @@ interface IncidentTableProps {
   incidents: Incident[];
   onUpdate: () => void;
   user: User | null;
+  selectedIds?: string[];
+  onToggleSelect?: (id: string) => void;
+  onToggleSelectAll?: () => void;
 }
 
-export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps) => {
+export const IncidentTable = ({ incidents, onUpdate, user, selectedIds = [], onToggleSelect, onToggleSelectAll }: IncidentTableProps) => {
   const [selectedIncident, setSelectedIncident] = useState<Incident | null>(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
@@ -54,6 +58,16 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
   const handleVerify = async (id: string, verified: boolean) => {
     setIsUpdating(true);
     try {
+      // Get incident details first
+      const { data: incident, error: fetchError } = await supabase
+        .from('incidents')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      // Update verification status
       const { error } = await supabase
         .from('incidents')
         .update({ verified })
@@ -61,7 +75,25 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
 
       if (error) throw error;
 
-      toast.success(verified ? 'Incident verified' : 'Incident marked as unverified');
+      // Send thank you SMS if verifying and phone number exists
+      if (verified && incident?.sender_phone) {
+        try {
+          await supabase.functions.invoke('send-approval-feedback', {
+            body: {
+              phoneNumber: incident.sender_phone,
+              threatType: incident.threat_type,
+              incidentId: incident.id
+            }
+          });
+          toast.success('Incident verified! Thank you message sent to reporter.');
+        } catch (smsError) {
+          console.error('Error sending SMS:', smsError);
+          toast.success('Incident verified (SMS notification failed)');
+        }
+      } else {
+        toast.success(verified ? 'Incident verified' : 'Incident marked as unverified');
+      }
+
       onUpdate();
     } catch (error) {
       console.error('Error updating incident:', error);
@@ -109,12 +141,19 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
     setIsUpdating(true);
     try {
       toast.info('Finding nearest available ranger...');
-      
+
       const { data, error } = await supabase.functions.invoke('assign-ranger', {
         body: { incident_id: incidentId, auto_assign: true },
       });
 
-      if (error) throw error;
+      if (error) {
+        // Check if function doesn't exist (404)
+        if (error.message?.includes('404') || error.message?.includes('not found')) {
+          toast.warning('Auto-assign feature not configured. Please assign rangers manually.');
+          return;
+        }
+        throw error;
+      }
 
       if (data?.success) {
         toast.success(data.message || 'Ranger assigned successfully!');
@@ -124,7 +163,7 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
       }
     } catch (error) {
       console.error('Error assigning ranger:', error);
-      toast.error('Failed to assign ranger');
+      toast.error('Auto-assign feature unavailable. Please assign manually.');
     } finally {
       setIsUpdating(false);
     }
@@ -132,7 +171,7 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
 
   const getIncidentStatusBadge = (status?: string) => {
     if (!status) return null;
-    
+
     const variants: Record<string, { variant: 'default' | 'secondary' | 'destructive' | 'outline'; label: string }> = {
       reported: { variant: 'outline', label: 'Reported' },
       assigned: { variant: 'secondary', label: 'Assigned' },
@@ -141,7 +180,7 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
       resolved: { variant: 'outline', label: 'Resolved' },
       false_alarm: { variant: 'secondary', label: 'False Alarm' },
     };
-    
+
     const config = variants[status] || { variant: 'outline', label: status };
     return <Badge variant={config.variant}>{config.label}</Badge>;
   };
@@ -152,6 +191,15 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
         <Table>
           <TableHeader>
             <TableRow>
+              {onToggleSelectAll && (
+                <TableHead className="w-[50px]">
+                  <Checkbox
+                    checked={selectedIds.length === incidents.length && incidents.length > 0}
+                    onCheckedChange={onToggleSelectAll}
+                    aria-label="Select all"
+                  />
+                </TableHead>
+              )}
               <TableHead>Type</TableHead>
               <TableHead>Source</TableHead>
               <TableHead>Severity</TableHead>
@@ -165,13 +213,22 @@ export const IncidentTable = ({ incidents, onUpdate, user }: IncidentTableProps)
           <TableBody>
             {incidents.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                <TableCell colSpan={onToggleSelectAll ? 9 : 8} className="text-center py-8 text-muted-foreground">
                   No incidents reported yet
                 </TableCell>
               </TableRow>
             ) : (
               incidents.map((incident) => (
-                <TableRow key={incident.id}>
+                <TableRow key={incident.id} className={selectedIds.includes(incident.id) ? 'bg-muted/50' : ''}>
+                  {onToggleSelect && (
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedIds.includes(incident.id)}
+                        onCheckedChange={() => onToggleSelect(incident.id)}
+                        aria-label={`Select ${incident.threat_type}`}
+                      />
+                    </TableCell>
+                  )}
                   <TableCell className="font-medium">{incident.threat_type}</TableCell>
                   <TableCell>
                     <Badge variant="outline" className="gap-1">
