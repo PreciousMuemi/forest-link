@@ -104,8 +104,8 @@ export default function AdminLayout() {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
-        <Sidebar className="border-r border-border">
+      <div className="min-h-screen flex w-full bg-background admin-light">
+        <Sidebar className="border-r border-border bg-card">
           <SidebarContent>
             <div className="p-4 border-b border-border">
               <div className="flex items-center gap-3">
@@ -156,7 +156,7 @@ export default function AdminLayout() {
         </Sidebar>
 
         <div className="flex-1 flex flex-col">
-          <header className="h-16 border-b border-border bg-card flex items-center px-6">
+          <header className="h-16 border-b border-border bg-card flex items-center px-6 shadow-sm">
             <SidebarTrigger />
             <div className="ml-4">
               <h1 className="text-lg font-semibold">
