@@ -1,15 +1,27 @@
-const getEnvAllowedEmails = (): string[] => {
-    const envValue = import.meta.env.VITE_RANGER_ALLOWED_EMAILS as string | undefined;
-    const fallback = 'ranger-demo@example.com,admin@example.com';
-    return (envValue || fallback)
-        .split(',')
-        .map((email) => email.trim().toLowerCase())
-        .filter(Boolean);
-};
+import { supabase } from '@/integrations/supabase/client';
 
-const allowedEmails = getEnvAllowedEmails();
+export const checkRangerAccess = async (userId: string): Promise<boolean> => {
+    try {
+        // Check if user has admin role (admins can access ranger portal)
+        const { data: adminRole } = await supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', userId)
+            .eq('role', 'admin')
+            .maybeSingle();
 
-export const isRangerAccessEmail = (email?: string | null): boolean => {
-    if (!email) return false;
-    return allowedEmails.includes(email.toLowerCase());
+        if (adminRole) return true;
+
+        // Check if user is a ranger
+        const { data: rangerData } = await supabase
+            .from('rangers')
+            .select('id')
+            .eq('user_id', userId)
+            .maybeSingle();
+
+        return !!rangerData;
+    } catch (error) {
+        console.error('Error checking ranger access:', error);
+        return false;
+    }
 };

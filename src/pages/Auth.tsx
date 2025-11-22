@@ -9,7 +9,7 @@ import { Leaf, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { isRangerAccessEmail } from '@/utils/rangerAccess';
+import { checkRangerAccess } from '@/utils/rangerAccess';
 
 const signupSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }),
@@ -30,19 +30,21 @@ const Auth = () => {
 
   useEffect(() => {
     // Check if user is already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       console.log('[Auth] Initial session check:', session?.user?.email);
       if (session) {
-        const destination = isRangerAccessEmail(session.user.email) ? '/ranger' : '/admin';
+        const hasRangerAccess = await checkRangerAccess(session.user.id);
+        const destination = hasRangerAccess ? '/ranger' : '/admin';
         console.log('[Auth] Redirecting existing session to', destination);
         navigate(destination);
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('[Auth] Auth state changed:', event, session?.user?.email);
       if (session) {
-        const destination = isRangerAccessEmail(session.user.email) ? '/ranger' : '/admin';
+        const hasRangerAccess = await checkRangerAccess(session.user.id);
+        const destination = hasRangerAccess ? '/ranger' : '/admin';
         console.log('[Auth] Redirecting auth state change to', destination);
         navigate(destination);
       }
@@ -73,7 +75,6 @@ const Auth = () => {
       }
 
       toast.success('Welcome back!');
-      console.log('[Auth] Login success for', validated.email, 'ranger access:', isRangerAccessEmail(validated.email));
     } catch (error) {
       if (error instanceof z.ZodError) {
         toast.error(error.errors[0].message);

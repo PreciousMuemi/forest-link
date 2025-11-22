@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, useLocation, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { checkRangerAccess } from '@/utils/rangerAccess';
 import {
     Sidebar,
     SidebarContent,
@@ -41,7 +42,7 @@ export default function RangerLayout() {
 
     useEffect(() => {
         // Check authentication
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
             setUser(session?.user ?? null);
 
             if (!session?.user) {
@@ -49,8 +50,10 @@ export default function RangerLayout() {
                 return;
             }
 
-            // Check if this is the ranger demo account
-            if (session.user.email !== 'ranger-demo@example.com') {
+            // Check if user has ranger access (admin or ranger role)
+            const hasAccess = await checkRangerAccess(session.user.id);
+            
+            if (!hasAccess) {
                 toast.error('Access denied. Ranger accounts only.');
                 navigate('/admin');
                 return;
