@@ -278,15 +278,15 @@
   /* Light admin theme overrides */
   .admin-light {
     --background: 0 0% 98%;
-    --foreground: 150 50% 10%;
+    --foreground: 150 50% 5%;
     --card: 0 0% 100%;
-    --card-foreground: 150 50% 10%;
+    --card-foreground: 150 50% 8%;
     --primary: 136 45% 45%;
     --primary-foreground: 0 0% 100%;
     --secondary: 150 10% 95%;
-    --secondary-foreground: 150 50% 10%;
+    --secondary-foreground: 150 60% 10%;
     --muted: 150 10% 93%;
-    --muted-foreground: 150 20% 40%;
+    --muted-foreground: 150 30% 30%;
     --border: 150 15% 88%;
     --input: 150 15% 88%;
   }

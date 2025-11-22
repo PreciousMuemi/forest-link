@@ -6,11 +6,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { MessageSquare, Send, RefreshCw } from 'lucide-react';
+import { MessageSquare, Send, RefreshCw, History } from 'lucide-react';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
+import { BroadcastAlertHistory } from '@/components/BroadcastAlertHistory';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const alertTemplates = {
   fire: 'ALERT: Wildfire detected in {location}. Evacuate immediately. Rangers dispatched. Call 999 for emergencies.',
@@ -106,7 +106,7 @@ export default function AdminAlerts() {
 
   if (loading) {
     return (
-      <div className="p-8 space-y-8">
+      <div className="p-4 md:p-8 space-y-8">
         <Skeleton className="h-12 w-64" />
         <div className="grid gap-6 md:grid-cols-2">
           <Skeleton className="h-[400px]" />
@@ -117,10 +117,10 @@ export default function AdminAlerts() {
   }
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
+    <div className="p-4 md:p-8 space-y-8 animate-fade-in">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h2 className="text-3xl font-bold">SMS Alert Center</h2>
+          <h2 className="text-3xl font-bold text-foreground">SMS Alert Center</h2>
           <p className="text-muted-foreground">Send mass alerts to rangers and communities</p>
         </div>
         <Button onClick={fetchData} size="sm" variant="outline">
@@ -129,7 +129,20 @@ export default function AdminAlerts() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <Tabs defaultValue="send" className="w-full">
+        <TabsList className="grid w-full max-w-md grid-cols-2">
+          <TabsTrigger value="send" className="gap-2">
+            <Send className="h-4 w-4" />
+            Send Alert
+          </TabsTrigger>
+          <TabsTrigger value="history" className="gap-2">
+            <History className="h-4 w-4" />
+            History
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="send" className="mt-6">
+          <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -216,51 +229,51 @@ export default function AdminAlerts() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Alerts</CardTitle>
-            <CardDescription>Sent alert history</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4 max-h-[600px] overflow-y-auto">
-              {alertLogs.length === 0 ? (
-                <p className="text-center text-muted-foreground py-8">No alerts sent yet</p>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Recipients</TableHead>
-                      <TableHead>Radius</TableHead>
-                      <TableHead>Message</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {alertLogs.map((log) => (
-                      <TableRow key={log.id}>
-                        <TableCell className="text-xs">
-                          {new Date(log.sent_at).toLocaleString()}
-                        </TableCell>
-                        <TableCell>
-                          <Badge variant="outline">
-                            {log.sent_to?.length || 0} users
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-xs">
-                          {log.radius_km} km
-                        </TableCell>
-                        <TableCell className="text-xs max-w-xs truncate">
-                          {log.message}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Quick Stats</CardTitle>
+                <CardDescription>Recent broadcast performance</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 bg-primary/10 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Total Alerts Sent</p>
+                      <p className="text-2xl font-bold text-primary">{alertLogs.length}</p>
+                    </div>
+                    <MessageSquare className="h-8 w-8 text-primary opacity-50" />
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-success/10 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Recipients Reached</p>
+                      <p className="text-2xl font-bold text-success">
+                        {alertLogs.reduce((sum, log) => sum + (log.sent_to?.length || 0), 0)}
+                      </p>
+                    </div>
+                    <Send className="h-8 w-8 text-success opacity-50" />
+                  </div>
+
+                  <div className="flex items-center justify-between p-3 bg-accent/10 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Last Alert</p>
+                      <p className="text-sm font-semibold">
+                        {alertLogs.length > 0
+                          ? new Date(alertLogs[0].sent_at).toLocaleString()
+                          : 'No alerts sent'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="history" className="mt-6">
+          <BroadcastAlertHistory alertLogs={alertLogs} onRefresh={fetchData} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
