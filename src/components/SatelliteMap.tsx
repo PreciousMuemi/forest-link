@@ -22,7 +22,7 @@ const SatelliteMap = () => {
   useEffect(() => {
     if (!mapContainer.current) return;
 
-    const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN || 'pk.eyJ1IjoicHJlZXdhbmppcnUiLCJhIjoiY21pNTNncXdxMTk0YjJtcXc2bXdteHAyMyJ9.hiR41DMOmSiUFh1xUIoIeQ';
+    const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
     mapboxgl.accessToken = MAPBOX_TOKEN;
 
     map.current = new mapboxgl.Map({

@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import { toast } from 'sonner';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-const MAPBOX_TOKEN = 'pk.eyJ1IjoibG92YWJsZS1haS1kZW1vIiwiYSI6ImNseTB5YmNqeTBhcXEyanM3YmRlbGU4bTcifQ.VVWgR_SN5iRiMlLbd-Bvbg';
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 interface Incident {
     id: string;
