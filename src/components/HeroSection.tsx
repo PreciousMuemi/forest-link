@@ -57,43 +57,39 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Dark Gradient Overlay */}
-      <div className="absolute inset-0 z-10 bg-gradient-overlay" />
+      {/* Subtle Dark Overlay */}
+      <div className="absolute inset-0 z-10 bg-black/40" />
 
       {/* Content */}
       <div className="relative z-20 flex h-full items-center justify-center px-4">
       <div className="max-w-5xl text-center">
           {/* Main Headline */}
-          <h1 className="mb-8 text-5xl md:text-7xl lg:text-8xl font-extrabold text-white leading-none tracking-tighter animate-fade-in-up text-balance">
-            Forest Intelligence
-            <br />
-            <span className="text-accent inline-block">Command Center</span>
+          <h1 className="mb-6 text-4xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight tracking-tight animate-fade-in-up text-balance px-4">
+            Unified Forest Threat Intelligence for Kenya
           </h1>
 
           {/* Subtext */}
-          <p className="mb-12 text-xl md:text-2xl text-white/90 max-w-3xl mx-auto leading-relaxed animate-fade-in-up [animation-delay:200ms]">
-            Real-time threat monitoring and coordinated ranger response.
+          <p className="mb-12 text-base md:text-xl text-white/85 max-w-4xl mx-auto leading-relaxed animate-fade-in-up [animation-delay:200ms] px-4">
+            Bringing together NASA FIRMS satellite data, SMS alerts, USSD reports, and community submissions into one unified dashboard for the Kenya Forest Service.
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-5 justify-center items-center animate-fade-in-up [animation-delay:400ms]">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up [animation-delay:400ms] px-4">
             <Button
               size="lg"
               onClick={() => navigate('/admin')}
-              className="bg-accent hover:bg-accent/90 text-foreground font-bold px-10 py-7 text-xl rounded-2xl shadow-lg transition-all duration-300 hover-lift group"
+              className="bg-accent hover:bg-accent/90 text-foreground font-semibold px-8 py-6 text-lg rounded-xl shadow-lg transition-all duration-300 hover-lift w-full sm:w-auto"
             >
-              <Map className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform" />
-              Access Command Center
+              Request Access
             </Button>
             
             <Button
               size="lg"
               variant="outline"
               onClick={scrollToReporter}
-              className="border-2 border-white text-white hover:bg-white hover:text-primary font-bold px-10 py-7 text-xl rounded-2xl transition-all duration-300 hover-lift group"
+              className="border-2 border-white text-white hover:bg-white hover:text-primary font-semibold px-8 py-6 text-lg rounded-xl transition-all duration-300 hover-lift w-full sm:w-auto"
             >
-              <Camera className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform" />
-              View Threat Map
+              View Demo
             </Button>
           </div>
         </div>
