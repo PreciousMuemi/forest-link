@@ -17,9 +17,9 @@ export default defineConfig(({ mode }) => ({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.ico'],
       manifest: {
-        name: 'ForestGuard AI',
-        short_name: 'ForestGuard',
-        description: 'AI-powered forest monitoring and threat detection system',
+        name: 'ForestLink',
+        short_name: 'ForestLink',
+        description: 'Forest Intelligence Platform - AI-powered monitoring and threat detection',
         theme_color: '#10b981',
         background_color: '#ffffff',
         display: 'standalone',
