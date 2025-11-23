@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Leaf, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { ForestLinkLogo } from '@/components/ForestLinkLogo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -130,10 +131,10 @@ const Auth = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-            <Leaf className="h-8 w-8 text-primary" />
+            <ForestLinkLogo className="h-10 w-10 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">ForestGuard AI</h1>
-          <p className="text-muted-foreground">Protecting forests with AI-powered monitoring</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">ForestLink</h1>
+          <p className="text-muted-foreground">Forest Intelligence Platform</p>
         </div>
 
         <Card className="p-6 shadow-xl">

@@ -195,7 +195,7 @@ export default function RangerLayout() {
                         <div className="flex items-center gap-2">
                             <MapPin className="h-5 w-5 text-primary" />
                             <h1 className="text-xl font-bold text-foreground">
-                                Kenya Forest Service - Ranger Response
+                                ForestLink - Ranger Response
                             </h1>
                         </div>
                     </div>
