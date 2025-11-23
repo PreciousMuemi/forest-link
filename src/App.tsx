@@ -9,7 +9,6 @@ import Auth from "./pages/Auth";
 import RangerMobile from "./pages/RangerMobile";
 import NotFound from "./pages/NotFound";
 import AdminSetup from "./pages/AdminSetup";
-import PitchDeckPage from "./pages/PitchDeckPage";
 import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminIncidents from "./pages/admin/Incidents";
@@ -38,7 +37,6 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/admin-setup" element={<AdminSetup />} />
             <Route path="/ranger-mobile" element={<RangerMobile />} />
-            <Route path="/pitch" element={<PitchDeckPage />} />
 
             {/* Ranger Portal Routes (Demo Mode) */}
             <Route path="/ranger" element={<RangerLayout />}>
