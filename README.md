@@ -6,17 +6,7 @@ Unified threat intelligence, ranger assignment, and community reporting for Wang
 
 - **Live Prototype:** https://forest-guardian-henna.vercel.app/
 - **Pitch Deck (Gamma):** https://gamma.app/docs/ForestLink-y1x82k8lfq812si
-- **Demo Video (2–3 min):** _Add link here before submission_
-
-## Team & Track
-
-- **Team:** _Add official team name_
-- **Members & Roles:** _Name – Lead Engineer_, _Name – Product/UX_, _Name – ML/AI_, ...
-- **Track:** _Forest Intelligence & Ranger Response (adjust if needed)_
-- **Contact:** _Team lead email / phone_
-
-> Update the placeholders above so Devfolio reviewers have a single source of truth.
-
+- **Demo Video (2
 ## Problem & WMF/GBM Context
 
 - Forest agencies (WMF, GBM partners, county rangers, NGO patrols) operate separate SMS, radio, satellite, and web reporting channels.
@@ -60,7 +50,6 @@ ForestLink ingests multi-channel signals, verifies them with AI plus human revie
 4. **Field Updates:** Ranger mobile view (see `src/pages/ranger`) changes status, shares notes/photos.
 5. **Audit:** Assignment + status deltas hashed to Scroll; alert history visible in UI.
 
-> Diagram coming to `/docs/architecture.png` (export from deck and link here).
 
 ## Data, APIs & Integrations
 
@@ -71,7 +60,6 @@ ForestLink ingests multi-channel signals, verifies them with AI plus human revie
 - **Hugging Face** – ViT image model for verifying field photos.
 - **Scroll** – immutable ledger of verified incidents.
 
-Document any custom datasets or shapefiles used in `/docs/data-sources.md` (placeholder).
 
 ## Deployment & Ops
 
@@ -87,15 +75,7 @@ Document any custom datasets or shapefiles used in `/docs/data-sources.md` (plac
 - **Scalability:** Role-based access + RLS allow multiple orgs; API-driven ingest makes it easy to plug in drones, sensors, or partner systems.
 - **Sustainability:** Offline-ready PWA, modular Supabase functions, ops docs to hand off to conservation partners.
 
-## Submission Checklist
 
-- [x] README (this file) with problem, solution, architecture, deliverables.
-- [x] Live prototype URL.
-- [ ] Demo video link (add before 24 Nov 2025 deadline).
-- [x] Pitch deck PDF/Link inside repo (`/docs/ForestGuardAI_Track_WMH2025.pdf` – add export from Gamma).
-- [x] Dataset/API references.
-- [x] User & backend workflows documented.
-- [ ] Appendix (optional, 1 page max) – add community findings if ready.
 
 ## Quick Start (Dev)
 
@@ -108,13 +88,6 @@ npm run dev
 
 Create `.env.local` with Mapbox, Supabase, Twilio, Hugging Face, and Scroll keys.
 
-## Database Cheat Sheet
-
-- `profiles` – users/rangers (name, phone, org, role).
-- `incidents` – threat reports (location, type, severity, verification, tx_hash).
-- `assignments` – ranger dispatch states.
-- `alert_logs` – community broadcast history.
-- `user_roles` – role-based access control.
 
 ## PWA Tips
 
