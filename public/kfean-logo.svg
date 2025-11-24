@@ -1,0 +1,27 @@
+<svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" fill="none">
+  <rect width="300" height="120" rx="24" fill="#0D1624" />
+  <g transform="translate(30 20)">
+    <path
+      d="M60 0C32 0 10 22 10 50c0 36 28 50 50 70 22-20 50-34 50-70C110 22 88 0 60 0z"
+      stroke="#D88B31"
+      stroke-width="6"
+      fill="none"
+    />
+    <path
+      d="M60 20c-10 10-16 22-16 36 0 15 8 28 16 34 8-6 16-19 16-34 0-14-6-26-16-36z"
+      stroke="#D88B31"
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+    <path
+      d="M60 38c-5 6-8 13-8 20 0 5 1 10 3 14"
+      stroke="#D88B31"
+      stroke-width="6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </g>
+  <text x="150" y="78" font-family="'Inter', 'Segoe UI', sans-serif" font-size="54" font-weight="600" fill="#D88B31">KFEAN</text>
+</svg>
