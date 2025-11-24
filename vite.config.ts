@@ -15,22 +15,23 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico'],
       manifest: {
-        name: 'ForestGuard AI',
-        short_name: 'ForestGuard',
-        description: 'AI-powered forest monitoring and threat detection system',
+        name: 'ForestLink',
+        short_name: 'ForestLink',
+        description: 'Forest Intelligence Platform - AI-powered monitoring and threat detection',
         theme_color: '#10b981',
         background_color: '#ffffff',
         display: 'standalone',
         icons: [
           {
-            src: '/kfean-logo.svg',
+            src: '/placeholder.svg',
             sizes: '192x192',
             type: 'image/svg+xml',
             purpose: 'any maskable'
           },
           {
-            src: '/kfean-logo.svg',
+            src: '/placeholder.svg',
             sizes: '512x512',
             type: 'image/svg+xml',
             purpose: 'any maskable'

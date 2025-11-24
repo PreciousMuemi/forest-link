@@ -404,7 +404,7 @@ export default function AdminUsers() {
               <Input
                 value={newUserData.organization}
                 onChange={(e) => setNewUserData({ ...newUserData, organization: e.target.value })}
-                placeholder="Kenya Forest Service"
+                placeholder="ForestLink"
               />
             </div>
             <div className="space-y-2">

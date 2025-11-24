@@ -70,7 +70,7 @@ const HeroSection = () => {
 
           {/* Subtext */}
           <p className="mb-12 text-base md:text-xl text-white/85 max-w-4xl mx-auto leading-relaxed animate-fade-in-up [animation-delay:200ms] px-4">
-            Bringing together NASA FIRMS satellite data, SMS alerts, USSD reports, and community submissions into one unified dashboard for the Kenya Forest Service.
+            Bringing together NASA FIRMS satellite data, SMS alerts, USSD reports, and community submissions into one unified forest intelligence platform.
           </p>
 
           {/* Action Buttons */}

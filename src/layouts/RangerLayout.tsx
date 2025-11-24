@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, Outlet, useLocation, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { User } from '@supabase/supabase-js';
+import { checkRangerAccess } from '@/utils/rangerAccess';
 import {
     Sidebar,
     SidebarContent,
@@ -41,11 +42,20 @@ export default function RangerLayout() {
 
     useEffect(() => {
         // Check authentication
-        supabase.auth.getSession().then(({ data: { session } }) => {
+        supabase.auth.getSession().then(async ({ data: { session } }) => {
             setUser(session?.user ?? null);
 
             if (!session?.user) {
                 navigate('/auth');
+                return;
+            }
+
+            // Check if user has ranger access (admin or ranger role)
+            const hasAccess = await checkRangerAccess(session.user.id);
+            
+            if (!hasAccess) {
+                toast.error('Access denied. Ranger accounts only.');
+                navigate('/admin');
                 return;
             }
 
@@ -118,33 +128,33 @@ export default function RangerLayout() {
     }
 
     return (
-        <SidebarProvider>
-            <div className="min-h-screen flex w-full bg-background admin-light">
-                <Sidebar className="border-r border-border bg-card">
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background admin-light">
+        <Sidebar className="border-r border-border bg-card">
                     <SidebarContent>
-                        <div className="p-6 border-b border-border">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 rounded-lg bg-primary">
-                                    <Shield className="h-6 w-6 text-white" />
+                    <div className="p-6 border-b border-border">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 rounded-lg bg-primary">
+                                <Shield className="h-6 w-6 text-white" />
                                 </div>
-                                <div>
-                                    <h2 className="font-bold text-lg text-foreground">Ranger Portal</h2>
-                                    <p className="text-xs text-muted-foreground">Field Response</p>
-                                </div>
+                            <div>
+                                <h2 className="font-bold text-lg text-foreground">Ranger Portal</h2>
+                                <p className="text-xs text-muted-foreground">Field Response</p>
+                            </div>
                             </div>
                         </div>
 
-                        <SidebarGroup>
-                            <SidebarGroupLabel className="text-muted-foreground">Navigation</SidebarGroupLabel>
-                            <SidebarGroupContent>
-                                <SidebarMenu>
-                                    {menuItems.map((item) => (
-                                        <SidebarMenuItem key={item.url}>
-                                            <SidebarMenuButton
-                                                asChild
-                                                isActive={location.pathname === item.url}
-                                                className="hover:bg-accent"
-                                            >
+                    <SidebarGroup>
+                        <SidebarGroupLabel className="text-muted-foreground">Navigation</SidebarGroupLabel>
+                        <SidebarGroupContent>
+                            <SidebarMenu>
+                                {menuItems.map((item) => (
+                                    <SidebarMenuItem key={item.url}>
+                                        <SidebarMenuButton
+                                            asChild
+                                            isActive={location.pathname === item.url}
+                                            className="hover:bg-accent"
+                                        >
                                                 <Link to={item.url}>
                                                     <item.icon className="h-4 w-4" />
                                                     <span>{item.title}</span>
@@ -161,16 +171,16 @@ export default function RangerLayout() {
                             </SidebarGroupContent>
                         </SidebarGroup>
 
-                        <div className="mt-auto p-4 border-t border-border">
-                            <div className="mb-3 p-3 rounded-lg bg-accent/10">
-                                <p className="text-xs font-semibold text-foreground">Logged in as:</p>
-                                <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
-                            </div>
-                            <Button
-                                onClick={handleSignOut}
-                                variant="outline"
-                                className="w-full"
-                            >
+                    <div className="mt-auto p-4 border-t border-border">
+                        <div className="mb-3 p-3 rounded-lg bg-accent/10">
+                            <p className="text-xs font-semibold text-foreground">Logged in as:</p>
+                            <p className="text-xs text-muted-foreground truncate">{user?.email}</p>
+                        </div>
+                        <Button
+                            onClick={handleSignOut}
+                            variant="outline"
+                            className="w-full"
+                        >
                                 <LogOut className="h-4 w-4 mr-2" />
                                 Sign Out
                             </Button>
@@ -178,18 +188,18 @@ export default function RangerLayout() {
                     </SidebarContent>
                 </Sidebar>
 
-                <div className="flex-1 flex flex-col">
-                    <header className="border-b border-border bg-card p-4 shadow-sm">
-                        <div className="flex items-center gap-4">
-                            <SidebarTrigger className="text-foreground" />
-                            <div className="flex items-center gap-2">
-                                <MapPin className="h-5 w-5 text-primary" />
-                                <h1 className="text-xl font-bold text-foreground">
-                                    Kenya Forest Service - Ranger Response
-                                </h1>
-                            </div>
+            <div className="flex-1 flex flex-col">
+                <header className="border-b border-border bg-card p-4 shadow-sm">
+                    <div className="flex items-center gap-4">
+                        <SidebarTrigger className="text-foreground" />
+                        <div className="flex items-center gap-2">
+                            <MapPin className="h-5 w-5 text-primary" />
+                            <h1 className="text-xl font-bold text-foreground">
+                                ForestLink - Ranger Response
+                            </h1>
                         </div>
-                    </header>
+                    </div>
+                </header>
 
                     <main className="flex-1 overflow-auto p-6">
                         <Outlet />

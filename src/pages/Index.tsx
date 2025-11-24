@@ -8,6 +8,7 @@ import FieldReporter from '@/components/FieldReporter';
 import TestIncidentButton from '@/components/TestIncidentButton';
 import { ThreatGallery } from '@/components/ThreatGallery';
 import { ForestAmbiance } from '@/components/ForestAmbiance';
+import { ForestLinkLogo } from '@/components/ForestLinkLogo';
 import {
   AlertTriangle,
   Shield,
@@ -68,11 +69,11 @@ const Index = () => {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3 group">
             <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <Leaf className="h-6 w-6 text-white transform group-hover:rotate-12 transition-transform duration-300" />
+              <ForestLinkLogo className="h-6 w-6 text-white transform group-hover:scale-110 transition-transform duration-300" />
             </div>
             <div>
-              <h2 className="font-bold text-foreground text-lg">ForestWatch KE</h2>
-              <p className="text-xs text-muted-foreground font-medium">Kenya Forest Service</p>
+              <h2 className="font-bold text-foreground text-lg">ForestLink</h2>
+              <p className="text-xs text-muted-foreground font-medium">Forest Intelligence Platform</p>
             </div>
           </div>
 
@@ -210,7 +211,7 @@ const Index = () => {
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { icon: Shield, name: 'Kenya Forest Service', role: 'Command & Control' },
+              { icon: Shield, name: 'ForestLink', role: 'Command & Control' },
               { icon: User, name: 'Community Scouts', role: 'Field Reporting' },
               { icon: MapIcon, name: 'Forest Rangers', role: 'Response Teams' },
               { icon: Globe, name: 'NGO Partners', role: 'Conservation Support' },
@@ -349,15 +350,15 @@ const Index = () => {
             <div>
               <div className="flex items-center gap-3 mb-4">
                 <div className="h-10 w-10 rounded-lg bg-gradient-primary flex items-center justify-center">
-                  <Leaf className="h-6 w-6 text-white" />
+                  <ForestLinkLogo className="h-6 w-6 text-white" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-foreground">ForestWatch KE</h3>
-                  <p className="text-xs text-muted-foreground">Kenya Forest Service</p>
+                  <h3 className="font-bold text-foreground">ForestLink</h3>
+                  <p className="text-xs text-muted-foreground">Forest Intelligence Platform</p>
                 </div>
               </div>
               <p className="text-sm text-muted-foreground">
-                Unified threat intelligence for Kenya Forest Service
+                Unified threat intelligence for forest protection
               </p>
             </div>
 
@@ -379,7 +380,7 @@ const Index = () => {
           </div>
 
           <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            <p>© 2025 ForestWatch KE - Kenya Forest Emergency Alert Network. All rights reserved.</p>
+            <p>© 2025 ForestLink - Forest Intelligence Platform. All rights reserved.</p>
             <p className="mt-2">Built for 🇰🇪 Kenya | Powered by NASA FIRMS, Africa's Talking & Scroll Blockchain</p>
           </div>
         </div>

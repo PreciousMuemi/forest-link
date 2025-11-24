@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Leaf, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
+import { ForestLinkLogo } from '@/components/ForestLinkLogo';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { checkRangerAccess } from '@/utils/rangerAccess';
 
 const signupSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }),
@@ -29,19 +31,23 @@ const Auth = () => {
 
   useEffect(() => {
     // Check if user is already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       console.log('[Auth] Initial session check:', session?.user?.email);
       if (session) {
-        console.log('[Auth] Redirecting existing session to /ranger');
-        navigate('/ranger');
+        const hasRangerAccess = await checkRangerAccess(session.user.id);
+        const destination = hasRangerAccess ? '/ranger' : '/admin';
+        console.log('[Auth] Redirecting existing session to', destination);
+        navigate(destination);
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('[Auth] Auth state changed:', event, session?.user?.email);
       if (session) {
-        console.log('[Auth] Redirecting auth state change to /ranger');
-        navigate('/ranger');
+        const hasRangerAccess = await checkRangerAccess(session.user.id);
+        const destination = hasRangerAccess ? '/ranger' : '/admin';
+        console.log('[Auth] Redirecting auth state change to', destination);
+        navigate(destination);
       }
     });
 
@@ -125,10 +131,10 @@ const Auth = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-4">
-            <Leaf className="h-8 w-8 text-primary" />
+            <ForestLinkLogo className="h-10 w-10 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">ForestGuard AI</h1>
-          <p className="text-muted-foreground">Protecting forests with AI-powered monitoring</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">ForestLink</h1>
+          <p className="text-muted-foreground">Forest Intelligence Platform</p>
         </div>
 
         <Card className="p-6 shadow-xl">

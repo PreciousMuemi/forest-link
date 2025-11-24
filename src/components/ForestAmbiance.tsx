@@ -34,9 +34,10 @@ export const ForestAmbiance = () => {
 
     // Forest-themed colors
     const colors = [
-      'rgba(34, 139, 34, 0.5)',  // Lush Green
-      'rgba(15, 118, 110, 0.4)', // Teal canopy
-      'rgba(59, 130, 246, 0.25)', // Cool dusk accent
+      'rgba(63, 163, 77, 0.6)',    // Forest Green
+      'rgba(242, 160, 7, 0.8)',    // Safari Amber (fireflies)
+      'rgba(34, 139, 34, 0.4)',    // Dark Green
+      'rgba(255, 223, 0, 0.9)',    // Yellow (fireflies)
     ];
 
     for (let i = 0; i < particleCount; i++) {
@@ -67,13 +68,35 @@ export const ForestAmbiance = () => {
         if (particle.y < 0) particle.y = canvas.height;
         if (particle.y > canvas.height) particle.y = 0;
 
-        // Draw subtle forest particles (no bright yellow bubbles)
-        ctx.fillStyle = particle.color;
-        ctx.globalAlpha = particle.opacity;
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
+        // Firefly glow effect for amber/yellow particles
+        if (particle.color.includes('242, 160') || particle.color.includes('255, 223')) {
+          particle.opacity = Math.sin(Date.now() * 0.003 + particle.x) * 0.3 + 0.5;
+          
+          // Glow effect
+          const gradient = ctx.createRadialGradient(
+            particle.x,
+            particle.y,
+            0,
+            particle.x,
+            particle.y,
+            particle.size * 3
+          );
+          gradient.addColorStop(0, particle.color);
+          gradient.addColorStop(1, 'rgba(242, 160, 7, 0)');
+          
+          ctx.fillStyle = gradient;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Regular leaf particles
+          ctx.fillStyle = particle.color;
+          ctx.globalAlpha = particle.opacity;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
       });
 
       animationFrameId = requestAnimationFrame(animate);
