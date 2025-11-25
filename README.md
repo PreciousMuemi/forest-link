@@ -6,7 +6,7 @@ Unified threat intelligence, ranger assignment, and community reporting for Wang
 
 - **Live Prototype:** https://forest-guardian-henna.vercel.app/
 - **Pitch Deck (Gamma):** https://gamma.app/docs/ForestLink-y1x82k8lfq812si
-- **Demo Video (2
+- **Demo Video (https://youtu.be/qQ_53HqL2Zc?si=WVTITLZHDw8WQpWi
 ## Problem & WMF/GBM Context
 
 - Forest agencies (WMF, GBM partners, county rangers, NGO patrols) operate separate SMS, radio, satellite, and web reporting channels.
